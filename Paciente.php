@@ -76,8 +76,8 @@ function create($Conexion_ID, $datos = ""){
 
 function actualiza($Conexion_ID, $Where = "", $datos = ""){
 
-  $query = "UPDATE paciente set shistoria = '". $datos["shistoria"] ."', snombre = '". $datos["snombre"] .
-           "', sapellido = '". $datos['sapellido']. "', edad = '".$datos['edad']."'' WHERE ";
+  $query = "UPDATE paciente set shistoria = '". $datos["shistoria"] ."', snombre = '". utf8_decode($datos["snombre"]) .
+           "', sapellido = '". utf8_decode($datos['sapellido']). "', edad = '".$datos['edad']."' WHERE ";
 
   if (!empty($Where)){
     $query .= $Where;

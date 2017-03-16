@@ -65,11 +65,9 @@
     if ( $_POST["accion"] == "enviar" && empty($_POST["id"])){
       if (crear( $miconexion->Conexion_ID, $miPaciente )){
         $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa');
-	      //if (preg_match("/CtrlPacienteIntervencion/", $_POST['referente'])) {
 
-          $nombrePaciente = $_POST['sapellido'].", ".$_POST['snombre'];
-	        header( 'Location: http://localhost/Sociproma_linux/CtrlPacienteIntervencion.php?id_paciente='.mysql_insert_id().'&nombre_paciente='.urlencode($nombrePaciente) ) ;
-	      //}
+        $nombrePaciente = $_POST['sapellido'].", ".$_POST['snombre'];
+        header( 'Location: http://localhost/Sociproma_linux/CtrlPacienteIntervencion.php?id_paciente='.mysql_insert_id().'&nombre_paciente='.      urlencode($nombrePaciente) ) ;
       }
       else{
       	$Error = 'Ha ocurrido un error al momento de la creación de los datos';
@@ -126,7 +124,7 @@ function crear( $Conexion_ID, $miPaciente ){
 
   $datos = array( "shistoria" => $_POST["shistoria"],
 	          "snombre"   => $_POST["snombre"],
-		  "sapellido" => $_POST["sapellido"],
+		        "sapellido" => $_POST["sapellido"],
 	          'edad'      => $_POST["edad"] );
 
   
@@ -142,9 +140,9 @@ function actualiza( $Conexion_ID, $miPaciente ){
   $Where = " id = " . $_POST["id"];
 
   $datos = array( "shistoria" => $_POST["shistoria"],
-		  "snombre"   => $_POST["snombre"],
-		  "sapellido" => $_POST["sapellido"],
-	          "edad"      => $_POST["edad"] );
+		              "snombre"   => $_POST["snombre"],
+		              "sapellido" => $_POST["sapellido"],
+	                "edad"      => $_POST["edad"] );
   
   $resultado = $miPaciente->actualiza( $Conexion_ID, $Where, $datos );
 
@@ -173,8 +171,8 @@ function verconsulta( $smarty, $ConsultaID ) {
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
     $Datos['id']        = $row->id;
     $Datos['shistoria'] = $row->shistoria;
-    $Datos['snombre']   = strtoupper($row->snombre);
-    $Datos['sapellido'] = strtoupper($row->sapellido);
+    $Datos['snombre']   = utf8_encode(strtoupper($row->snombre));
+    $Datos['sapellido'] = utf8_encode(strtoupper($row->sapellido));
     $Datos['edad']      = strtoupper($row->edad);
     $Datos['clase']     = $clase;
 

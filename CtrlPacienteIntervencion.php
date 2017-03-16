@@ -133,6 +133,10 @@
     if ( $_POST["accion"] == "enviar" && empty($_POST["id"])){
       if (crear( $miconexion->Conexion_ID, $miPacienteIntervencion )){
         $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa');
+        $url = $_SERVER["HTTP_REFERER"];
+        list($part1, $part2) = split('\?', $url);
+        $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa'.$part1);
+        header("Location: http://localhost/Sociproma_linux/CtrlPaciente.php") ;
       }
       else{
         $smarty->assign('error_msg', 'Ha ocurrido un error al momento de la creación de los datos');

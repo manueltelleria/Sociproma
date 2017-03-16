@@ -190,19 +190,25 @@ function validate_fpaciente_intervencion (form) {
   }
   }
 
-// id_paciente: select list, always assume it's multiple to get all values
-  var id_paciente = 0;
-  var selected_id_paciente = 0;
-  for (var loop = 0; loop < form.elements['id_paciente'].options.length; loop++) {
-    if (form.elements['id_paciente'].options[loop].selected) {
-      id_paciente = form.elements['id_paciente'].options[loop].value;
-      selected_id_paciente++;
-      if (id_paciente == 0 || id_paciente === 0) {
-        alertstr += '- Seleccione una opción para el campo "Paciente"\n';
-        invalid++;
-      }
-    } // if
-  } // for id_paciente
+  var id_paciente = document.getElementById("id_paciente");
+
+  if (id_paciente.type != "hidden"){
+    // id_paciente: select list, always assume it's multiple to get all values
+    var id_paciente = 0;
+    var selected_id_paciente = 0;
+    for (var loop = 0; loop < form.elements['id_paciente'].options.length; loop++) {
+      if (form.elements['id_paciente'].options[loop].selected) {
+        id_paciente = form.elements['id_paciente'].options[loop].value;
+        selected_id_paciente++;
+        if (id_paciente == 0 || id_paciente === 0) {
+          alertstr += '- Seleccione una opción para el campo "Paciente"\n';
+          invalid++;
+        }
+      } // if
+    } // for id_paciente
+  }
+
+
 
 // fecha: standard text, hidden, password, or textarea box
   var fecha = form.elements['fecha'].value;
@@ -346,7 +352,7 @@ function calcula_monto( ){
     {if $id_paciente != ''}
       <tr>
         <td width="15%"><b>Paciente:</b></td>
-        <td align="left"><b>{$nombre_paciente}</b><input type="hidden" value="{$id_paciente}"></td>
+        <td align="left"><b>{$nombre_paciente}</b><input name="id_paciente" id="id_paciente" type="hidden" value="{$id_paciente}"></td>
       </tr>
     {else}    
       <tr>
