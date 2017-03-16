@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-03-09 13:07:55
-  from "C:\xampp\htdocs\Sociproma\smarty\templates\estilosgenerales.tpl" */
+/* Smarty version 3.1.30, created on 2017-03-16 17:33:22
+  from "/opt/lampp/htdocs/Sociproma_linux/smarty/templates/estilosgenerales.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_58c1459ba18d49_99648945',
+  'unifunc' => 'content_58cabe5284b8b3_71235083',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '76ddc5b8223c487782961532617ff393f2325150' => 
+    'a97ea0f67f94f98df9508626d85ed66aaaa28b9c' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\Sociproma\\smarty\\templates\\estilosgenerales.tpl',
-      1 => 1489059558,
+      0 => '/opt/lampp/htdocs/Sociproma_linux/smarty/templates/estilosgenerales.tpl',
+      1 => 1489045160,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_58c1459ba18d49_99648945 (Smarty_Internal_Template $_smarty_tpl) {
+function content_58cabe5284b8b3_71235083 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <link href="/sociproma/css/estilo.css" rel="stylesheet" type="text/css" />
 <link href="/sociproma/css/menu/dhtmlXMenu.css" rel="stylesheet" type="text/css" />

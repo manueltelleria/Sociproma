@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-03-09 13:27:24
-  from "C:\xampp\htdocs\Sociproma\smarty\templates\iniciosesion.tpl" */
+/* Smarty version 3.1.30, created on 2017-03-16 17:44:22
+  from "/opt/lampp/htdocs/Sociproma_linux/smarty/templates/iniciosesion.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_58c14a2c077705_45794329',
+  'unifunc' => 'content_58cac0e61040a0_47043404',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    'd24c25377957ce270598d86899b608571a56c30e' => 
+    'f96f5c9aabf3304fd1e46c0022999aa35356c916' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\Sociproma\\smarty\\templates\\iniciosesion.tpl',
-      1 => 1489061865,
+      0 => '/opt/lampp/htdocs/Sociproma_linux/smarty/templates/iniciosesion.tpl',
+      1 => 1489682647,
       2 => 'file',
     ),
   ),
@@ -23,7 +23,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:jsgenerales.tpl' => 1,
   ),
 ),false)) {
-function content_58c14a2c077705_45794329 (Smarty_Internal_Template $_smarty_tpl) {
+function content_58cac0e61040a0_47043404 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_subTemplateRender("file:encabezado.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
@@ -86,7 +86,7 @@ function validate_iniciosesion( form ){
 
 <body>
 <!-- Login form -->
-<form method='post' name='iniciosesion' id='iniciosesion' action='http://localhost:8080/sociproma/iniciosesion.php'>
+<form method='post' name='iniciosesion' id='iniciosesion' action='http://localhost/Sociproma_linux/iniciosesion.php'>
 <table align='center'>
   <tr>
     <td>Usuario:</td>

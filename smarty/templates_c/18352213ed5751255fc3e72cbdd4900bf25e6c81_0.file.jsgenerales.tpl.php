@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-03-09 13:07:55
-  from "C:\xampp\htdocs\Sociproma\smarty\templates\jsgenerales.tpl" */
+/* Smarty version 3.1.30, created on 2017-03-16 17:33:22
+  from "/opt/lampp/htdocs/Sociproma_linux/smarty/templates/jsgenerales.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_58c1459ba273f3_35494106',
+  'unifunc' => 'content_58cabe5288c208_34391779',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '9b22b5000306d9d17ff0dac03cc5fb16bcb49324' => 
+    '18352213ed5751255fc3e72cbdd4900bf25e6c81' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\Sociproma\\smarty\\templates\\jsgenerales.tpl',
-      1 => 1489059558,
+      0 => '/opt/lampp/htdocs/Sociproma_linux/smarty/templates/jsgenerales.tpl',
+      1 => 1489045160,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_58c1459ba273f3_35494106 (Smarty_Internal_Template $_smarty_tpl) {
+function content_58cabe5288c208_34391779 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <?php echo '<script'; ?>

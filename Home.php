@@ -10,7 +10,7 @@
   $smarty->assign('error_msg', '');
 
   if (!$_SESSION['usuario_log']){
-    header('location: http://localhost:8080/sociproma/iniciosesion.php');
+    header('location: http://localhost/Sociproma_linux/iniciosesion.php');
   }
   else{
     $smarty->assign('usuario_log', $_SESSION['usuario_log']);

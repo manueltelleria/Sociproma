@@ -65,12 +65,11 @@
     if ( $_POST["accion"] == "enviar" && empty($_POST["id"])){
       if (crear( $miconexion->Conexion_ID, $miPaciente )){
         $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa');
-	      if (preg_match("/CtrlPacienteIntervencion/", $_POST['referente'])) {
+	      //if (preg_match("/CtrlPacienteIntervencion/", $_POST['referente'])) {
 
-        //    $_SESSION['id_paciente'] = mysql_insert_id();
-        //    $_SESSION['nombre_paciente'] = $_POST['sapellido'].", ".$_POST['snombre'];
-	      //    header( 'Location: http://localhost:8080/sociproma/CtrlPacienteIntervencion.php' ) ;
-	      }
+          $nombrePaciente = $_POST['sapellido'].", ".$_POST['snombre'];
+	        header( 'Location: http://localhost/Sociproma_linux/CtrlPacienteIntervencion.php?id_paciente='.mysql_insert_id().'&nombre_paciente='.urlencode($nombrePaciente) ) ;
+	      //}
       }
       else{
       	$Error = 'Ha ocurrido un error al momento de la creación de los datos';

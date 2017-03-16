@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-03-16 15:03:42
-  from "C:\xampp\htdocs\Sociproma\smarty\templates\Paciente_Intervencion.tpl" */
+/* Smarty version 3.1.30, created on 2017-03-16 17:48:07
+  from "/opt/lampp/htdocs/Sociproma_linux/smarty/templates/Paciente_Intervencion.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_58ca9b3ee28df8_09514512',
+  'unifunc' => 'content_58cac1c7daff82_26170795',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '78b55a38b88021fb40c9d868a84af9c117cd2c7e' => 
+    '8a158803b54225a0fb2fb16c346bc436cbc3f5e8' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\Sociproma\\smarty\\templates\\Paciente_Intervencion.tpl',
-      1 => 1489673019,
+      0 => '/opt/lampp/htdocs/Sociproma_linux/smarty/templates/Paciente_Intervencion.tpl',
+      1 => 1489681361,
       2 => 'file',
     ),
   ),
@@ -21,8 +21,8 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:encabezado.tpl' => 1,
   ),
 ),false)) {
-function content_58ca9b3ee28df8_09514512 (Smarty_Internal_Template $_smarty_tpl) {
-if (!is_callable('smarty_function_html_options')) require_once 'C:\\xampp\\htdocs\\Sociproma\\libs\\plugins\\function.html_options.php';
+function content_58cac1c7daff82_26170795 (Smarty_Internal_Template $_smarty_tpl) {
+if (!is_callable('smarty_function_html_options')) require_once '/opt/lampp/htdocs/sociproma/libs/plugins/function.html_options.php';
 $_smarty_tpl->_subTemplateRender("file:encabezado.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
@@ -382,11 +382,12 @@ function calcula_monto( ){
       <td align="left"><input type="text" name="num_recibo" id="num_recibo" size="10" value="<?php echo $_smarty_tpl->tpl_vars['num_recibo']->value;?>
 "><b>*</b></td>
     </tr>
-    <?php if ($_SESSION['id_paciente'] != '') {?>
+    <?php if ($_smarty_tpl->tpl_vars['id_paciente']->value != '') {?>
       <tr>
         <td width="15%"><b>Paciente:</b></td>
         <td align="left"><b><?php echo $_smarty_tpl->tpl_vars['nombre_paciente']->value;?>
-</b></td>
+</b><input type="hidden" value="<?php echo $_smarty_tpl->tpl_vars['id_paciente']->value;?>
+"></td>
       </tr>
     <?php } else { ?>    
       <tr>

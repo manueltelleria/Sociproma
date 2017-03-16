@@ -28,16 +28,15 @@
   $smarty->assign('monto_anestesia', 0);
   $smarty->assign('sobservacion','');
   $smarty->assign('id_intervencion','');
-  if (!empty($_SESSION['id_paciente'])){
-      $smarty->assign('id_paciente', $_SESSION['id_paciente']);
-      $smarty->assign('nombre_paciente',$_SESSION['nombre_paciente']);
-      //unset($_SESSION['id_paciente']);
-      unset($_SESSION['nombre_paciente']);
-  } else {
-    $_SESSION['id_paciente'] = '';
-    $_SESSION['nombre_paciente'] = '';
-    $smarty->assign('id_paciente', '');
-    $smarty->assign('nombre_paciente','');
+  $smarty->assign('id_paciente', '');
+  $smarty->assign('nombre_paciente','');
+
+  print "LLEGA ----> ". $_GET['id_paciente'] . " ----> ". $_GET['nombre_paciente'];
+
+  if (!empty($_GET['id_paciente']) && !empty($_GET['nombre_paciente'])){
+    print "ENTROOOOOO";
+    $smarty->assign('id_paciente', $_GET['id_paciente']);
+    $smarty->assign('nombre_paciente',$_GET['nombre_paciente']);
   }
   //$smarty->assign('id','');
 
@@ -187,7 +186,7 @@
     else{
      // $smarty->assign('id', '');
       $smarty->assign('num_recibo', '');
-      $smarty->assign('id_paciente', '');
+      //$smarty->assign('id_paciente', '');
       $smarty->assign('fecha', '');
       $smarty->assign('id_tpoperacion', '');
       $smarty->assign('id_doctor_cirujano', '');
@@ -202,9 +201,7 @@
       $smarty->assign('id_interven', '');
       
       $smarty->display('Paciente_Intervencion.tpl');
-      if (!empty($_SESSION['id_paciente'])){
-        unset($_SESSION['id_paciente']);
-      }
+
     }
   }
 

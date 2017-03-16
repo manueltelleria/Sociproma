@@ -343,10 +343,10 @@ function calcula_monto( ){
       <td width="15%"><b>Número de Recibo:</b></td>
       <td align="left"><input type="text" name="num_recibo" id="num_recibo" size="10" value="{$num_recibo}"><b>*</b></td>
     </tr>
-    {if $smarty.session.id_paciente != ''}
+    {if $id_paciente != ''}
       <tr>
         <td width="15%"><b>Paciente:</b></td>
-        <td align="left"><b>{$nombre_paciente}</b></td>
+        <td align="left"><b>{$nombre_paciente}</b><input type="hidden" value="{$id_paciente}"></td>
       </tr>
     {else}    
       <tr>

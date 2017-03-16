@@ -51,7 +51,7 @@ function validate_iniciosesion( form ){
 
 <body>
 <!-- Login form -->
-<form method='post' name='iniciosesion' id='iniciosesion' action='http://localhost:8080/sociproma/iniciosesion.php'>
+<form method='post' name='iniciosesion' id='iniciosesion' action='http://localhost/Sociproma_linux/iniciosesion.php'>
 <table align='center'>
   <tr>
     <td>Usuario:</td>

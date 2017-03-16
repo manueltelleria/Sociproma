@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2017-03-16 12:42:20
-  from "C:\xampp\htdocs\Sociproma\smarty\templates\encabezado.tpl" */
+/* Smarty version 3.1.30, created on 2017-03-16 17:45:47
+  from "/opt/lampp/htdocs/Sociproma_linux/smarty/templates/encabezado.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_58ca7a1c50ef89_20932348',
+  'unifunc' => 'content_58cac13b1b78b8_73184095',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '63fe20a63bfdf9d313f2e585ba427b34510840e3' => 
+    'f7a9cb04631ddf567770f849d34459200e8cd4f9' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\Sociproma\\smarty\\templates\\encabezado.tpl',
-      1 => 1489664534,
+      0 => '/opt/lampp/htdocs/Sociproma_linux/smarty/templates/encabezado.tpl',
+      1 => 1489682744,
       2 => 'file',
     ),
   ),
@@ -20,28 +20,28 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_58ca7a1c50ef89_20932348 (Smarty_Internal_Template $_smarty_tpl) {
-if (!is_callable('smarty_modifier_date_format')) require_once 'C:\\xampp\\htdocs\\Sociproma\\libs\\plugins\\modifier.date_format.php';
+function content_58cac13b1b78b8_73184095 (Smarty_Internal_Template $_smarty_tpl) {
+if (!is_callable('smarty_modifier_date_format')) require_once '/opt/lampp/htdocs/sociproma/libs/plugins/modifier.date_format.php';
 ?>
 <html>
 <!-- INICIO HEADER VENEZUELA -->
 <head>
-<link rel="stylesheet" href="/sociproma/menu/menu.css">
-<LINK HREF="/sociproma/css/anestesia.css" REL="stylesheet" TYPE="text/css">
+<link rel="stylesheet" href="/Sociproma_linux/menu/menu.css">
+<LINK HREF="/Sociproma_linux/css/anestesia.css" REL="stylesheet" TYPE="text/css">
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta charset="utf-8"> 
 
-<link rel="stylesheet" type="text/css" href="/sociproma/css/jquerycssmenu.css" />
+<link rel="stylesheet" type="text/css" href="/Sociproma_linux/css/jquerycssmenu.css" />
 
-<link href="/sociproma/menu/estilos.css" rel="stylesheet" type="text/css" /> 
-<link href="/sociproma/menu/ADxMenuHoriz.css" rel="stylesheet" type="text/css" media="screen, tv, projection" /> 
+<link href="/Sociproma_linux/menu/estilos.css" rel="stylesheet" type="text/css" /> 
+<link href="/Sociproma_linux/menu/ADxMenuHoriz.css" rel="stylesheet" type="text/css" media="screen, tv, projection" /> 
 <!--[if lte IE 6]>
 <link href="ADxMenuHoriz-IE6.css" rel="stylesheet" type="text/css" media="screen, tv, projection" />
 <![endif]--> 
  
 <?php echo '<script'; ?>
- type="text/javascript" src="/sociproma/menu/ADxMenu.js"><?php echo '</script'; ?>
+ type="text/javascript" src="/Sociproma_linux/menu/ADxMenu.js"><?php echo '</script'; ?>
 > 
 <?php echo '<script'; ?>
  language="JavaScript" src="js/generales.js"><?php echo '</script'; ?>
@@ -55,8 +55,8 @@ if (!is_callable('smarty_modifier_date_format')) require_once 'C:\\xampp\\htdocs
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td><img src="/sociproma/imagenes/soci.png" alt="soci.png" /></td>
-    <td colspan="2" width="100%" align="right" class="titulosistema" background="/sociproma/imagenes/banner_bandes_cen.jpg">Sistema Control de Intervenciones<br/></td>
+    <td><img src="/Sociproma_linux/imagenes/soci.png" alt="soci.png" /></td>
+    <td colspan="2" width="100%" align="right" class="titulosistema" background="/Sociproma_linux/imagenes/banner_bandes_cen.jpg">Sistema Control de Intervenciones<br/></td>
   </tr>
   <tr>
     <td colspan="3" align="right"><?php echo $_smarty_tpl->tpl_vars['nombre_log']->value;?>
@@ -72,25 +72,25 @@ if (!is_callable('smarty_modifier_date_format')) require_once 'C:\\xampp\\htdocs
   <?php if ($_smarty_tpl->tpl_vars['badministra']->value) {?>
     <li><a href="javascript:void();" title="Administración del Sistema">Administración</a>
       <ul> 
-        <li><a href="http://localhost:8080/sociproma/CtrlUsuario.php" title="Registro de Usuarios">Usuarios</a></li> 
-        <li><a href="http://localhost:8080/sociproma/CtrlDoctor.php" title="Registro de Doctores">Doctores</a></li> 
-        <li><a href="http://localhost:8080/sociproma/CtrlPaciente.php" title="Registro de Pacientes">Pacientes</a></li> 
-        <li><a href="http://localhost:8080/sociproma/CtrlResponsable.php" title="Registro de Responsables">Responsables</a></li> 
-        <li><a href="http://localhost:8080/sociproma/CtrlIntervencion.php" title="Registro de Tipo de Intervenciones">Tipo de Intervenciones</a></li> 
+        <li><a href="http://localhost/Sociproma_linux/CtrlUsuario.php" title="Registro de Usuarios">Usuarios</a></li> 
+        <li><a href="http://localhost/Sociproma_linux/CtrlDoctor.php" title="Registro de Doctores">Doctores</a></li> 
+        <li><a href="http://localhost/Sociproma_linux/CtrlPaciente.php" title="Registro de Pacientes">Pacientes</a></li> 
+        <li><a href="http://localhost/Sociproma_linux/CtrlResponsable.php" title="Registro de Responsables">Responsables</a></li> 
+        <li><a href="http://localhost/Sociproma_linux/CtrlIntervencion.php" title="Registro de Tipo de Intervenciones">Tipo de Intervenciones</a></li> 
       </ul> 
     </li> 
   <?php }?>
   <li><a href="javascript:void()" title="Recibos">Recibos</a>
     <ul> 
-      <li><div><a href="http://localhost:8080/sociproma/CtrlPacienteIntervencion.php" title="Cargar Recibo" >Cargar Recibo</a></div></li> 
+      <li><div><a href="http://localhost/Sociproma_linux/CtrlPacienteIntervencion.php" title="Cargar Recibo" >Cargar Recibo</a></div></li> 
     </ul> 
   </li> 
   <li><a href="javascript:void();" title="Consultas del Sistema">Consultas</a>
     <ul> 
-      <li><div><a href="http://localhost:8080/sociproma/CtrlBuscarRecibo.php" title="Consulta de Recibos" >Consulta Recibos</a></div></li> 
+      <li><div><a href="http://localhost/Sociproma_linux/CtrlBuscarRecibo.php" title="Consulta de Recibos" >Consulta Recibos</a></div></li> 
     </ul> 
   </li> 
-  <li><a href="http://localhost:8080/sociproma/Salir.php" title="Salir del Sistema">Salir</a></li> 
+  <li><a href="http://localhost/Sociproma_linux/Salir.php" title="Salir del Sistema">Salir</a></li> 
 </ul> 
 </div>  
 
@@ -118,7 +118,7 @@ if (document.getElementById) {
 <?php echo '</script'; ?>
 >
 <?php echo '<script'; ?>
- type="text/javascript" src="/sociproma/js/tooltip.js"><?php echo '</script'; ?>
+ type="text/javascript" src="/Sociproma_linux/js/tooltip.js"><?php echo '</script'; ?>
 >
 
 <div id="cargando" style="display: none">
@@ -130,7 +130,7 @@ if (document.getElementById) {
          </tr>
          <tr> 
             <td align="center">
-               <img alt="Cargando" src="/sociproma/imagenes/cargando.gif" /> 
+               <img alt="Cargando" src="/Sociproma_linux/imagenes/cargando.gif" /> 
             </td> 
          </tr>  
       </table> 

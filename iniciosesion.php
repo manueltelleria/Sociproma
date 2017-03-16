@@ -34,21 +34,23 @@
     if ($ConsultaId){
       $row = mysql_fetch_object($ConsultaId);
       if ($row &&  (sha1($_POST['scontrasena']) == $row->scontrasena)){
-    print $row->susuario;
-	session_start();
-	$usuario_log  = $_POST['susuario'];
-	$nombre_log   = $row->snombre;
-	$apellido_log = $row->sapellido;
-	$badministra  = ($row->badministrador == 1) ? 1 : 0;
+        print $row->susuario;
+	      session_start();
+	      $usuario_log  = $_POST['susuario'];
+	      $nombre_log   = $row->snombre;
+	      $apellido_log = $row->sapellido;
+	      $badministra  = ($row->badministrador == 1) ? 1 : 0;
         $_SESSION['usuario_log']  = $usuario_log;
         $_SESSION['nombre_log']   = $nombre_log;
         $_SESSION['apellido_log'] = $apellido_log;
         $_SESSION['badministra']  = $badministra;
 
-        header( 'Location: http://localhost:8080/sociproma/Home.php' ) ;
+        print("ANTESSSSSSSSSSSSS");
+
+        header( 'Location: http://localhost/Sociproma_linux/Home.php' ) ;
       }
       else{
-        $smarty->assign('error_msg','Las credenciales indicadas no corresponden con ning&uacute;n usuario registrado');
+        $smarty->assign('error_msg','Las credenciales indicadas no corresponden con ningún usuario registrado');
       }
     }
     else{
