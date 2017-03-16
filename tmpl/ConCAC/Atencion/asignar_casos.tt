@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+[% formbuilder.jshead %]
+
+
+
+<script type="text/javascript">
+
+    function upd(valor, ruta){
+        document.forma.id_ciudadanos.value = valor;
+        document.forma.action = ruta;
+        document.forma.submit();
+    }
+
+    function upd2(valor, ruta){
+
+        document.forma.id_casos.value = valor;
+        document.forma.action = ruta;
+        document.forma.submit();
+    }
+
+    function cambioRes(){
+        if(document.forma.id_responsables.value) {
+            document.forma.id_remitidopara.value = '';
+        }
+    }
+    function cambioRem(){
+        if(document.forma.id_remitidopara.value) {
+            document.forma.id_responsables.value = '';
+        }
+    }
+
+</script>
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Asignar Casos</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+<table align="center" width="65%">
+
+    <tr>
+        <td align="left" class="" nowrap colspan=2 >
+            <table align="center" border=0 cellspacing="1" cellpadding="2" width="65%">
+                <tr class=titulodonforojo>
+                    <th width=40 colspan=12 align=center> Casos de Atenci&oacute;n al Ciudadano</th>
+                </tr>
+                <tr class=fondoetiqueta5 align=center>
+<!--                     <th width=40>id</th> -->
+                    <th width=200>Tipo</th>
+                    <th width=40>Asunto</th>
+<!--                     <th width=200>Estatus</th> -->
+                    <th width=40>Detalle</th>
+                    <th width=40>Seleccionar</th>
+
+                </tr>
+                [% FOREACH field IN tabla %]
+                <tr class=[% field.clase %]>
+                    <td>[% field.id_tpcaso %]</td>
+                    <td>[% field.sasunto %]</td>
+<!--                     <td>[% field.id_tpedocaso %]</td> -->
+                    <td><a href="javascript: upd2([% field.id %],'/concac/atencion/administracion/fichaCaso')"  style="text-decoration:none">Ver Detalle</a></td>
+                    <td align=center><input type=checkbox name=id_casos2 value=[% field.id %] ></input></td>
+
+                </tr>
+                [% END %]
+                <tr >
+                    <td colspan=11><hr></td>
+                </tr>
+            </table>
+        </td>
+
+    </tr>
+    <tr>
+        <td align center  colspan=2 >
+            <table align="center" border=0 cellspacing="1" cellpadding="2" width="65%">
+                <tr class=titulodonforojo>
+                    <th width=40 colspan=2 align=center> Asignar Casos</th>
+                </tr>
+                <tr>
+                    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_remitidopara.label %]</b></td>
+                    <td align="left">[% formbuilder.field.id_remitidopara.field %]</td>
+                </tr>
+                <tr>
+                    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_responsables.label %]</b></td>
+                    <td align="left">[% formbuilder.field.id_responsables.field %]</td>
+                </tr>
+                <tr >
+                    <th width=40 colspan=2 align=center> [% formbuilder.submit %]</th>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+</table>
+<input type=hidden name=retorno value='/concac/atencion/administracion/asignarCaso'>
+[% formbuilder.field.id_ciudadanos.field %]
+[% formbuilder.field.id_casos.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

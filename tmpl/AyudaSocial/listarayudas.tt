@@ -1,0 +1,157 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<script type="text/javascript">
+
+function datosReporteExcel( ){
+  document.indexconsulta.action = "[% ruta_datosReporteExcel %]";
+  document.indexconsulta.submit();
+}
+
+function paginar( page ){
+  document.indexconsulta.action = "[% ruta_listarAyudas %]";
+  document.indexconsulta.page.value = page;
+  document.indexconsulta.submit();
+}
+
+function fichaAyuda( id ){
+  document.indexconsulta.action = "[% ruta_fichaAyuda %]";
+  document.indexconsulta.idAyuda.value = id;
+  document.indexconsulta.submit();
+}
+
+function generarPDF( id ){
+  document.indexconsulta.action = "[% ruta_generarFichaPDF %]";
+  document.indexconsulta.idAyuda.value = id;
+  document.indexconsulta.submit();
+}
+
+function mostrarHisto( id ){
+  document.indexconsulta.action = "[% ruta_ayudaedohisto %]";
+  document.indexconsulta.idAyuda.value = id;
+  document.indexconsulta.submit();
+}
+
+</script>
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+<fieldset>
+<legend>Consultar Ayuda Social</legend>
+
+<table align="center" cellpadding="2" width="160%">
+<tr>
+  <td align="center" colspan="[% columnas.size() + 1 %]" class="titulodonforojo">Listado de Ayudas Sociales Registradas</td>
+</tr>
+<tr>
+[% IF columnas %]
+  [% FOREACH i IN columnas %]
+    [% FOREACH k IN i %]
+      <td class="fondoetiqueta5" align="center" >[% k.value %]</td>
+    [% END %]
+  [% END %]
+[% END %]
+  <td align="center" class="fondoetiqueta5">&nbsp;</td>
+</tr>
+[% IF registros %]
+
+  [% FOREACH fila IN registros %]
+    <tr bgcolor="[% fila.sclase %]">
+    [% FOREACH i IN columnas %]
+      [% FOREACH k IN i %]
+      [% y = k.key %]
+        [% IF y == 'nayuda' %]
+          <td width="6%" align="center" ><a style="text-decoration:none" href="javascript:fichaAyuda([% fila.id %])">[% fila.$y %]</a></td>
+        [% ELSE %]
+          <td align="justify" style="white-space: nowrap">[% fila.$y %]</td>
+        [% END %]
+      [% END %]
+    [% END %]
+      <td width="5%" align="center">
+        <a  href="javascript:mostrarHisto([% fila.id %]);">
+          <img src="[% ruta_estatica %]/imagenes/history.png" height="16px" width="16px" border="0" alt="PDF" />
+        </a>&nbsp;<a  href="javascript:generarPDF([% fila.id %]);"><img src="[% ruta_estatica %]/imagenes/pdf.jpg" height="16px" width="16px" border="0" alt="PDF" /></a>
+      </td>
+    </tr>
+  [% END %]
+  [% IF total_entries %]
+  <tr>
+    <td align="left" width="100%" colspan="[% columnas.size() + 1 %]"><b>Total Registros:</b> [% total_entries %]<td>
+  </tr>
+  [% END %]
+[% ELSE %]
+<tr>
+  <td align="center" colspan="[% columnas.size() + 1 %]" class="titulodonfomarillo">No Existen Ayudas Sociales Registradas.</td>
+</tr>
+[% END %]
+</table>
+<br/>
+<font color="#0F305A" size="0" >
+<table align="left" width="95%">
+  <tr>
+    <td align="left" >Leyenda:&nbsp;&nbsp;
+      <img width="14" height="14" src="[% ruta_estatica %]/imagenes/pdf.jpg" border="0" alt="Planilla" />&nbsp;Planilla Solicitud Ayuda Social&nbsp;&nbsp;<img width="16" height="16" src="[% ruta_estatica %]/imagenes/history.png" border="0" alt="Historico" />&nbsp;Registros hist&oacute;ricos de Estatus</td>
+  </tr>
+</table>
+</font>
+<br/><br/>
+[% IF registros %]
+<table width="50%" align="left" border="0">
+  <tr>
+    <td align="left" valign="middle" width="25%">Listado en Excel&nbsp;&nbsp;&nbsp;&nbsp;<a  href="javascript:datosReporteExcel();"><img src="[% ruta_estatica %]/imagenes/excel.jpg" height="20px" width="16px" border="0" alt="Excel" /></a></td>
+  </tr>
+</table>
+[% END %]
+<br/><br/><br/>
+[% IF registros and last_page > 1 %]
+<table align="center" width="50%" border="0">
+<tr>
+  <td width="38%" align="right"><a style="text-decoration:none" href="javascript:paginar([% first_page %])"><< Primera</a>&nbsp;&nbsp;
+    <a style="text-decoration:none" href="javascript:paginar([% previous_page %])">< Anterior</a>
+  </td>
+  <td width="24%" align="center">
+    [% current_page %] / [% last_page %]
+  </td>
+  <td width="38%" align="left">
+    <a style="text-decoration:none" href="javascript:paginar([% next_page %])">Siguiente ></a>&nbsp;&nbsp;<a style="text-decoration:none" href="javascript:paginar([% last_page %])">Ultima >></a>
+  </td>
+</tr>
+</table>
+[% END %]
+<table align="center" width="60%">
+  <tr>
+    <td colspan="4" align="center">[% formbuilder.field.btnvolver.field %]</td>
+  </tr>
+</table>
+
+</fieldset>
+[% formbuilder.field.page.field %]
+[% formbuilder.field.idAyuda.field %]
+[% formbuilder.end %]
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+<legend>Datos del Evaluador</legend>
+<table border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td border="1"><b>Nro. C&eacute;dula:</b></td>
+    <td border="1">[% cedula %]
+    <td border="1"><b>Nombres y Apellidos:</b></td>
+    <td border="1">[% nombreapellido %]
+  </tr>
+</table>
+</fieldset>
+<fieldset>
+<legend>Datos del Evaluado</legend>
+<table border="0" align="center" cellspacing="3" cellpadding="5">
+  <tr>
+    <td class="fondoetiqueta"><b>C&eacute;dula del Evaluado:</b></td>
+    <td class="fondoetiqueta2">[% formbuilder.field.cedulaeval.value %]</td>
+  </tr>
+  <tr>
+    <td class="fondoetiqueta"><b>[% formbuilder.field.nombreeval.label %]:</b></td>
+    <td class="fondoetiqueta2">[% formbuilder.field.nombreeval.value %]</td>
+  </tr>
+  <tr>
+    <td class="fondoetiqueta"><b>[% formbuilder.field.estatusodi.label %]:</b></td>
+    <td class="fondoetiqueta2">[% formbuilder.field.estatusodi.value %]</td>
+  </tr>
+  <tr>
+    <td class="fondoetiqueta"><b>[% formbuilder.field.estatussegui.label %]:</b></td>
+    <td class="fondoetiqueta2">[% formbuilder.field.estatussegui.value %]</td>
+  </tr>
+  <tr>
+    <td class="fondoetiqueta"><b>[% formbuilder.field.estatuseval.label %]:</b></td>
+    <td class="fondoetiqueta2">[% formbuilder.field.estatuseval.value %]</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <table>
+        <tr>
+          <td>[% formbuilder.field.btnvolver.field %]</td>
+          <td>[% formbuilder.field.btnrevodi.field %]</td>
+          <td>[% formbuilder.field.btnrevsegui.field %]</td>
+          [% IF bMostrar == 1 %]
+            <td>[% formbuilder.field.btnreveval.field %]</td>
+          [% END %]
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</fieldset>
+<br>
+[% formbuilder.field.cedulaeval.field %]</td>
+[% formbuilder.end %]
+<br/>
+</body>
+</html>

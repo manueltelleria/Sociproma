@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+[% INCLUDE estilosgenerales.tt %]
+[%formbuilder.jshead%]
+</head>
+<body>
+ <TABLE width="93%" cellpadding="0">
+   <div align="center">
+      <span class="titulodonfomarillo" id="error_msg">[% error_msg %]</span>
+   </div>
+    <tr align="center">
+      <td colspan="6"><input id="btnCerrar" name="btnCerrar" onClick="window.close();" type="button" value="Cerrar" /></td>
+    </tr>
+  </TABLE>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%formbuilder.jshead%]
+
+<script language ="JavaScript">
+
+function imprime(){
+//desaparece el boton
+document.getElementById("noprint").style.visibility='hidden';
+//se imprime la pagina
+print();
+setTimeout("showlayer()",2000);
+}
+function showlayer(){
+     document.getElementById("noprint").style.visibility='visible';
+}
+</script>
+</head>
+[%formbuilder.start%]
+<div class="page">
+<table cellspacing="1" cellpadding="1" border="1">
+<tr>
+<td colspan="4" bgcolor="#DDDDDD">
+    <b><div align="center">SECCION "B"</div></b>
+    </td>
+</tr>
+  <tr>
+    <td width="300px" align="justify"><small>
+      <b>OBJETIVO DEL DESEMPE&Ntilde;O INDIVIDUAL</b><p>(ODI): Se refiere a los logros que cada funcionario debe alcanzar durante un periodo
+      espec&iacute;fico.<br/><br/>El <b>Objetivo de Desempe&ntilde;o Individual (ODI)</b> debe guardar relaci&oacute;n con el objetivo funcional de la unidad.<br/>
+      Entendi&eacute;ndose por <b>Objetivo Funcional</b> la raz&oacute;n de ser de la Unidad dentro del organismo.
+      <ul>
+        <li>&nbsp;&nbsp;En esta columna se indicar&aacute;n los ODI fijados con previo acuerdo entre el supervisor y el supervisado.</li>
+        <li>&nbsp;&nbsp;Los objetivos deben ser medibles, observables y verificables.</li>
+        <li>&nbsp;&nbsp;Al definir los objetivos se debe tomar en cuenta el que y el cuando.</li>
+        <li>&nbsp;&nbsp;No deben fijarse para cada empleado m&aacute;s de (5) objetivos, ni menos de tres (3).</li>
+        <li>&nbsp;&nbsp;El supervisor debe fijar los lineamientos generales para alcanzar los objetivos.<br/><b>PESO:</b>Es la ponderaci&oacute;n
+        del ODI expresada en puntos.</li>
+        <li>&nbsp;&nbsp;En esta columna se debe indicar el peso para cada ODI, en funci&oacute;n de su importancia con el Objetivo Funcional.</li>
+        <li>&nbsp;&nbsp;El peso total es (50) puntos, el cual debe distribuirse entre los objetivos fijados.</li>
+        <li>&nbsp;&nbsp;El peso asignado a un objetivo no debe ser inferior a (5) puntos ni superior a (25).<br/><b>RANGOS:</b>Es la
+        expresi&oacute;n cuantitativa del cumplimiento de los ODI alcanzados por el funcionario.</li>
+        <li>&nbsp;&nbsp;En este cuadro debe seleccionar y marcar con una equis (X) el rango que mejor describa el comportamiento del evaluado.</li>
+        </ul><small>
+        <table width="300px" border=1 cellspacing="0" cellpadding="1">
+          <tr bgcolor="#DDDDDD">
+            <th><small>RANGOS</th>
+            <th><small>DESCRIPCI&Oacute;N</th>
+          </tr>
+          <tr>
+            <td align="center"><small>1</small></td>
+            <td align="left"><small>Muy por debajo de lo esperado</small></td>
+          </tr>
+          <tr>
+            <td align="center"><small>2</small></td>
+            <td align="left"><small>Por debajo de lo esperado</small></td>
+          </tr>
+          <tr>
+            <td align="center"><small>3</small></td>
+            <td align="left"><small>Dentro de lo esperado</small></td>
+          </tr>
+          <tr>
+            <td align="center"><small>4</small></td>
+            <td align="left"><small>Sobre lo esperado</small></td>
+          </tr>
+          <tr>
+            <td align="center"><small>5</small></td>
+            <td align="left"><small>Excepcional</small></td>
+          </tr>
+        </table>
+    </td>
+    <td valign="top">
+      <table border=1 cellspacing="0" cellpadding="1">
+        <tr>
+          <td colspan="8" bgcolor="#DDDDDD" align="center">
+            <b>ESTABLECIMIENTO Y EVALUACI&Oacute;N DE OBJETIVOS DE DESEMPE&Ntilde;O INDIVIDUAL</b>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="8">
+            En esta Secci&oacute;n se establecen los Objetivos de Desempe&ntilde;o Individual (ODI) que el funcionario debe cumplir en el periodo a evaluar.
+          </td>
+        </tr>
+        </tr>
+        <tr bgcolor="#DDDDDD">
+          <td valign="top" rowspan="2" align="center"><b><small>20. OBJETIVOS DE DESEMPE&Ntilde;O INDIVIDUAL</small></b></td>
+          <td align="center" rowspan="2"><b><small>21. PESO</small></b></td>
+          <td colspan="5" align="center"><b><small>22. RANGO</small></b></td>
+          <td rowspan="2" align="center"><b><small>23. PESO X RANGO</small></b> </td>
+        </tr>
+        <tr bgcolor="#DDDDDD">
+          <td align="center">1</td>
+          <td align="center">2</td>
+          <td align="center">3</td>
+          <td align="center">4</td>
+          <td align="center">5</td>
+        </tr>
+        [% FOREACH listado %]
+          <tr>
+            <td border="0" height="55px" align="justify"><small>[% descripcion %]</small></td>
+            <td align="center" height="55px"><small>[% npeso %]</small></td>
+            <td height="55px"><small>[% celda1 %]</small></td>
+            <td height="55px"><small>[% celda2 %]</small></td>
+            <td height="55px"><small>[% celda3 %]</small></td>
+            <td height="55px"><small>[% celda4 %]</small></td>
+            <td height="55px"><small>[% celda5 %]</small></td>
+            <td height="55px" align="center"><small>[% rangoxpeso %]</small></td>
+          </tr>
+        [% END %]
+        <tr>
+          <td>&nbsp;</td>
+          <td align="center"><b>[% totalpeso %]</b></td>
+          <td colspan="5" valign="top" align="right" bgcolor="#DDDDDD"><b><small>24. TOTAL</small></b></td>
+          <td align="center"><b>[% nTotal %]</b></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<div id=noprint>
+  <TABLE width="93%" cellpadding="2">
+    <tr align="center">
+      <td colspan="6">[% formbuilder.field.btnvolver.field %][% formbuilder.field.btnImprimir.field %][% formbuilder.submit %]</td>
+    </tr>
+  </TABLE>
+</div>
+</div>
+[% formbuilder.field.ncedula.field %]
+[% formbuilder.end %]
+<br/>
+</body>
+</html>

@@ -1,0 +1,147 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<script language="JavaScript">
+
+function validarClave (clave) {
+
+  /*** propiedades de la contraseña ***/
+  var obj = {
+    min:      [% desafio.min %],      /* longitud minima          */
+    max:      [% desafio.max %],      /* longitud maxima          */
+    digitos:  [% desafio.digitos %],  /* numero minimo de digitos */
+    letras:   [% desafio.letras %],   /* numero minimo de letras  */
+    especial: [% desafio.especial %], /* numero minimo de caracteres especiales */
+    espacios: [% desafio.espacios %], /* permitir o no espacios   */
+  };
+
+  /* Nota: La suma de cantidades entre letras y digitos no debe superar a la longitud minima configurada */
+
+  /*** expresiones regulares para validar las propiedades  ***/
+  var regExp = {
+      digitos:    /[0-9]/g,
+      letras:     /[A-Z]/gi,
+      especial:   /[!,@#$%^&*?_~]/g,
+  }, regla, i;
+
+  /* validar la longitud de la contraseña  */
+  if ( clave.length < obj.min || clave.length > obj.max ) {
+    return false;
+  }
+
+  /* validar si debe contener o no espacios  */
+  if ( obj.espacios <= 0 && clave.match(/\s/g) ) {
+    return false;
+  }
+
+  /* validar el resto de las reglas */
+  for (regla in regExp) {
+    if ((clave.match(regExp[regla]) || []).length < obj[regla])
+      return false;
+  }
+
+  return true;
+
+}
+
+function validar( form ){
+  if (validate_infoDesafio(form)){
+
+    var alertstr='';
+    var invalid=0;
+
+    if ( !validarClave(form.sclaveconfirmar.value) ) {
+      alertstr += "- La contraseña no cumple con las políticas de seguridad establecidas\n";
+      invalid++;
+    }
+
+    if (invalid > 0 || alertstr != '') {
+      alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'
+              +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
+      return false;
+    }
+
+    return true;
+
+  }else{ return false; }
+
+}
+
+</script>
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+<fieldset>
+<legend>Cambio de Contraseña</legend>
+
+<table align="center" width="60%">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">Información de Validación</td>
+  </tr>
+  <tr>
+    <td width="50%" colspan="1" align="left" class="fondoetiqueta"><b>[% formbuilder.field.sclaveactual.label %]</b></td>
+    <td width="50%" colspan="1" align="left">[% formbuilder.field.sclaveactual.field %]</td>
+  </tr>
+  <tr>
+    <td width="50%" colspan="1" align="left" class="fondoetiqueta"><b>[% formbuilder.field.sclavenueva.label %]</b></td>
+    <td width="50%" colspan="1" align="left">[% formbuilder.field.sclavenueva.field %]&nbsp;<a href="javascript:void(0);" onmouseover="Tip([% desafio.msg %])" onmouseout="UnTip()">Pol&iacute;ticas de Seguridad</a></td>
+  </tr>
+  <tr>
+    <td width="50%" colspan="1" align="left" class="fondoetiqueta"><b>[% formbuilder.field.sclaveconfirmar.label %]</b></td>
+    <td width="50%" colspan="1" align="left">[% formbuilder.field.sclaveconfirmar.field %]</td>
+  </tr>
+  <tr>
+    <td width="50%" colspan="1" align="left" class="fondoetiqueta"><b>Pregunta de Seguridad:</b></td>
+    <td width="50%" colspan="1" align="left">[% datos.challengeQuestion %]</td>
+    </tr>
+  <tr>
+    <td width="50%" colspan="1" align="left" class="fondoetiqueta"><b>[% formbuilder.field.srespuestaseguridad.label %]</b></td>
+    <td width="50%" colspan="1" align="left">[% formbuilder.field.srespuestaseguridad.field %]</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="left" ><font color="#0F305A" size="0" >Nota: Todos los campos son obligatorios.</font></td>
+  </tr>
+</table>
+<br>
+<table align="center" width="60%">
+  <tr>
+    <td width="100%" align="center">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+
+<br><br>
+<table align="center" width="50%">
+<tr>
+  <td align="left" width="30%" valign="top"><small><b>Pol&iacute;ticas de Seguridad:</b></small></td>
+  <td align="justify" width="70%"><small>[% desafio.politicas %]</small></td>
+</tr>
+</table>
+
+</fieldset>
+
+[% formbuilder.end %]
+
+</body>
+</html>

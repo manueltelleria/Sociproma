@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<body>
+[%INCLUDE ReciboPago/encabreclote.tt %]
+<table width="670px" border="0" cellpadding="0" cellspacing="0">
+[% IF recibo %]
+<tr bgcolor="#005288">
+<td height="20px" width="398px" align="center"><p style="font-family:Helvetica;font-size:55%"><font color="white"><b>CONCEPTO</b></p></td>
+<td height="20px" width="68px" align="center"><p style="font-family:Helvetica;font-size:55%"><font color="white"><b>DIAS/HORAS</b></p></td>
+<td height="20px" width="68px" align="right"><p style="font-family:Helvetica;font-size:55%"><font color="white"><b>ASIGNACIONES</b></p></td>
+<td height="20px" width="68px" align="right"><p style="font-family:Helvetica;font-size:55%"><font color="white"><b>DEDUCCIONES</b></p></td>
+<td height="20px" width="68px" align="right"><p style="font-family:Helvetica;font-size:55%"><font color="white"><b>SALDO</b></p></td>
+</tr>
+[% FOREACH recibo %]
+<tr bgcolor="[% clase %]">
+<td colspan="1" height="20px" width="398px" align="left">[% codconcepto %]&nbsp;&nbsp;[% concepto %]</td>
+<td colspan="1" height="20px" width="68px" align="center">[% dhoras %]</td>
+[% IF tconcepto =='A' %]
+<td colspan="1" height="20px" width="68px" align="right">[% monto %]</td>
+[% ELSE %]
+<td colspan="1" height="20px" width="68px" align="right">&nbsp;</td>
+[% END %]
+[% IF tconcepto =='D' %]
+<td colspan="1" height="20px" width="68px" align="right">[% monto %]</td>
+[% ELSE %]
+<td colspan="1" height="20px" width="68px" align="right">&nbsp;</td>
+[% END %]
+[% IF saldo ==',00' %]
+<td colspan="1" height="20px" width="68px" align="right">&nbsp;</td>
+[% ELSE %]
+<td colspan="1" height="20px" width="68px" align="right">&nbsp;</td>
+[% END %]
+</tr>
+[% END %]
+[% END %]
+<tr>
+<td bgcolor="#015289" colspan="2" height="20px" width="398px" align="center"><font color="white"><b>FORMA DE PAGO</b></td>
+<td bgcolor="#015289" colspan="1" height="20px" width="68px" align="right">&nbsp;</td>
+<td bgcolor="#015289" colspan="1" height="20px" width="68px" align="center"><font color="white"><b>TOTAL ASIGNACIONES</b></td>
+<td bgcolor="#015289" colspan="1" height="20px" width="68px" align="center"><font color="white"><b>TOTAL DEDUCCIONES</b></td>
+<td bgcolor="#015289" colspan="1" height="20px" width="68px" align="center"><font color="white"><b>NETO A PAGAR</b></td>
+</tr>
+<td colspan="2" height="20px" width="398px" align="left"><b>[% fpago %]&nbsp;[% tpago %]</b></td>
+<td colspan="1" height="20px" width="68px" align="right">&nbsp;</td>
+<td colspan="1" height="20px" width="68px" align="right"><b>[% mtotalasig %]</b></td>
+<td colspan="1" height="20px" width="68px" align="right"><b>[% mtotaldeducc %]</b></td>
+<td colspan="1" height="20px" width="68px" align="right"><b>[% netopagar %]</b></td>
+</table>
+<table width="670px" border="0" cellpadding="0" cellspacing="0">
+<tr bgcolor="#c0c0c0">
+<td height="20px" width="670px" align="center"><font color="black"><b>MENSAJES</b></td>
+</tr>
+<td height="20px" width="670px" align="left"><b>[% IF tproceso == 'NOMINA' %] PAGO DE NOMINA MES DE [% mesnombre %]&nbsp;[% ano %][% ELSE %][% mensaje %]&nbsp;[% ano %][% END %]</b></td>
+</table>
+</body>
+</html>

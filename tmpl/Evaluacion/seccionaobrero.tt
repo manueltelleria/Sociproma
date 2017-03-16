@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%formbuilder.jshead%]
+
+<script language ="JavaScript">
+
+function imprime(){
+//desaparece el boton
+document.getElementById("noprint").style.visibility='hidden';
+//se imprime la pagina
+print();
+setTimeout("showlayer()",2000);
+}
+function showlayer(){
+     document.getElementById("noprint").style.visibility='visible';
+}
+</script>
+</head>
+[%formbuilder.start%]
+<table width="100%" cellspacing="0" cellpadding="1" border="1">
+  <tr>
+    <td align="left">
+      <img src="[% ruta_estatica %]/imagenes/bandes.jpg" width="126" height="52" />
+      <center><h3>EVALUACI&Oacute;N DE EFICIENCIA <br/>PERSONAL OBRERO</h2></center>
+    </td>
+  </tr>
+</table>
+<small>
+<table width="100%" cellspacing="0" cellpadding="1" border="0">
+  <tr>
+    <td colspan="2">&nbsp;
+    <td>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td  width="50" align="center"><small><b>D</b></small></td>
+          <td  width="50" align="center"><small><b>M</b></small></td>
+          <td  width="50" align="center"><small><b>A</b></small></td>
+        </tr>
+      </table>
+    </td>
+    <td>&nbsp;</td>
+    <td>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td  width="50" align="center"><small><b>D</b></small></td>
+          <td  width="50" align="center"><small><b>M</b></small></td>
+          <td  width="50" align="center"><small><b>A</b></small></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td><small><b>PERIODO EVALUADO:</b></small></td>
+    <td><small><b>DESDE</b>&nbsp;&nbsp;&nbsp;</small></td>
+    <td>
+      <table border="1" cellpading="0" cellspacing="0">
+        <tr>
+          <td width="50" align="center" height="20px"><small>[% diainicio %]</small></td>
+          <td width="50" align="center" height="20px"><small>[% mesinicio %]</small></td>
+          <td width="50" align="center" height="20px"><small>[% anioinicio %]</small></td>
+        </tr>
+      </table>
+    </td>
+    <td><small><b>HASTA</b>&nbsp;&nbsp;&nbsp;</small></td>
+    <td>
+      <table border="1" cellpading="0" cellspacing="0">
+        <tr>
+          <td width="50" align="center" height="20px"><small>[% diafin %]</small></td>
+          <td width="50" align="center" height="20px"><small>[% mesfin %]</small></td>
+          <td width="50" align="center" height="20px"><small>[% aniofin %]</small></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<br/>
+<table colspan="2" width="100%"  cellspacing="0" cellpadding="1" border="1">
+  <tr>
+    <td colspan="2" width="100%" bgcolor="#DDDDDD" height="5%">
+    <b><div align="left" valign="top">1.</div><div align="center" valign="top">DATOS DEL EVALUADO</div></b>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="1" width="25%" height="30px"><b>APELLIDOS Y NOMBRES:</b></td>
+    <td colspan="1" width="75%">[% nombreevaluado %]</td>
+  </tr>
+  <tr>
+    <td colspan="1" width="25%" height="30px"><b>C&Eacute;DULA DE IDENTIDAD:</b></td>
+    <td colspan="1" width="75%">[% ncedulaevaluado %]</td>
+  </tr>
+  <tr>
+    <td colspan="1" width="25%" height="30px"><b>T&Iacute;TULO DEL CARGO:</b></td>
+    <td colspan="1" width="75%">[% cargoevaluado %]</td>
+  </tr>
+  <tr>
+    <td colspan="1" width="25%" height="30px"><b>UBICACI&Oacute;N ADMINISTRATIVA:</b></td>
+    <td colspan="1" width="75%">[% ubicacionevaluado %]</td>
+  </tr>
+</table>
+<br/>
+<table colspan="2" width="100%" cellspacing="0" cellpadding="1" border="1">
+  <tr>
+    <td colspan="2" width="100%" bgcolor="#DDDDDD">
+    <b><div align="left">2.</div><div align="center">DATOS DEL EVALUADOR</div></b>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="1" width="25%" height="30px"><b>APELLIDOS Y NOMBRES:</b></td>
+    <td colspan="1" width="75%">[% nombreevaluador %]</td>
+  </tr>
+  <tr>
+    <td colspan="1" width="25%" height="30px"><b>C&Eacute;DULA DE IDENTIDAD:</b></td>
+    <td colspan="1" width="75%">[% ncedulaevaluador %]</td>
+  </tr>
+  <tr>
+    <td colspan="1" width="25%" height="30px"><b>UBICACI&Oacute;N ADMINISTRATIVA:</b></td>
+    <td colspan="1" width="75%">[% ubicacionevaluador %]</td>
+  </tr>
+</table>
+<br/>
+<ul>
+  <li>&nbsp&nbsp;Cada factor deber ser evaluado de manera independiente del resto de los otros factores.</li>
+  <li>&nbsp&nbsp;Lea cuidadosamente cada uno de los factores descritos y marque con una equis (X) en el recuadro correspondiente la alternativa que mejor refleje la actuación del trabajador evaluado.</li>
+<li>&nbsp&nbsp;Marque sólo una alternativa por factor.</li>
+<li>&nbsp&nbsp;Cuando el trabajador desempeñe un puesto de trabajo de nivel de obrero calificado o no calificado, evalúe los ocho primeros factores.</li>
+<li>&nbsp&nbsp;Cuando el trabajador desempeñe un puesto de trabajo de nivel Supervisorio, evalúe todos los factores.</li>
+<li>&nbsp&nbsp;Su apreciación debe reflejar una opinión honesta e imparcial del desempeño del trabajador. No permita que los sentimientos personales y prejuicios influyan en la evaluación.</li>
+</ul>
+<div id=noprint>
+  <TABLE width="93%" cellpadding="0">
+    <tr align="center">
+      <td colspan="6">[% formbuilder.field.btnCerrar.field %][% formbuilder.field.btnImprimir.field %][% formbuilder.submit %]</td>
+    </tr>
+  </TABLE>
+</div>
+</div>
+[% formbuilder.field.ncedula.field %]
+[% formbuilder.end %]
+</small>
+</body>
+</html>

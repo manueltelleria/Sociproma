@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar-setup.js"></script>
+
+[% formbuilder.jshead %]
+
+
+<script type="text/javascript">
+
+    function upd(valor, ruta){
+        document.forma_c.id_ciudadanos.value = valor;
+        document.forma_c.action = ruta;
+        document.forma_c.submit();
+    }
+</script>
+
+<script language="JavaScript">
+
+
+function marcar() {
+  document.forma_c.marca.value = 1;
+}
+</script>
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Datos del Caso<</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+<table align="center" width="65%">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">Datos del Caso</td>
+                     
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta2" nowrap colspan=2  align=center><b>Datos Ciudadano</b></td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap><b>C&eacute;dula/RIF</td><td>[% id_tprif %]-[% scedularif %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap><b>Nombre(s)</td><td>[% snombre %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap><b>Apellido(s)</td><td>[% sapellido %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap><b>Direcci&oacute;n</td><td>[% sdireccion %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap><b>Estado</td><td>[% id_tpentfederal %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap><b>Tel&eacute;fono</td><td>[% stelefono %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap><b>Sexo</td><td>[% id_tpgenero %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap><b>F. Nacimiento</td><td>[% dnacimiento %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta2" nowrap colspan=2  align=center ><b>Datos del Caso</b></td>
+    </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_tpcaso.label %]</b></td>
+    <td align="left">[% formbuilder.field.id_tpcaso.value %]</td>
+  </tr>
+<tr>
+    <td width="15%" align="left" class="fondoetiqueta" ><b>[% formbuilder.field.dcaso.label %]<b></td>
+    <td width="75%" align="left" valign=center>[% formbuilder.field.dcaso.value %]&nbsp;
+        </td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.slugar.label %]</b></td>
+    <td align="left">[% formbuilder.field.slugar.value %]</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.sasunto.label %]</b></td>
+    <td align="left">[% formbuilder.field.sasunto.value %]</td>
+  </tr>
+
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.sdescripcion.label %]</b></td>
+    <td align="left">[% formbuilder.field.sdescripcion.value %]</td>
+  </tr>
+
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.nmonto.label %]</b></td>
+    <td align="left">[% formbuilder.field.nmonto.value %]</td>
+  </tr>
+
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_remitidopor.label %]</b></td>
+    <td align="left">[% formbuilder.field.id_remitidopor.value %]</td>
+  </tr>
+
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_tpedocaso.label %]</b></td>
+    <td align="left">[% formbuilder.field.id_tpedocaso.field %]</td>
+  </tr>
+      <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>Atenci&oacute;n Telef&oacute;nica: </b></td>
+    <td align="left"><img src="/static/imagenes/phone.png" width=20 ><input type=checkbox name='bllamada' value='1'></td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.sobservacion.label %]</b></td>
+    <td align="left">[% sobservacion %]<br>[% formbuilder.field.sobservacion.field %]</td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2" align="center">[% formbuilder.submit %]&nbsp; <input type=button  onclick="javascript:document.forma_c.id_casos.value =''; upd(document.forma_c.id_ciudadanos.value,'/concac/atencion/responder/listarCasos')" value='<< Regresar'/>
+  </td>
+  </tr>
+  <tr class=''>
+<!--     <td colspan=2 >(*) Todos los campos son obligatorios</td> -->
+  </tr>
+</table>
+[% formbuilder.field.flag.field %]
+[% formbuilder.field.id_casos.field %]
+[% formbuilder.field.id_ciudadanos.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>
+

@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar-setup.js"></script>
+
+[% formbuilder.jshead %]
+
+
+<script type="text/javascript">
+
+    function upd(valor, ruta){
+        document.forma.id_proyectos.value = valor;
+        document.forma.action = ruta;
+        document.forma.submit();
+    }
+</script>
+
+<script language="JavaScript">
+
+
+function marcar() {
+  document.forma.marca.value = 1;
+}
+</script>
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Proyecto / Acci&oacute;n Centralizada</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+<table align="center" width="65%">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">Proyecto / Acci&oacute;n Centralizada</td>
+  </tr>
+<!--  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_proyectos.label %]</b></td>
+    <td align="left"><b>[% formbuilder.field.id_proyectos.value %][% formbuilder.field.id_proyectos.field %]</td>
+  </tr>-->
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.scodproy.label %]</b></td>
+    <td align="left">[% formbuilder.field.scodproy.field %](*)</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_tpproyecto.label %]<b></td>
+    <td align="left">[% formbuilder.field.id_tpproyecto.field %](*)</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.snombproy.label %]<b></td>
+    <td align="left">[% formbuilder.field.snombproy.field %](*)</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_unidadesadmin.label %]<b></td>
+    <td align="left">[% formbuilder.field.id_unidadesadmin.field %](*)</td>
+  </tr>
+  <tr>
+  <td colspan="2" align="center">[% formbuilder.submit %]&nbsp;
+    <input type=button  onclick="javascript: document.forma.flag.value=0; upd(0,'/presupuesto/estructura/estructura/listarProyectos')" value='<< Regresar'/>
+  </td>
+  </tr>
+  <tr class=''>
+    <td colspan=2 >(*) Estos campos son obligatorios</td>
+  </tr>
+
+ 
+</table>
+[% formbuilder.field.flag.field %]
+[% formbuilder.field.id_proyectos.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

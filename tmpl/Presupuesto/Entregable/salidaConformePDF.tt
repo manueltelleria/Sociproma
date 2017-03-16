@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    </head>
+    <body>
+        <table align="center" border=0 ellspacing=1 cellpadding=2 width=100% >
+            <tr>
+                <td width="80%" height="74" colspan="2">
+                    <img src="[% logo %]" width="150" height="74">
+                </td>
+            </tr>
+            <tr bgcolor= #015289>
+                <th width=45 colspan=4><font color=#ffffff>Conformaci&oacute;n de Base de C&aacute;lculo<br>Lista de Actividades de [% unidadUsuario %] : ([% anio %]) </font></th>
+            </tr>
+            
+        </table>
+        <table align="center" border=1 cellspacing=0 cellpadding=2 >
+            <tr class=fondoetiqueta5 bgcolor= #015289 >
+                <th width=20><font color=#ffffff>No.</font> </th>
+                <th width=150><font color=#ffffff>Actividad</font> </th>
+                <th width=150><font color=#ffffff>Unidad Ejecutora</font> </th>
+                <th width=150><font color=#ffffff>Acci&oacute;n Espec&iacute;fica</font> </th>
+                <th width=150><font color=#ffffff>Proyecto/ Acci&oacute;n Centralizada</font> </th>
+                <th width=150><font color=#ffffff>Monto Actividad (+iva)</font></th>    
+                <th width=10 ><font color=#ffffff>Conformidad</font></th>
+            </tr>
+            [% FOREACH tabla %]
+
+            <tr bgcolor=[% clase_1 %]>
+                <td>[% id %]</td>
+                <td>[% sdescripcionpdf %]</td>
+                <td>[% id_unidadesadmin2pdf %]</td>
+                <td>[% id_accionespecificaspdf %]</td>
+                <td>[% IF id %][% snombproypdf %][% ELSE %] TOTAL[% END %]</td>
+                <td align='right' nowrap>[% mntoAct %]</td>
+    <!--             <td>[% field.id_unidadesadmin %]</td>            -->
+                <td align=center>[% IF id %][% sconforme %]<!--<img src="[% bconforme %]" border=0 width=19 height=18">-->[% END %]</td>
+            </tr>            
+            
+            [% END %]
+        </table>
+        <hr>
+        _________________________________<br>[% responsable %]
+    </body>
+</html>

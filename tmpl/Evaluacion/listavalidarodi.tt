@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+<script type="text/javascript">
+function valida_descrip() {
+  var form     = document.getElementById('listavalidarodi');
+  var alertstr = '';
+  var invalid  = 0;
+  var invalid_fields = new Array();
+
+  // sobservacion: standard text, hidden, password, or textarea box
+  var sobservacion = form.elements['sobservacion'].value;
+  if (sobservacion == null || sobservacion === "") {
+    alertstr += '- Indique algún valor en el campo "Observación"\n';
+    invalid++;
+    invalid_fields.push('sobservacion');
+  }
+  if (invalid > 0 || alertstr != '') {
+    if (! invalid) invalid = 'The following';   // catch for programmer error
+      alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'
+      +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
+      return false;
+  }
+  return true;  // all checked ok
+}
+</script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+<legend>Datos del Evaluado</legend>
+<table border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td border="1"><b>Nro. C&eacute;dula:</b></td>
+    <td border="1">[% cedula %]
+    <td border="1"><b>Nombres y Apellidos:</b></td>
+    <td border="1">[% nombreapellido %]
+    <td border="1"><b>Cargo:</b></td>
+    <td border="1">[% cargo %]</td>
+  </tr>
+</table>
+</fieldset>
+[% IF listadoodi %]
+<fieldset>
+<legend>ODI por Evaluado</legend>
+<table width="905px" align="center" border="1">
+  [% IF descestatus %]
+    <tr>
+      <td colspan="2" align="center" class="titulodonfomarillo">[% descestatus %]</td>
+    </tr>
+  [% END %]
+  <tr class="titulodonforojo">
+    <tr class="titulodonforojo">
+    <td width="450px" align="center">Objetivos de Desempe&ntilde;o Individual</td>
+    <td width="5px" align="center">Peso</td>
+  </tr>
+  [% FOREACH listadoodi %]
+  <tr>
+    <td width="450px" align="justify"><input type="hidden" name="id" value="[% idodi %]" id="id"> [% descripcionodi %]</td>
+    <td width="5px" align="center">[% pesoodi %]</td>
+  </tr>
+  [% END %]
+  <tr>
+    <td align="right" width="500px"><b>Total peso:</b></td>
+    <td align="center" width="5px"><b>[% totalpeso %]</b></td>
+  </tr>
+</table>
+</fieldset>
+[% END %]
+<br>
+<table align="center" colspan="3">
+  <tr>
+    [% IF codestatus != 8 && codestatus != 9 %]
+      <td>Observaci&oacute;n:</td>
+      <td>[% formbuilder.field.sobservacion.field %]</td>
+    [% END %]
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <table>
+        <tr>
+          <td align="center">[% formbuilder.field.btnvolver.field %]</td>
+          [% IF codestatus != 8 && codestatus != 9 %]
+            <td align="center">[% formbuilder.field.btnvalidar.field %]</td>
+            <td align="center">[% formbuilder.field.btndevolver.field %]</td>
+          [% END %]
+        </tr>  
+      </table>  
+    </td>
+  </tr>
+</table>
+[% formbuilder.field.bvalidar.field %]
+[% formbuilder.field.bdevolver.field %]
+[% formbuilder.field.h_cedulaevaluado.field %]
+[% formbuilder.field.h_totalpeso.field %]
+[% formbuilder.field.origen.field %]
+[%formbuilder.end%]
+<br/>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+<script type="text/javascript">
+
+function runMode( id, accion ){
+  document.listaproducto.action = accion;
+  document.listaproducto.id_producto.value = id;
+  document.listaproducto.submit();
+}
+
+function paginar( page ){
+  document.listaproducto.page.value = page;
+  document.listaproducto.submit();
+}
+
+</script>
+<script type="text/javascript">
+function upd(valor, ruta){
+   document.listaproducto.id_producto.value = valor;
+   document.listaproducto.action = ruta;
+   document.listaproducto.submit();
+}
+function respEliminarProducto  (request){
+var respuesta = request.responseText;
+   if ( respuesta != 'undef' ){
+      //alert(respuesta);
+      alert('[% mensaje_verificarRecursos %]'+ '.\n\rRecursos Relacionados: '+respuesta);
+   }
+   if (confirm('¿Esta seguro que desea eliminar el registro?')){
+      upd(document.listaproducto.id_producto.value,'/presupuesto/catalogo/regtoproducto/eliminarProducto');
+   }
+}
+function eliminarProducto(valor){
+  var forma = document.listaproducto;
+  var url = '[% ruta_verificarRecursos %]';
+  var pars = "id_producto="+ valor;
+  document.listaproducto.id_producto.value = valor;
+  var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: respEliminarProducto});
+}
+</script>
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Catálogo de Bienes/Servicios</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+<table align="left" width="100%" border="0">
+  <tr>
+    <td width="20%" class="fondoetiqueta" align="left"><b>[% formbuilder.field.criterio.label %]</b></td>
+    <td align="left" valign="middle">[% formbuilder.field.criterio.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/menu/help.gif" onmouseover="Tip('<b>Criterio de Busqueda</b><br>Debe especificar un parámetro que concuerde con los campos:<br>Código del SNC, Descripción o Partida Presupuestaria')" onmouseout="UnTip()"/>&nbsp;&nbsp;[% formbuilder.submit %]</td>
+  </tr>
+</table>
+<br><br>&nbsp;
+
+<table align="center" cellpadding="2" width="97%" border="0">
+<tr>
+  <td align="center" colspan="10" class="titulodonforojo">Lista de Bienes/Servicios</td>
+</tr>
+<tr>
+  <td width="6%" align="center" class="fondoetiqueta5">C&oacute;digo SNC</td>
+  <td width="22%" align="center" class="fondoetiqueta5">Descripci&oacute;n del Bien/Servicio</td>
+  <td width="9%" align="center" class="fondoetiqueta5">Precio Neto BsF.</td>
+  <td width="9%" align="center" class="fondoetiqueta5">I.V.A. %</td>
+  <td width="9%" align="center" class="fondoetiqueta5">Precio Total</td>
+  <td width="33%" align="center" class="fondoetiqueta5">Partida Presupuestaria</td>
+  <td width="6%" align="center" class="fondoetiqueta5">Tipo</td>
+  <td width="7%" align="center" class="fondoetiqueta5">Unidad</td>
+  <td width="8%" align="center" class="fondoetiqueta5">Fecha Vigencia</td>
+  <td width="8%" align="center" class="fondoetiqueta5">Eliminar</td>
+</tr>
+[% IF registros %]
+[% FOREACH registros %]
+<tr bgcolor="[% sclase %]">
+    <td width="6%" align="left" ><a href="javascript: runMode([% id %],'/presupuesto/catalogo/regtoproducto/detalleProducto')">[% scodsnc %]</a></td>
+    <td width="22%" align="justify" >[% sdescripcion %]</td>
+    <td width="9%" align="right" >[% nprecio %]</td>
+    [% IF baplicaiva == 1 %]
+      <td width="9%" align="right" >[% percent_iva %]</td>
+    [% ELSE %]
+      <td width="9%" align="right" >&nbsp;</td>
+    [% END %]
+    <td width="9%" align="right" >[% UNLESS biva %](*)&nbsp;[% END %][% nmonto %]</td>
+    <td width="33%" align="justify" >[% spartida %]</td>
+    <td width="6%" align="center" >[% stpproducto %]</td>
+    <td width="7%" align="center" >[% sunidad %]</td>
+    <td width="8%" align="center" >[% dvigencia %]</td>
+    <td align=center><a style="text-decoration:none" onclick="javascript:eliminarProducto([% id %])" href="#"><IMG src="/static/imagenes/menu/delete.gif" border="0"></a></td>
+</tr>
+[% END %]
+<tr>
+    <td colspan="8" align="left" ><font color="#0F305A" size="0" >Nota: (*) Producto Excento de I.V.A.</font></td>
+</tr>
+[% ELSE %]
+<tr>
+<td align="center" colspan="9" class="titulodonfomarillo">No Existen Bienes/Servicios registrados en el catalogo.</td>
+</tr>
+[% END %]
+</table>
+
+[% IF registros and last_page > 1 %]
+<br>
+<table align="center" width="30%">
+<tr>
+  <td width="45%">
+    <a style="text-decoration:none" href="javascript:paginar([% previous_page %])"><< Anterior</a>
+  </td>
+  <td width="10%" align="center">
+    [% current_page %] / [% last_page %]
+  </td>
+  <td width="45%" align="right">
+    <a style="text-decoration:none" href="javascript:paginar([% next_page %])">Siguiente >></a>
+  </td>
+</tr>
+</table>
+[% END %]
+
+<br>
+<table align="center" width="95%" border="0">
+  <tr>
+    <td align="center">[% formbuilder.field.btningresar.field %]</td>
+  </tr>
+</table>
+
+[% formbuilder.field.id_producto.field %]
+[% formbuilder.field.page.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%formbuilder.jshead%]
+
+<script language ="JavaScript">
+
+function imprime(){
+//desaparece el boton
+document.getElementById("noprint").style.visibility='hidden';
+//se imprime la pagina
+print();
+setTimeout("showlayer()",2000);
+}
+
+function showlayer(){
+     document.getElementById("noprint").style.visibility='visible';
+}
+
+function runMode( accion ) {
+  var form = document.getElementById('odiimpr');
+
+  if (accion == "volver"){
+    form.action = "/evaluacion/regtoodi/verOdis";
+  }
+
+  form.submit();
+}
+</script>
+</head>
+[%formbuilder.start%]
+<table width="80%" align="center" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td align="left">
+      <img src="[% ruta_estatica %]/imagenes/bandes.jpg" width="106" height="42" />
+      <center><h4>ESTABLECIMIENTO Y SEGUIMIENTO DE LOS OBJETIVOS DE DESEMPE&Ntilde;O INDIVIDUAL</center>
+    </td>
+  </tr>
+</table>
+<small>
+<table width="80%" align="center" cellspacing="0" cellpadding="1" border="1">
+  <tr>
+    <td colspan="5">
+    <b><div align="center" height="20px" valign="middle"><small>DATOS DEL EVALUADO</small></div></b>
+    </td>
+  </tr>
+  <tr>
+    <td width="15%" height="50px"><small><b>APELLIDOS</b><br>[% apellidoevaluado %]</small></td>
+    <td width="15%" height="50px"><small><b>NOMBRES</b><br>[% nombreevaluado %]</small></td>
+    <td width="15%" height="50px"><small><b>C&Eacute;DULA DE IDENTIDAD</b><br>[% ncedulaevaluado %]</small></td>
+    <td width="30%" height="50px"><small><b>CARGO</b><br>[% cargoevaluado %]</small></td>
+    <td width="25%" height="50px"><small><b>UBICACI&Oacute;N ADMINISTRATIVA</b><br>[% ubicacionevaluado %]</small></td>
+  </tr>
+</table>
+<br/>
+<br/>
+<br/>
+<table width="80%" cellspacing="0" align="center" cellpadding="1" border="1">
+  <tr>
+    <td colspan="5">
+    <b><div align="center" height="20px" valign="middle"><small>ESTABLECIMIENTO Y REVISION DE LOS O.D.I.</small></div></b>
+    </td>
+  </tr>
+  <tr>
+    <td width="30%"><small><b>DESEMPE&Ntilde;O INDIVIDUAL</b></small></td>
+    <td width="2%"><small><b>PESO</b></small></td>
+    <td width="17%"><small><b>PRIMERA REVISION</b></small></td>
+    <td width="17%"><small><b>SEGUNDA REVISION</b></small></td>
+    <td width="17%"><small><b>TERCERA REVISION</b></small></td>
+  </tr>
+  [% FOREACH listado %]
+  <tr>
+    <td width="17%"><small>[% descripcion %]</small></td>
+    <td width="2%"><small>[% peso %]</small></td>
+          [% IF NOT revision.1 %]
+            <td width="22%" height="40px">&nbsp;</td>
+          [% ELSE %]
+            <td width="22%" wrap="hard" height="40px"><small>[% revision.1 %]</small></td>
+          [% END %]
+          [% IF revision.1 AND NOT revision.2 %]
+            <td width="22%" height="40px">&nbsp;</td>
+          [% ELSE %]
+            <td width="22%" wrap="hard" height="40px"><small>[% revision.2 %]</small></td>
+          [% END %]
+          [% IF revision.2 AND NOT revision.3 %]
+            <td width="22%" height="40px">&nbsp;</td>
+          [% ELSE %]
+            <td width="22%" wrap="hard" height="40px"><small>[% revision.3 %]</small></td>
+          [% END %]
+  </tr>
+  [% END %]
+</table>
+<br/>
+<table width="80%" align="center" cellspacing="0" cellpadding="1" border="0">
+  <tr>
+    <td align="left" ><b>FIRMAS</b></td>
+  </tr>
+</table>
+<br/>
+<table width="80%" align="center" cellspacing="0" cellpadding="1" border="1">
+  <tr>
+    <td  align="center" width="33%"><small><b>EVALUADO</b></small></td>
+    <td  align="center" width="33%"><small><b>EVALUADOR</b></small></td>
+    <td  align="center" width="34%"><small><b>FECHA</b></small></td>
+  </tr>
+  <tr>
+    <td width="33%" height="20px">&nbsp;</td>
+    <td width="33%" height="20px">&nbsp;</td>
+    <td width="34%" height="20px">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="33%" height="20px">&nbsp;</td>
+    <td width="33%" height="20px">&nbsp;</td>
+    <td width="34%" height="20px">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="33%" height="20px">&nbsp;</td>
+    <td width="33%" height="20px">&nbsp;</td>
+    <td width="34%" height="20px">&nbsp;</td>
+  </tr>
+</table>
+
+<div id=noprint>
+  <TABLE width="80%" align="center" cellpadding="0">
+    <tr>
+      <td align="center">[% formbuilder.field.btnVolver.field %][% formbuilder.field.btnImprimir.field %]</td>
+    </tr>
+  </TABLE>
+</div>
+</div>
+[% formbuilder.field.ncedula.field %]
+[% formbuilder.end %]
+</small>
+</body>
+</html>

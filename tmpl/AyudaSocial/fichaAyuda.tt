@@ -1,0 +1,159 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+<fieldset>
+<legend>Datos Ayuda Social</legend>
+
+
+<table align="center" width="70%">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">Datos Ayuda Social</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>N&deg; Ayuda:</b></td>
+    <td width="75%" height="25px" align="left" ><b>[% datos.nayuda %]</b></td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>N&deg; caso de AC:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.ncaso %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Solicitante:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_solicitante %]&nbsp;-&nbsp;[% datos.ssolicitante %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Beneficiario:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_beneficiario %]&nbsp;-&nbsp;[% datos.sbeneficiario %]&nbsp;&nbsp;&nbsp;[% IF datos.parentesco %]<b>Parentesco:</b> [% datos.parentesco %][% END %][% IF datos.id_tpempresa %]<b>Tipo de Empresa:</b> [% datos.id_tpempresa %][% END %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Fecha de Registro:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.dfecha %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Fecha de Respuesta:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.dfecharesp %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Fecha de Cambio de Estatus:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.dfechaliq %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Ayuda tramitada por otro ente:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.botroente %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Procedencia</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_tpprocedencia %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Tipo de Registro</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_tpregistro %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Monto Solicitado:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.nmntosolicitado %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Monto Aprobado:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.nmntoaprobado %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Destinos:</b></td>
+    <td width="75%" height="25px" align="left" >
+      <ul>
+      [% FOREACH datos.destinos %]
+        <li>[% sdescripcion %]</li>
+      [% END %]
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="25%" height="80px" align="left" class="fondoetiqueta"><b>Motivo:</b></td>
+    <td width="75%" height="80px" align="left" >[% datos.smotivo %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Estatus:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_tpedosolicitud %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Forma de Pago:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_tpformapago %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Anexos:</b></td>
+    <td width="75%" height="25px" align="left" >
+      <ul>
+      [% FOREACH datos.anexos %]
+        <li>[% sdescripcion %]</li>
+      [% END %]
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Region:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_tpregion %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Entidad Federal:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_tpentfederal %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Municipio:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_tpmunicipio %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Eje:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_tpeje %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Proveedores/Deudores:</b></td>
+    <td width="75%" height="25px" align="left" >
+      <ul>
+      [% FOREACH datos.proveedores %]
+        <li>[% sdescripcion %]</li>
+      [% END %]
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Elaborado por:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.scedulausuarios %]&nbsp;-&nbsp;[% datos.susuarios %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="80px" align="left" class="fondoetiqueta"><b>Observaciones:</b></td>
+    <td width="75%" height="80px" align="left" >[% datos.sobservaciones %]</td>
+  </tr>
+</table>
+
+<table align="center" width="60%">
+  <tr>
+    <td align="center">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+</legend>
+</body>
+</html>

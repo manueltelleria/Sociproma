@@ -1,0 +1,156 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<script language="JavaScript" type="text/javascript">
+
+function cambiarDestino (destino) {
+
+  if ( destino.value == 1 ) {
+    document.getElementById('indexviatico').action = "[% destino_nacional %]";
+  }else{
+    document.getElementById('indexviatico').action = "[% destino_internacional %]";
+  }
+
+}
+
+function enviarViatico( id ){
+  document.indexviatico.action = "[% ruta_enviarviatico %]";
+  document.indexviatico.id.value = id;
+  document.indexviatico.submit();
+}
+
+function editarViatico( id ){
+  document.indexviatico.action = "[% ruta_editarviatico %]";
+  document.indexviatico.id.value = id;
+  document.indexviatico.submit();
+}
+
+function borrarViatico( id, snroviatico ){
+  if(confirm("¿Realmente desea borrar la Solicitud de Viático seleccionada?")){
+    document.indexviatico.action = "[% ruta_borrarviatico %]";
+    document.indexviatico.id.value = id;
+    document.indexviatico.submit();
+  }
+}
+
+</script>
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Solicitar Vi&aacute;tico</legend>
+
+<table align="center" width="100%">
+  <tr>
+    <td>[% INCLUDE 'cssmenu.tt' %]</td>
+  </tr>
+</table>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+<br/>
+
+<table align="center" width="70%">
+  <tr>
+    <td width="25%" align="center" class="titulodonforojo">Solicitante activo:</td>
+    <td width="75%" align="left" ><b>[% id_tprif_sol %]-[% icedula_sol %]</b>&nbsp;&nbsp;[% snombres_sol %]&nbsp;&nbsp;<b>Categor&iacute;a:</b>&nbsp;&nbsp;[% scategoria_sol %]</td>
+  </tr>
+    [% IF flag_acompanante %]
+  <tr>
+    <td width="25%" align="center" class="titulodonforojo">Acompañante activo:</td>
+    <td width="75%" align="left" ><b>[% id_tprif_acomp %]-[% icedula_acomp %]</b>&nbsp;&nbsp;[% snombres_acomp %]&nbsp;&nbsp;<b>Categor&iacute;a:</b>&nbsp;&nbsp;[% scategoria_acomp %]</td>
+  </tr>
+  [% END %]
+</table>
+<br>
+
+<table align="center" cellpadding="2" width="85%">
+<tr>
+  <td align="center" colspan="13" class="titulodonforojo">Listado de Vi&aacute;ticos Registrados al Solicitante</td>
+</tr>
+<tr>
+  <td width="5%" align="center" class="fondoetiqueta5">Nro.</td>
+  <td width="5%" align="center" class="fondoetiqueta5">Fecha Registro</td>
+  <td width="5%" align="center" class="fondoetiqueta5">Fecha Inicio</td>
+  <td width="5%" align="center" class="fondoetiqueta5">Fecha Fin</td>
+  <td width="5" align="center" class="fondoetiqueta5">Categoria</td>
+  <td width="10%" align="center" class="fondoetiqueta5">Tipo de Destino</td>
+  <td width="13%" align="center" class="fondoetiqueta5">Estatus</td>
+  <td width="10%" align="center" class="fondoetiqueta5">Forma Traslado</td>
+  <td width="12%" align="center" class="fondoetiqueta5">Misión Designada Presidente Bandes</td>
+  <td width="10%" align="center" class="fondoetiqueta5">Aprobado 100%</td>
+  <td width="17%" align="center" class="fondoetiqueta5">Asistente</td>
+  <td width="1%" align="center" class="fondoetiqueta5">&nbsp;</td>
+  <td width="1%" align="center" class="fondoetiqueta5">&nbsp;</td>
+</tr>
+[% IF registros %]
+  [% FOREACH registros %]
+  <tr bgcolor="[% sclase %]">
+    <td width="5%" align="center" ><b>[% snroviatico %]</b></td>
+    <td width="5%" align="center">[% dregistro %]</td>
+    <td width="5%" align="center">[% ddesde %]</td>
+    <td width="5%" align="center">[% dhasta %]</td>
+    <td width="5%" align="center">[% scategoria %]</td>
+    <td width="10%" align="center">[% id_tpdestino %]</td>
+    <td width="13%" align="center">[% id_tpestatus %]</td>
+    <td width="10%" align="center">[% id_tpformatraslado %]</td>
+    <td width="12%" align="center">[% bmision %]</td>
+    <td width="10%" align="center">[% bcompleto %]</td>
+    <td width="17%" align="justify">[% asistente %]</td>
+    <td width="1%" align="center" >
+      [% IF flagaccion == 'editar' %]
+        <a  href="javascript:editarViatico([% id %]);"><img src="[% ruta_estatica %]/imagenes/menu/edit.gif" border="0" alt="Editar" /></a>
+      [% ELSIF flagaccion == 'borrar' %]
+        <a  href="javascript:borrarViatico([% id %],'[% snroviatico %]');"><img src="[% ruta_estatica %]/imagenes/menu/delete.gif" border="0" alt="Borrar" /></a>
+      [% ELSE %]
+        &nbsp;
+      [% END %]
+    </td>
+    <td width="1%" align="center" >
+      [% IF flagenviar %]
+        <a  href="javascript:enviarViatico([% id %]);"><img src="[% ruta_estatica %]/imagenes/enviar.gif" height="16px" width="16px" border="0" alt="Enviar" /></a>
+      [% ELSE %]
+        &nbsp;
+      [% END %]
+    </td>
+  <tr>
+  [% END %]
+[% ELSE %]
+<tr>
+  <td align="center" colspan="13" class="titulodonfomarillo">El Solicitante no posee Vi&aacute;ticos Registrados.</td>
+</tr>
+[% END %]
+</table>
+
+<br/>
+<table align="center" width="40%">
+  <tr>
+    <td width="30%" align="center" class="fondoetiqueta5"><b>Solicitar Vi&aacute;tico: (Destino)</b></td>
+    <td width="35%" align="left">[% formbuilder.field.id_tpdestino.field %]</td>
+    <td width="5%" align="left">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+[% formbuilder.field.id.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

@@ -1,0 +1,3 @@
+<link href="[% ruta_estatica %]/css/estilo.css" rel="stylesheet" type="text/css" />
+<link href="[% ruta_estatica %]/css/menu/dhtmlXMenu.css" rel="stylesheet" type="text/css" />
+

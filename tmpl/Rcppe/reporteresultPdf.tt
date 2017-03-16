@@ -1,0 +1,58 @@
+<!-- HEADER -->
+[% INCLUDE estilosgenerales.tt %]
+<html>
+<body>
+<table border="0" align="center" cellspacing="3" cellpadding="5" width="100%">
+  <tr>
+    <td colspan="5" align=left"><img src="[%ruta_estatica%]/imagenes/bandes.jpg" height="100" widht="100"> </td>
+  </tr>
+  <tr>
+    <td colspan="5" align="center"><b>PERSONAS P&Uacute;BLICAMENTE EXPUESTAS</b></td>
+  </tr>
+  <tr bgcolor="#015289">
+    <td align="center" style{ font-color: #FFFFFF}><b>Nombre</b></td>
+    <td align="center"><b>Nro. CI / Pasaporte / DNI</b></td>
+    <td align="center"><b>Tipo de Persona</b></td>
+    <td align="center"><b>Profesi&oacute;n</b></td>
+    <td align="center"><b>Pa&iacute;s</b></td>
+    <td width="60%" align="center"><b>CARGOS</b></td>
+  </tr>
+  [% FOREACH listado %]
+    <tr bgcolor="[% clase %]">
+      <td align="left">[% nombre %]
+      <td align="left">[% identidad %]</td>
+      <td align="center">[% tppersona %]</td>
+      <td align="center">[% tpprofesion %]</td>
+      <td align="center">[% pais %]</td>
+      <td colspan="7">
+        <table border="1">
+          <tr>
+            <td width="14%" class="fondoetiqueta" align="center"><b>Tipo de Organismo</b></td>
+            <td width="14%" class="fondoetiqueta" align="center"><b>Instituto / Empresa</b></td>
+            <td width="14%" class="fondoetiqueta" align="center"><b>Organismo Adjunto</b></td>
+            <td width="14%" class="fondoetiqueta" align="center"><b>Cargo</b></td>
+            <td width="14%" class="fondoetiqueta" align="center"><b>Estatus</b></td>
+            <td width="14%" class="fondoetiqueta" align="center"><b>Designaci&oacute;n</b></td>
+            <td width="14%" class="fondoetiqueta" align="center"><b>Fecha Posesi&oacute;n</b></td>
+            <td width="14%" class="fondoetiqueta" align="center"><b>Fecha Cese</b></td>
+          </tr>
+        [% FOREACH listacargo %]
+          <tr>
+            <td align="left">[% organismo %]</td>
+            <td align="left">[% empresa %]</td>
+            <td align="left">[% org_adjunto %]</td>
+            <td align="left">[% cargo %]</td>
+            <td align="center">[% estatus %]</td>
+            <td align="left">[% descdesignacion %]</td>
+            <td align="left">[% dposesion %]</td>
+            <td align="left">[% dcese %]</td>
+          </tr>
+        [% END %]
+        </table>
+      </td>
+    </tr>
+  [% END %]
+</table>
+</br>
+</body>
+</html>

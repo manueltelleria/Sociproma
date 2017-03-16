@@ -1,0 +1,116 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+
+<fieldset>
+<legend>Registrar Ayuda Social</legend>
+
+<table align="center" width="100%">
+  <tr>
+    <td>[% INCLUDE 'cssmenu.tt' %]</td>
+  </tr>
+</table>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+[% IF solicitante %]
+<table align="center" width="50%">
+<tr>
+  <td width="30%" align="left" class="titulodonforojo"><b>Solicitante:</b></td>
+  <td width="70%" align="left" class="fondoetiqueta"><a href="[% ruta_infobenef %]"><b>[% id_tprifsol %]-[% sidentificadorsol %]</a>&nbsp;&nbsp;[% snombresol %]</b></td>
+</tr>
+</table>
+[% END %]
+<br/>
+
+<table align="center" width="50%" border="0">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">[% tituloBenef %]</td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2" class="fondoetiqueta5">Datos B&aacute;sicos</td>
+  </tr>
+  <tr>
+    <td width="35%" align="left" class="fondoetiqueta"><b>C&eacute;dula:</b></td>
+    <td width="65%" align="left"><b>[% id_tprif %]-[% sidentificador %]</b></td>
+  </tr>
+  <tr>
+    <td width="35%" align="left" class="fondoetiqueta"><b>Nombre:</b></td>
+    <td width="65%" align="left">[% snombre %]</td>
+  </tr>
+  <tr>
+    <td width="35%" align="left" class="fondoetiqueta"><b>Apellido:</b></td>
+    <td width="65%" align="left">[% sapellido %]</td>
+  </tr>
+  <tr>
+    <td width="35%" align="left" class="fondoetiqueta"><b>G&eacute;nero:</b></td>
+    <td width="65%" align="left">[% sgenero %]</td>
+  </tr>
+  <tr>
+    <td width="35%" align="left" class="fondoetiqueta"><b>Fecha de Nacimiento:</b></td>
+    <td width="65%" align="left">[% dfechanac %]</td>
+  </tr>
+  [% IF ubinatural %]
+  <tr>
+    <td align="center" colspan="2" class="fondoetiqueta5">Datos de Ubicaci&oacute;n</td>
+  </tr>
+  <tr>
+    <td width="35%" align="left" class="fondoetiqueta"><b>Tel&eacute;fono Habitaci&oacute;n</b></td>
+    <td width="65%" align="left">[% stelefono %]</td>
+  </tr>
+  <tr>
+    <td width="35%" align="left" class="fondoetiqueta"><b>Tel&eacute;fono Movil</b></td>
+    <td width="65%" align="left">[% stelefono2 %]</td>
+  </tr>
+  <tr>
+    <td width="35%" align="left" class="fondoetiqueta"><b>Tel&eacute;fono Otro</b></td>
+    <td width="65%" align="left">[% stelefono3 %]</td>
+  </tr>
+  <tr>
+    <td width="35%" align="left" class="fondoetiqueta"><b>Estado:</b></td>
+    <td width="65%" align="left">[% id_tpentfederal %]</td>
+  </tr>
+  <tr>
+    <td width="35%" align="left" class="fondoetiqueta"><b>Municipio:</b></td>
+    <td width="65%" align="left">[% id_tpmunicipio %]</td>
+  </tr>
+  <tr>
+    <td width="35%" align="left" class="fondoetiqueta"><b>Direcci&oacute;n</b></td>
+    <td width="65%" align="left">[% sdireccion %]</td>
+  </tr>
+  [% END %]
+</table>
+
+<table align="center" width="50%">
+  <tr>
+    <td colspan="2" align="center">[% formbuilder.field.btnvolver.field %]&nbsp;[% formbuilder.submit %]&nbsp;[% formbuilder.field.btnaccion.field %]&nbsp;[% IF valido %][% formbuilder.field.btnborrar.field %][% END %]</td>
+  </tr>
+</table>
+
+[% formbuilder.field.tpbenef.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

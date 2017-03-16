@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar-setup.js"></script>
+
+[% formbuilder.jshead %]
+
+
+<script type="text/javascript">
+
+    function upd(valor, ruta){
+        document.forma.id_accionespecificas.value = valor;
+        document.forma.action = ruta;
+        document.forma.submit();
+    }
+</script>
+
+<script language="JavaScript">
+
+
+function marcar() {
+  document.forma.marca.value = 1;
+}
+</script>
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Acciones</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+<table align="center" width="65%">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">Acciones</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_proyectos.label %]</b></td>
+    <td align="left"><b>[% formbuilder.field.scodproy.value %][% formbuilder.field.id_proyectos.field %]</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.snombproy.label %]<b></td>
+    <td align="left">[% formbuilder.field.snombproy.value %]</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.scodaccion.label %]</b></td>
+    <td align="left"><b>[% formbuilder.field.scodaccion.field %]</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.sdescripcion.label %]<b></td>
+    <td align="left">[% formbuilder.field.sdescripcion.field %](*)</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_unidadesadmin.label %]<b></td>
+    <td align="left">[% formbuilder.field.id_unidadesadmin.field %](*)</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">[% formbuilder.submit %]&nbsp;
+    <input type=button  onclick="javascript: document.forma.flag.value=0; upd(0,'/presupuesto/estructura/estructura/listarProyectos')" value='<< Regresar'/>
+<!--<input type=button  onclick="javascript:upd(0,'/coproci/proyecto/proyecto/listar')" value='Administrar Proyectos'/>-->
+    </td>
+  </tr>
+    <tr class=''>
+      <td colspan=2 >(*) Todos los campos son obligatorios <br>&nbsp;</td>
+    </tr>
+</table>
+<table align=center width="80%">
+    </tr>
+    <tr class=titulodonforojo>
+        <th width=45 colspan=12>Acciones</th>
+    </tr>
+    <tr class=fondoetiqueta5>
+        <th width=40>Cod</th>
+        
+        <th width=200>Accion Especifica</th>
+        <th width=200>Unidad Administrativa</th>
+
+        <th width=80>Eliminar</th>
+    </tr>
+    [% FOREACH field IN tabla %]
+    <tr class="[% field.clase %]">
+        <td align="center">[% field.scodaccion %]</td>
+        <td>[% field.sdescripcion %]</td>
+
+        <td>
+        [% FOREACH field.id_unidadesadmin %]
+            <IMG src="/static/imagenes/menu/btn_rt1.gif" border="0"> [% id_unidadesadmin_1 %]<br>
+        [% END %]
+        </td>
+        <td align=center><a style="text-decoration:none" href="javascript:if (confirm('Desea eliminar el registro'))upd([% field.id %],'/presupuesto/estructura/estructura/eliminarAccion')"><IMG src="/static/imagenes/menu/delete.gif" border="0"></a></td>
+        [% END %]
+    </tr>
+</table>
+[% formbuilder.field.id_accionespecificas.field %]
+[% formbuilder.field.flag.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

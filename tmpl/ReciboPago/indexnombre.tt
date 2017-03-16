@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu(); mostrarFieldset();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+<legend>Tipo de Consulta</legend>
+  <table align="center" colspan="3">
+    <tr colspan="1">
+      <td>[%formbuilder.field.id_tpconsulta.field %]</td>
+    </tr>
+  </table>
+<br>
+<table align="center" colspan="3">
+  <tr>
+    <td>
+      <fieldset id=fieldset2 style="display:">
+        <legend>Por Nombre</legend>
+        <table border="0" cellspacing="0" cellpadding="5" align="center" >
+          <tr>
+            <td><b>[% formbuilder.field.cadena_busqueda.label %]</b></td>
+            <td>[% formbuilder.field.cadena_busqueda.field %]</td>
+            <td>[%formbuilder.field.sttrabajador.field %]</td>
+          </tr>
+        </table>
+      </fieldset>
+    </td>
+  </tr>
+</table>
+</fieldset>
+<table align="center" colspan="3">
+  <tr>
+    <td align="center">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+[%consultaCedula%]
+[%formbuilder.end%]
+<br/>
+</body>
+</html>

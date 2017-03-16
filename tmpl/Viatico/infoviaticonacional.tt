@@ -1,0 +1,165 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+
+<fieldset>
+<legend>Solicitar Vi&aacute;tico</legend>
+
+<table align="center" width="100%">
+  <tr>
+    <td>[% INCLUDE 'cssmenu.tt' %]</td>
+  </tr>
+</table>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+<br>
+
+<table align="center" width="65%">
+  <tr>
+    <td width="30%" align="center" class="titulodonforojo">Solicitante activo:</td>
+    <td width="70%" align="left" ><b>[% id_tprif_sol %]-[% icedula_sol %]</b>&nbsp;&nbsp;[% snombres_sol %]&nbsp;&nbsp;<b>Categor&iacute;a:</b>&nbsp;&nbsp;[% scategoria_sol %]</td>
+  </tr>
+  [% IF id_tprif_acomp %]
+  <tr>
+    <td width="30%" align="center" class="titulodonforojo">Acompañante activo:</td>
+    <td width="70%" align="left" ><b>[% id_tprif_acomp %]-[% icedula_acomp %]</b>&nbsp;&nbsp;[% snombres_acomp %]&nbsp;&nbsp;<b>Categor&iacute;a:</b>&nbsp;&nbsp;[% scategoria_acomp %]</td>
+  </tr>
+  [% END %]
+</table>
+
+<br>
+
+<table align="center" width="65%" border="0">
+  <tr>
+    <td align="center" colspan="4" class="titulodonforojo">Datos del Vi&aacute;tico Nacional</td>
+  </tr>
+  <tr>
+    <td width="30%" colspan="1" align="left" class="fondoetiqueta"><b>C&oacute;digo Vi&aacute;tico:</b></td>
+    <td width="70%" colspan="3" align="left"><b>[% snroviatico %]</b></td>
+  </tr>
+  <tr>
+    <td width="30%" colspan="1" align="left" class="fondoetiqueta"><b>Fecha de Registro:</b></td>
+    <td width="70%" colspan="3" align="left">[% dregistro %]</td>
+  </tr>
+  <tr>
+    <td width="30%" align="left" class="fondoetiqueta"><b>Fecha Inicio:</b></td>
+    <td width="20%" align="left">[% ddesde %]</td>
+  </tr>
+  <tr>
+    <td width="30%" align="left" class="fondoetiqueta"><b>Fecha Fin:</b></td>
+    <td width="20%" align="left">[% dhasta %]</td>
+  </tr>
+  <tr>
+    <td width="30%" align="left" class="fondoetiqueta"><b>Misión designada por Presidente de Bandes:</b></td>
+    <td width="20%" align="left">[% bmision %]</td>
+  </tr>
+  <tr>
+    <td width="30%" align="left" class="fondoetiqueta"><b>Aprobado 100%:</b></td>
+    <td width="20%" align="left">[% bcompleto %]</td>
+  </tr>
+  <tr>
+    <td width="30%" colspan="1" align="left" class="fondoetiqueta"><b>Forma de Traslado:</b></td>
+    <td width="70%" colspan="3" align="left">[% tpformatraslado %]</td>
+  </tr>
+</table>
+[% IF tpcarretera %]
+<table align="center" width="65%" border="0">
+  <tr>
+    <td width="30%" colspan="1" align="left" class="fondoetiqueta"><b>Tipo de Carretera:</b></td>
+    <td width="70%" colspan="3" align="left">[% tpcarretera %]</td>
+  </tr>
+</table>
+[% END %]
+[% IF sotraformatraslado %]
+<table align="center" width="65%" border="0">
+  <tr>
+    <td width="30%" colspan="1" align="left" class="fondoetiqueta"><b>Otra Forma de Traslado:</b></td>
+    <td width="70%" colspan="3" align="left">[% sotraformatraslado %]</td>
+  </tr>
+</table>
+[% END %]
+<table align="center" width="65%" border="0">
+  <tr>
+    <td width="30%" align="left" class="fondoetiqueta"><b>Unidad Tributaria actual:</b></td>
+    <td width="70%" align="left">[% ut %]</td>
+  </tr>
+  <tr>
+    <td width="30%" align="left" class="fondoetiqueta"><b>Observaciones:</b></td>
+    <td width="70%" align="left">[% sobservaciones %]</td>
+  </tr>
+  <tr>
+    <td width="30%" align="left" class="fondoetiqueta"><b>Lugar Origen:</b></td>
+    <td width="70%" align="left"><b>Distrito Capital - Caracas</b></td>
+  </tr>
+</table>
+[% IF destinosnac %]
+<table align="center" width="65%">
+  <tr>
+    <td width="100%" align="center" colspan="6" class="fondoetiqueta5">Lugares de Destinos</td>
+  </tr>
+[% FOREACH destinosnac %]
+  <tr>
+    <td width="10%" align="left" class="fondoetiqueta"><b>Ciudad:</b></td>
+    <td width="50%" align="left">[% tpciudad %]</td>
+    <td width="10%" align="left" class="fondoetiqueta"><b>Fecha desde:</b></td>
+    <td width="10%" align="left">[% ddesde %]</td>
+    <td width="10%" align="left" class="fondoetiqueta"><b>Fecha hasta:</b></td>
+    <td width="10%" align="left">[% dhasta %]</td>
+  </tr>
+[% END %]
+</table>
+[% END %]
+
+<br>
+
+<table align="center" width="30%">
+  <tr>
+    <td width="100%" align="center" colspan="2" class="titulodonforojo">Calculo de los Vi&aacute;ticos</td>
+  </tr>
+  <tr>
+    <td width="70%" align="left" class="fondoetiqueta"><b>Conceptos</b></td>
+    <td width="30%" align="left" class="fondoetiqueta"><b>Subtotal (BsF)</b></td>
+  </tr>
+  [% IF conceptos %]
+    [% FOREACH conceptos %]
+    <tr>
+      <td width="70%" align="left" ><b>[% tpconcepto %]</b></td>
+      <td width="30%" align="left"><b>[% subtotal %]</b></td>
+    </tr>
+    [% END %]
+  [% END %]
+</table>
+<br><br>
+<table align="center" width="65%">
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]&nbsp;[% formbuilder.submit %]</td>
+  </tr>
+
+</table>
+
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

@@ -1,0 +1,316 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar-setup.js"></script>
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+[%formbuilder.jshead%]
+
+<script type="text/javascript">
+
+function guardarNegociacion(){
+  var form = document.actcreditoveh;
+
+  var dcredentregacheque = form.elements['dcredentregacheque'].value;
+  var dcrednegociado = form.elements['dcrednegociado'].value;
+  var dcredliquidado = form.elements['dcredliquidado'].value;
+  var tiempoplazo = form.elements['tiempoplazo'].value;
+
+  if (dcredentregacheque == ""){
+    if (form.elements['dentregacheque'].value == "") {
+      alert("Indique un valor válido para el campo Fecha de Entrega de Cheque");
+      return false;
+    }else
+      if (tiempoplazo == ""){
+        if (form.elements['id_tpplazo'].value == "") {
+        alert("Indique un valor válido para el campo Plazo del Crédito");
+         return false;
+      }
+    }
+      validaEntregaCheque();
+  }else if ((dcredentregacheque) && (dcrednegociado =="")) {
+      if (form.elements['dnegociacion'].value == "") {
+        alert("Indique un valor válido para el campo Fecha de Otorgamiento");
+         return false;
+      }else
+      if (tiempoplazo == ""){
+        if (form.elements['id_tpplazo'].value == "") {
+        alert("Indique un valor válido para el campo Plazo del Crédito");
+         return false;
+      }
+    }
+    validaOtorgamiento();
+  }
+
+    if (dcredliquidado == "") {
+    if (form.elements['dliquidacion'].value == "") {
+      alert("Indique un valor válido para el campo Fecha de Liquidacion");
+      return false;
+    }
+    if (tiempoplazo == ""){
+        if (form.elements['id_tpplazo'].value == "") {
+        alert("Indique un valor válido para el campo Plazo del Crédito");
+         return false;
+        }
+    }
+      validaLiquidacion();
+   }
+}
+
+var formato = 1;
+
+ function invFecha(nTipFormat,dFecIni){
+     var dFecIni = dFecIni.replace(/-/g,"/");                    // reemplaza el - por ⁄
+//      primera division fecha
+     var nPosUno  = ponCero(dFecIni.substr(0,dFecIni.indexOf("/")));
+//      2º divicion fecha
+     var nPosDos  = ponCero(dFecIni.substr(parseInt(dFecIni.indexOf("/")) + 1,parseInt(dFecIni.lastIndexOf("/")) - parseInt(dFecIni.indexOf("/")) - 1));
+//      3º divicion fecha
+     var nPosTres = ponCero(dFecIni.substr(parseInt(dFecIni.lastIndexOf("/")) + 1));
+
+     switch(nTipFormat){
+         case 1 :    //  DD/MM/YYYY
+             dReturnFecha = nPosTres + "" + nPosDos + "" + nPosUno;
+             break;
+     }
+     return dReturnFecha;    // retorna la fecha
+ }
+
+// ⁄⁄ Agrega un cero delante del strPon cuando tenga solo un caracter
+ function ponCero(strPon){
+     if(parseInt(strPon.length) < 2)
+         strPon = "0" + strPon;
+     return strPon;
+ }
+
+ function comparaFecha1(dFormat,dfecha1, dfecha2){
+     var dfecha1 = invFecha(dFormat,dfecha1);
+     var dfecha2 = invFecha(dFormat,dfecha2);
+
+     if(dfecha1 >= dfecha2)
+         return false;
+     else
+         return true;
+ }
+
+ function comparaFecha2(dFormat,dfecha2,dactual){
+     var dfecha2 = invFecha(dFormat,dfecha2);
+     var dactual = invFecha(dFormat,dactual);
+
+     if(dfecha2 > dactual)
+         return false;
+     else
+         return true;
+ }
+
+ function validaEntregaCheque(){
+  var form = document.actcreditoveh;
+  var daprobacion = form.elements['daprobacion'].value;
+  var dentregacheque = form.elements['dentregacheque'].value;
+  var dactual = form.elements['dactual'].value;
+
+  if(comparaFecha1( formato,daprobacion,dentregacheque) == true){
+    if(comparaFecha2( formato,dentregacheque,dactual) == true){
+      document.actcreditoveh.action = "[% url_guardarNegociacion %]";
+      document.actcreditoveh.submit();
+    }else{
+      alert("La fecha de Entrega de Cheque no puede ser mayor que la fecha Actual.");
+    }
+  }else{
+    alert("La fecha de Entrega de Cheque no puede ser menor o igual que la fecha de Aprobación.");
+  }
+ }
+
+ function validaOtorgamiento(){
+  var form = document.actcreditoveh;
+  var dcredentregacheque = form.elements['dcredentregacheque'].value;
+  var dnegociacion = form.elements['dnegociacion'].value;
+  var dactual = form.elements['dactual'].value;
+
+  if (dcredentregacheque){
+    var dentregacheque = dcredentregacheque;
+  }else{
+    dentregacheque = form.elements['dentregacheque'].value;
+  }
+  if(comparaFecha1( formato,dentregacheque,dnegociacion) == true){
+    if(comparaFecha2( formato,dnegociacion,dactual) == true){
+      document.actcreditoveh.action = "[% url_guardarNegociacion %]";
+      document.actcreditoveh.submit();
+    }else{
+      alert("La fecha de Otorgamiento no puede ser mayor que la fecha Actual.");
+    }
+  }else{
+    alert("La fecha de Otorgamiento no puede ser menor o igual que la fecha de Entrega de Cheque.");
+  }
+ }
+
+ function validaLiquidacion(){
+  var form = document.actcreditoveh;
+  var dfecha1 = form.elements['dcrednegociado'].value;
+  var dfecha2 = form.elements['dliquidacion'].value;
+  var dactual = form.elements['dactual'].value;
+
+  if(comparaFecha1( formato,dfecha1,dfecha2) == true){
+    if(comparaFecha2( formato,dfecha2,dactual) == true){
+      document.actcreditoveh.action = "[% url_guardarNegociacion %]";
+      document.actcreditoveh.submit();
+    }else{
+      alert("La fecha de Liquidación no puede ser mayor que la fecha Actual.");
+    }
+  }else{
+    alert("La fecha de Liquidación no puede ser menor o igual que la fecha de Otorgamiento.");
+  }
+ }
+
+// Función desactivará todos los días el futuro de los días actuales, pero el día actual se mantendrá activo.
+function dateRange(date) {
+  var now = new Date();
+  return (date.getTime() >= now.getTime() )
+}
+
+</script>
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+[% IF rrhh %]
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <tr>
+      <td align="center" colspan="7" bgcolor="#DDDDDD"><b><big>Actualizar Fecha del Crédito</big></b></td>
+    </tr>
+      <tr>
+        <td align="center" colspan="7">&nbsp;</td>
+     </tr>
+  <tr>
+    <td align="center" colspan="7" bgcolor="#DDDDDD"><b><big>Datos del Trabajador</big></b></td>
+  </tr>
+  <tr class="titulodonforojo">
+    <td width="100px"><b><small>Nro. C&eacute;dula</small></b></td>
+    <td width="250px"><b><small>Nombres y Apellidos</small></b></td>
+    <td width="300px"><b><small>Ubicaci&oacute;n</small></b></td>
+    <td width="150px"><b><small>Extensi&oacute;n</small></b></td>
+  </tr>
+  [% FOREACH rrhh %]
+  <tr>
+    <td nowrap><small>[% scedula %]</small></td>
+    <td nowrap><small>[% snombre %]&nbsp;[% sapellido %]</small></td>
+    <td nowrap><small>[% subicacion %]</small></td>
+    <td nowrap><small align="right">[% ntelfoficina %]</small></td>
+  </tr>
+  [% END %]
+</table>
+[% END %]
+<br>
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    [% IF id_tpestatus == 5%]
+    <td width="400px" align="left"><b>[% descripestatus %] el:</b>&nbsp;[% daprobacion %]</td>
+    [% END %]
+      [% IF dentregacheque%]
+        <td width="275px" align="left"><b>Entrega de Cheque:&nbsp;</b>[%dentregacheque%]</td>
+      [%ELSE%]
+        [% IF accion == 'validarSolicitud' AND id_tpestatus == '5'%]
+        <td width="275px" align="left"><b>Entrega de Cheque:&nbsp;</b>[%formbuilder.field.dentregacheque.field%]
+                    <img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="f_dentregacheque" style="cursor: pointer; border: 1px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onMouseOut="this.style.background=''"/>
+                    <script type="text/javascript">
+                    Calendar.setup({
+                                  inputField     :    "dentregacheque",     // id of the input field
+                                  button         :    "f_dentregacheque",  // trigger for the calendar (button ID)
+                                  align          :    "Tl",           // alignment (defaults to "Bl")
+                                  singleClick    :    true,
+                                  dateStatusFunc :    dateRange
+                                });
+                    </script></td>
+        [% END %]
+      [% END %]
+      [% IF dnegociacion%]
+        <td width="275px" align="left"><b>Otorgamiento:&nbsp;</b>[%dnegociacion%]</td>
+        [% IF dliquidacion%]
+          <td width="275px" align="left"><b>Liquidacion:&nbsp;</b>[%dliquidacion%]</td>
+        [%ELSE%]
+            [% IF accion == 'validarSolicitud'%]
+            <td width="275x" align="left"><b>Liquidaci&oacute;n:&nbsp;</b>[%formbuilder.field.dliquidacion.field%]
+                    <img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="f_dliquidacion" style="cursor: pointer; border: 1px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onMouseOut="this.style.background=''"/>
+                    <script type="text/javascript">
+                    Calendar.setup({
+                                  inputField     :    "dliquidacion",     // id of the input field
+                                  button         :    "f_dliquidacion",  // trigger for the calendar (button ID)
+                                  align          :    "Tl",           // alignment (defaults to "Bl")
+                                  singleClick    :    true,
+                                  dateStatusFunc :    dateRange
+                                });
+                    </script></td>
+            [%END%]
+        [%END%]
+      [%ELSE%]
+        [% IF accion == 'validarSolicitud' AND id_tpestatus == '5'%]
+        <td width="275px" align="left"><b>Otorgamiento:&nbsp;</b>[%formbuilder.field.dnegociacion.field%]
+                    <img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="f_dnegociacion" style="cursor: pointer; border: 1px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onMouseOut="this.style.background=''"/>
+                    <script type="text/javascript">
+                    Calendar.setup({
+                                  inputField     :    "dnegociacion",     // id of the input field
+                                  button         :    "f_dnegociacion",  // trigger for the calendar (button ID)
+                                  align          :    "Tl",           // alignment (defaults to "Bl")
+                                  singleClick    :    true,
+                                  dateStatusFunc :    dateRange
+                                });
+                    </script></td>
+        [% END %]
+      [% END %]
+  </tr>
+  <fieldset id=fieldset4 style="display:none">
+    <legend align="center"><b>Plazo de la Solicitud del Cr&eacute;dito</b></legend>
+    <table width="800px" border="1" cellspacing="0" cellpadding="5" align="center" >
+      <tr>
+        [% IF nplazo %]
+        <td colspan="10" align="center"><b>Plazo de la Solicitud del Cr&eacute;dito:</b>&nbsp;[%nplazo%]&nbsp;a&ntilde;os</td>
+        [% ELSE %]
+        <td colspan="10" align="center"><b>Plazo de la Solicitud del Cr&eacute;dito:</b>&nbsp;[%formbuilder.field.id_tpplazo.field %]<b>*</b><br><div align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Obligatorio</div></td>
+        [% END %]
+      </tr>
+    </table>
+  </fieldset>
+</table>
+<br>
+<br>
+<table align="center" colspan="3">
+<td align="center">[% formbuilder.field.btnvolver.field %]</td>
+[% IF id_tpestatus == 5 %]
+  [% UNLESS dnegociacion AND dliquidacion%]
+    [% IF accion == 'validarSolicitud'%]
+      <td align="center">[% formbuilder.field.btnguardar.field %]</td>
+    [% END %]
+  [% END %]
+[% END %]
+</table>
+[% formbuilder.field.id_tpestatus.field %]
+[% formbuilder.field.daprobacion.field %]
+[% formbuilder.field.dcrednegociado.field %]
+[% formbuilder.field.dcredentregacheque.field %]
+[% formbuilder.field.dactual.field %]
+[% formbuilder.field.dcredliquidado.field %]
+[% formbuilder.field.tiempoplazo.field %]
+[% formbuilder.end %]
+<br/>
+</body>
+</html>

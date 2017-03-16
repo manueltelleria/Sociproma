@@ -1,0 +1,352 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar-setup.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<script type="text/javascript">
+
+function cambiarColor(tipo){
+
+  if ( tipo.value == 'B' ) {
+    document.getElementById('dfechaliqini_row').className = 'fondoetiqueta5';
+    document.getElementById('dfechaliqfin_row').className = 'fondoetiqueta5';
+    document.getElementById('estatus_row').className = 'fondoetiqueta5';
+  } else {
+    document.getElementById('dfechaliqini_row').className = 'fondoetiqueta';
+    document.getElementById('dfechaliqfin_row').className = 'fondoetiqueta';
+    document.getElementById('estatus_row').className = 'fondoetiqueta';
+  }
+
+}
+
+function habilitarCampo(campo){
+
+  var valor = campo.value;
+  var nombre = campo.name;
+
+  if ( nombre == 'id_tpformapago' ) {
+    if ( valor == 3 || valor == 2 || valor == 5 ) {
+        document.getElementById('norden').disabled = false;
+    } else {
+      document.getElementById('norden').value = '';
+      document.getElementById('norden').disabled = true;
+    }
+  }
+
+}
+
+function limpiarCampos(forma){
+
+  forma.dfechaini.value = '';
+  forma.dfechafin.value = '';
+  forma.nayuda.value = '';
+  forma.ncaso.value = '';
+  forma.botroente.options[0].selected = true;
+  forma.id_tpedosolicitud.options[0].selected = true;
+  forma.id_tpdestino.options[0].selected = true;
+  forma.nmntoinicial.value = '';
+  forma.nmntofinal.value = '';
+  forma.nmntoaprobinicial.value = '';
+  forma.nmntoaprobfinal.value = '';
+  forma.id_tpformapago.options[0].selected = true;
+  forma.norden.value = '';
+  forma.norden.disabled = true;
+  forma.id_tpprocedencia.options[0].selected = true;
+  forma.id_tpregistro.options[0].selected = true;
+  forma.id_tpregion.options[0].selected = true;
+  forma.id_tpentfederal.options[0].selected = true;
+  forma.id_tpmunicipio.options[0].selected = true;
+  forma.id_tprifsol.options[0].selected = true;
+  forma.ssolicitante.value = '';
+  forma.id_tprifbenef.options[0].selected = true;
+  forma.sbeneficiario.value = '';
+  forma.rangoedad.options[0].selected = true;
+
+}
+
+var arregloCampos = new Array(
+  new Array('id_tpregion','id_tpentfederal'),
+  new Array('id_tpentfederal','id_tpmunicipio')
+);
+
+function funcionCargarListas(nombreCampoSeleccionado){
+  var forma = document.indexconsulta;
+  var listaSeleccionada = eval('forma.'+nombreCampoSeleccionado);
+  var url = "[% ruta_listas %]";
+  var campoLlenar = buscarValorAsociadoEnArreglo(arregloCampos, '0', nombreCampoSeleccionado, 1);
+  var funcion = eval('llenar_' + campoLlenar);
+  var valorSeleccionado = listaSeleccionada.options[listaSeleccionada.selectedIndex].value;
+  if (valorSeleccionado) {
+    var pars = nombreCampoSeleccionado+"="+valorSeleccionado;
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: funcion});
+  }
+  else {
+    limpiarListas(campoLlenar);
+  }
+}
+
+// Función limpiarListas: Método encargado de limpiar el contenido de una lista desplegable.
+function limpiarListas(nombreLista) {
+  var forma = document.indexconsulta;
+  vaciarLista(eval('forma.'+nombreLista));
+  if (nombreLista == 'id_tpentfederal') {
+    vaciarLista(forma.id_tpmunicipio);
+  }
+}
+
+function llenar_id_tpentfederal(originalRequest) {
+  llenarListaDependiente(originalRequest, 'id_tpentfederal');
+}
+
+function llenar_id_tpmunicipio(originalRequest) {
+  llenarListaDependiente(originalRequest, 'id_tpmunicipio');
+}
+
+function llenarListaDependiente(originalRequest, nombreListaLlenar) {
+  var respuesta = originalRequest.responseText;
+  var forma = document.indexconsulta;
+  var listaLlenar = eval('forma.'+nombreListaLlenar);
+  limpiarListas(nombreListaLlenar);
+
+  if ( respuesta != 'undef' ){
+    var primerarreglo = respuesta.split("|");
+    for(i=0;i<primerarreglo.length;i++){
+      var elemento  = primerarreglo[i].split(":");
+      agregarOpcionLista(listaLlenar,new Option(elemento[1],elemento[0]));
+    }
+  }
+
+}
+
+function validar(form) {
+  if (validate_indexconsulta(form)){
+
+      var alertstr='';
+      var invalid=0;
+
+      var stiporeporte = form.elements['stiporeporte'];
+      var dfechaliqini = form.elements['dfechaliqini'].value;
+      var dfechaliqfin = form.elements['dfechaliqfin'].value;
+
+      var tpreporte;
+
+      for( i=0; i< stiporeporte.length; i++ ){
+        if(stiporeporte[i].checked){
+          tpreporte = stiporeporte[i].value;
+        }
+      }
+
+      if ( tpreporte == 'B' && ( dfechaliqini == '' || dfechaliqfin == '' ) ) {
+        alertstr += '- Debe Indicar un valor para los campos de "Fecha Cambio Estatus Inicio" y "Fecha Cambio Estatus Final" \n';
+        invalid++;
+      }
+
+      if (invalid > 0 || alertstr != '') {
+        alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'
+                +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
+        return false;
+      }
+
+      return true;
+
+  }else{ return false; }
+}
+
+
+</script>
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+<fieldset>
+<legend>Consultar Ayuda Social</legend>
+<table align="center" width="60%">
+  <tr>
+    <td align="center" colspan="4" class="titulodonforojo">Filtros de Busqueda para las Ayudas Sociales</td>
+  </tr>
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.stiporeporte.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.stiporeporte.field %]</td>
+  </tr>
+  <tr>
+    <td width="20%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.dfechaini.label %]</b></td>
+    <td width="30%" align="left">[% formbuilder.field.dfechaini.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" alt="Calendario" width="25" height="18" id="t_dfechaini" style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onmouseout="this.style.background=''"/>
+           <script type="text/javascript">
+           Calendar.setup({
+                    inputField     :    "dfechaini",     // id of the input field
+                    ifFormat       :    "%d/%m/%Y",      // format of the input field
+                    button         :    "t_dfechaini",  // trigger for the calendar (button ID)
+                    align          :    "Tl",           // alignment (defaults to "Bl")
+                    singleClick    :    true
+                        });
+           </script></td>
+    <td width="20%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.dfechafin.label %]</b></td>
+    <td width="30%" align="left">[% formbuilder.field.dfechafin.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" alt="Calendario" width="25" height="18" id="t_dfechafin" style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onmouseout="this.style.background=''"/>
+           <script type="text/javascript">
+           Calendar.setup({
+                    inputField     :    "dfechafin",     // id of the input field
+                    ifFormat       :    "%d/%m/%Y",      // format of the input field
+                    button         :    "t_dfechafin",  // trigger for the calendar (button ID)
+                    align          :    "Tl",           // alignment (defaults to "Bl")
+                    singleClick    :    true
+                        });
+           </script></td>
+  </tr>
+  <tr>
+    <td id="dfechaliqini_row" width="20%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.dfechaliqini.label %]</b></td>
+    <td width="30%" align="left">[% formbuilder.field.dfechaliqini.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" alt="Calendario" width="25" height="18" id="t_dfechaliqini" style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onmouseout="this.style.background=''"/>
+           <script type="text/javascript">
+           Calendar.setup({
+                    inputField     :    "dfechaliqini",     // id of the input field
+                    ifFormat       :    "%d/%m/%Y",      // format of the input field
+                    button         :    "t_dfechaliqini",  // trigger for the calendar (button ID)
+                    align          :    "Tl",           // alignment (defaults to "Bl")
+                    singleClick    :    true
+                        });
+           </script></td>
+    <td id="dfechaliqfin_row" width="20%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.dfechaliqfin.label %]</b></td>
+    <td width="30%" align="left">[% formbuilder.field.dfechaliqfin.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" alt="Calendario" width="25" height="18" id="t_dfechaliqfin" style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onmouseout="this.style.background=''"/>
+           <script type="text/javascript">
+           Calendar.setup({
+                    inputField     :    "dfechaliqfin",     // id of the input field
+                    ifFormat       :    "%d/%m/%Y",      // format of the input field
+                    button         :    "t_dfechaliqfin",  // trigger for the calendar (button ID)
+                    align          :    "Tl",           // alignment (defaults to "Bl")
+                    singleClick    :    true
+                        });
+           </script></td>
+  </tr>
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.nayuda.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.nayuda.field %]</td>
+  </tr>
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.ncaso.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.ncaso.field %]</td>
+  </tr>
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.botroente.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.botroente.field %]</td>
+  </tr>
+  <tr>
+    <td id="estatus_row" width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.id_tpedosolicitud.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.id_tpedosolicitud.field %]</td>
+  </tr>
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.id_tpdestino.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.id_tpdestino.field %]</td>
+  </tr>
+  <tr>
+    <td width="25%" class="fondoetiqueta"><b>[% formbuilder.field.nmntoinicial.label %]</b></td>
+    <td width="25%">[% formbuilder.field.nmntoinicial.field %]</td>
+    <td width="25%" class="fondoetiqueta"><b>[% formbuilder.field.nmntofinal.label %]</b></td>
+    <td width="25%">[% formbuilder.field.nmntofinal.field %]</td>
+  </tr>
+  <tr>
+    <td width="25%" class="fondoetiqueta"><b>[% formbuilder.field.nmntoaprobinicial.label %]</b></td>
+    <td width="25%">[% formbuilder.field.nmntoaprobinicial.field %]</td>
+    <td width="25%" class="fondoetiqueta"><b>[% formbuilder.field.nmntoaprobfinal.label %]</b></td>
+    <td width="25%">[% formbuilder.field.nmntoaprobfinal.field %]</td>
+  </tr>
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.id_tpformapago.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.id_tpformapago.field %]&nbsp;&nbsp;[% formbuilder.field.norden.label %]&nbsp;[% formbuilder.field.norden.field %]</td>
+  </tr>
+
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.id_tpprocedencia.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.id_tpprocedencia.field %]</td>
+  </tr>
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.id_tpregistro.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.id_tpregistro.field %]</td>
+  </tr>
+
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.id_tpregion.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.id_tpregion.field %]</td>
+  </tr>
+
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.id_tpentfederal.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.id_tpentfederal.field %]</td>
+  </tr>
+
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.id_tpmunicipio.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.id_tpmunicipio.field %]</td>
+  </tr>
+
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>Solicitante</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.id_tprifsol.field %]-[% formbuilder.field.ssolicitante.field %]</td>
+  </tr>
+
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>Beneficiario</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.id_tprifbenef.field %]-[% formbuilder.field.sbeneficiario.field %]</td>
+  </tr>
+
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.sgenero.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.sgenero.field %]</td>
+  </tr>
+
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.rangoedad.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.rangoedad.field %]</td>
+  </tr>
+
+  <tr>
+    <td width="30%" colspan="1" class="fondoetiqueta"><b>[% formbuilder.field.campos.label %]</b></td>
+    <td width="70%" colspan="3">[% formbuilder.field.campos.field %]</td>
+  </tr>
+
+  <tr>
+    <td colspan="4" align="left" ><font color="#0F305A" size="0" >Nota: Se muestra siempre los datos actuales de las Ayuda Sociales que apliquen según el filtro selecionado.</font></td>
+  </tr>
+</table>
+
+<table align="center" width="60%">
+  <tr>
+    <td colspan="4" align="center">[% formbuilder.submit %]&nbsp;[% formbuilder.field.btnlimpiar.field %]</td>
+  </tr>
+</table>
+<br/>
+
+</fieldset>
+[% formbuilder.field.idAyuda.field %]
+[% formbuilder.end %]
+</body>
+</html>

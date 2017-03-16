@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[%INCLUDE jsgenerales.tt %]
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu()">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+  <legend>Recibo de Pago</legend>
+  <table align="center" colspan="2">
+    <tr colspan="1">
+      <td><b>[%formbuilder.field.stperiodonom.label%]</b></td>
+      <td>[%formbuilder.field.stperiodonom.field %]</td>
+    </tr>
+    <tr colspan="1">
+      <td><b>[%formbuilder.field.sttipo.label%]</b></td>
+      <td>[%formbuilder.field.sttipo.field %]</td>
+    </tr>
+    <tr colspan="1">
+      <td><b>[%formbuilder.field.stproceso.label%]</b></td>
+      <td>[%formbuilder.field.stproceso.field %]</td>
+    </tr>
+    <tr colspan="1">
+      <td><b>[%formbuilder.field.stunidad.label%]</b></td>
+      <td>[%formbuilder.field.stunidad.field %]</td>
+    </tr>
+    <br>
+    <tr>
+      <td colspan="2" align="center">[% formbuilder.submit %]</td>
+    </tr>
+  </table>
+[%formbuilder.end%]
+<br/>
+</body>
+</html>

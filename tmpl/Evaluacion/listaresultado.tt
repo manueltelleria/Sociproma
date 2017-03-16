@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<div align="left"><img src="[% ruta_estatica %]/imagenes/bandes.jpg" width="126" height="62" />
+</div>
+[%formbuilder.jshead%]
+<link href="[% ruta_estatica %]/css/estilo.css" rel="stylesheet" type="text/css" />
+<script language ="JavaScript">
+
+function imprime(){
+//desaparece el boton
+document.getElementById("noprint").style.visibility='hidden';
+//se imprime la pagina
+print();
+setTimeout("showlayer()",2000);
+}
+function showlayer(){
+     document.getElementById("noprint").style.visibility='visible';
+}
+
+</script>
+</head>
+
+
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<div  align="center"><big><font face="Helvetica" size="2"><b>Lista de Resultados</b></font></big>
+<br>
+<table border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td bgcolor="#005288" border="1" class="encabrpt" size="65%"><b>Periodo Desde:</b></td>
+    <td border="1" class="columrpt">[% periododesde %]
+    <td bgcolor="#005288" border="1" class="encabrpt" size="65%"><b>Periodo Hasta:</b></td>
+    <td border="1" class="columrpt">[% periodohasta %]
+  </tr>
+</table>
+<br>
+<table width="770px" cellpadding="1" cellspacing="0">
+  [% IF listado %]
+      <table align="center" border="1">
+        <tr  bgcolor="#005288">
+          <td  class="encabrpt" size="298%"><b>N&uacute;mero</td>
+          <td  class="encabrpt" size="298%"><b>Unidad</td>
+          <td  class="encabrpt" size="298%"><b>Evaluado</td>
+          <td  class="encabrpt" size="168%"><b>Total</td>
+          <td  class="encabrpt" size="168%"><b>Actuación</td>
+          <td  class="encabrpt" size="168%"><b>Estatus ODI</td>
+          <td  class="encabrpt" size="168%"><b>Estatus Comp.</td>
+          <td  class="encabrpt" size="168%"><b>Estatus Seg.</td>
+          <td  class="encabrpt" size="68%"><b>Evaluador</td>
+        </tr>
+      [% FOREACH listado %]
+        <tr>
+          <td class="columrpt" width="10px" align="center">[% numero %]</td>
+          <td class="columrpt" width="250px" align="left">[% unidad %]</td>
+          <td class="columrpt" width="250px" align="left">[% nombresapellidos %]</td>
+          <td class="columrpt" width="30px" align="center">[% ntotal %]</td>
+          <td class="columrpt" width="100px" align="center">[% rangoactuacion %]</td>
+          <td class="columrpt" width="80px" align="center">[% estatusodi %]</td>
+          <td class="columrpt" width="80px" align="center">[% estatuscomp %]</td>
+          <td class="columrpt" width="80px" align="center">[% estatusseg %]</td>
+          <td class="columrpt" width="250px" align="left">[% evaluador %]</td>
+        </tr>
+      [% END %]
+      </table>
+   [% END %]
+</table>
+<div id=noprint>
+      <TABLE width="93%" cellpadding="2">
+<tr align="center">
+  <td colspan="6">[% formbuilder.field.volver.field %]&nbsp;[% formbuilder.field.imprimir.field %]</td>
+</tr>
+      </TABLE>
+    </div>
+[%formbuilder.end%]
+</body>
+</html>

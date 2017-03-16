@@ -1,0 +1,384 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+[%formbuilder.jshead%]
+<script language="JavaScript">
+
+function mostrarSolicitudVivienda( id ){
+  document.indexlistasolicitud.id_solicitud.value = id;
+  document.indexlistasolicitud.action = "[% ruta_consvivienda %]";
+  document.indexlistasolicitud.submit();
+}
+
+function mostrarSolicitudVehiculo( id ){
+  document.indexlistasolicitud.id_solicitud.value = id;
+  document.indexlistasolicitud.action = "[% ruta_consvehiculo %]";
+  document.indexlistasolicitud.submit();
+}
+
+function verHistoricoViv( id ){
+  document.indexlistasolicitud.id_solicitud.value = id;
+  document.indexlistasolicitud.id_finciamto.value = 1;
+  document.indexlistasolicitud.action = "[% ruta_historicoviv %]";
+  document.indexlistasolicitud.submit();
+}
+
+function verHistoricoVeh( id ){
+  document.indexlistasolicitud.id_solicitud.value = id;
+  document.indexlistasolicitud.id_finciamto.value = 2;
+  document.indexlistasolicitud.action = "[% ruta_historicoveh %]";
+  document.indexlistasolicitud.submit();
+}
+
+function generarPlanillaViv( id ){
+  document.indexlistasolicitud.id_solicitud.value = id;
+  document.indexlistasolicitud.id_finciamto.value = 1;
+  document.indexlistasolicitud.action = "[% ruta_planillaviv %]";
+  document.indexlistasolicitud.submit();
+}
+
+function generarPlanillaVeh( id ){
+  document.indexlistasolicitud.id_solicitud.value = id;
+  document.indexlistasolicitud.id_finciamto.value = 2;
+  document.indexlistasolicitud.action = "[% ruta_planillaveh %]";
+  document.indexlistasolicitud.submit();
+}
+
+function generarEtiquetaViv( id ){
+  document.indexlistasolicitud.id_solicitud.value = id;
+  document.indexlistasolicitud.id_finciamto.value = 1;
+  document.indexlistasolicitud.action = "[% ruta_etiquetaviv %]";
+  document.indexlistasolicitud.submit();
+}
+
+function generarEtiquetaVeh( id ){
+  document.indexlistasolicitud.id_solicitud.value = id;
+  document.indexlistasolicitud.id_finciamto.value = 2;
+  document.indexlistasolicitud.action = "[% ruta_etiquetaveh %]";
+  document.indexlistasolicitud.submit();
+}
+
+function generarCvsViv( id ){
+  document.indexlistasolicitud.id_solicitud.value = id;
+  document.indexlistasolicitud.id_finciamto.value = 1;
+  document.indexlistasolicitud.action = "[% ruta_cvsviv %]";
+  document.indexlistasolicitud.submit();
+}
+
+function generarCvsVeh( id ){
+  document.indexlistasolicitud.id_solicitud.value = id;
+  document.indexlistasolicitud.id_finciamto.value = 2;
+  document.indexlistasolicitud.action = "[% ruta_cvsveh %]";
+  document.indexlistasolicitud.submit();
+}
+
+function actFechaCreditoViv( id ){
+  document.indexlistasolicitud.id_solicitud.value = id;
+  document.indexlistasolicitud.action = "[% ruta_actfechaviv %]";
+  document.indexlistasolicitud.submit();
+}
+
+function actFechaCreditoVeh( id ){
+  document.indexlistasolicitud.id_solicitud.value = id;
+  document.indexlistasolicitud.action = "[% ruta_actfechaveh %]";
+  document.indexlistasolicitud.submit();
+}
+
+var arregloCampos = new Array(
+  new Array('id_tpfinciamto1','id_tpsolicitud')
+);
+
+//Función funcionCargarListas: se encarga de cargar el contenido de las listas dependientes de municipios o parroquias de acuerdo a la selección realizada (Entidad Federal seleccionada para el caso de un municipio, y municipio seleccionado para el caso de parroquias).
+function funcionCargarListas(nombreCampoSeleccionado){
+  var forma = document.indexlistasolicitud;
+  var listaSeleccionada = eval('forma.'+nombreCampoSeleccionado);
+  var url = '[%ruta_listas%]';
+  var campoLlenar = buscarValorAsociadoEnArreglo(arregloCampos, '0', nombreCampoSeleccionado, 1);
+  var funcion = eval('llenar_' + campoLlenar);
+  var valorSeleccionado = listaSeleccionada.options[listaSeleccionada.selectedIndex].value;
+  if (valorSeleccionado) {
+    var pars = nombreCampoSeleccionado+"="+valorSeleccionado;
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: funcion});
+  }
+  else {
+    limpiarListas(campoLlenar);
+  }
+}
+
+//Función llenarListaDependiente: método encargado de traducir la respuesta del servidor con la lista de valores que deben ser incluidas y llenar las listas dependientes con la información.
+function llenarListaDependiente(originalRequest, nombreListaLlenar) {
+  var respuesta = originalRequest.responseText;
+  var forma = document.indexlistasolicitud;
+  var listaLlenar = eval('forma.'+nombreListaLlenar);
+  limpiarListas(nombreListaLlenar);
+
+  //agregarOpcionLista(listaLlenar,new Option("- Seleccione -",''));
+  var primerarreglo = respuesta.split("|");
+  for(i=0;i<primerarreglo.length;i++){
+    var elemento  = primerarreglo[i].split(":");
+    agregarOpcionLista(listaLlenar,new Option(elemento[1],elemento[0]));
+  }
+}
+
+//Función limpiarListas: Método encargado de limpiar el contenido de una lista desplegable.
+function limpiarListas(nombreLista) {
+  var forma = document.indexlistasolicitud;
+  vaciarLista(eval('forma.'+nombreLista));
+}
+
+//Función id_tpsolicitud: Método encargado de hacer el llamado al método llenarListaDependiente, indicando que la lista a trabajar es la de los tipos de solicitudes
+function llenar_id_tpsolicitud(originalRequest) {
+  llenarListaDependiente(originalRequest, 'id_tpsolicitud');
+}
+
+</script>
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+[% IF noexiste %]
+<table width="900px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <tr>
+      <td width="900px" colspan="4" align="center" class="titulodonfomarillo">[% noexiste %]</td>
+    </tr>
+</table>
+[% END %]
+  <table width="900px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <tr>
+      <td align="center" colspan="11" bgcolor="#DDDDDD"><b><big>[%titfuncion%]</big></b></td>
+    </tr>
+[%IF tpconsulta != 'N' %]
+  [% IF rrhh %]
+    <tr>
+      <td align="center" colspan="12" bgcolor="#DDDDDD"><b><big>Datos del Trabajador</big></b></td>
+    </tr>
+    <tr class="titulodonforojo">
+      <td width="300px" colspan="3"><b><small>Nombres y Apellidos</small></b></td>
+      <td width="50px" colspan="2"><b><small>Nro. C&eacute;dula</small></b></td>
+      <td width="400px" colspan="4"><b><small>Ubicaci&oacute;n</small></b></td>
+      <td width="150px" colspan="2"><b><small>Extensi&oacute;n</small></b></td>
+    </tr>
+    [% FOREACH rrhh %]
+    <tr>
+      <td width="300px"  colspan="3"><small>[% snombre %]&nbsp;[% sapellido %]</small></td>
+      <td width="50px"  colspan="2"><small>[% scedula %]</small></td>
+      <td width="400px"  colspan="4"><small>[% subicacion %]</small></td>
+      <td width="150px"  colspan="2"><small align="right">[% ntelfoficina %]</small></td>
+    </tr>
+    [% END %]
+  [% END %]
+  [% END %]
+<br>
+[% IF listaVivienda %]
+      <tr>
+        <td align="center" colspan="12">&nbsp;</td>
+     </tr>
+      <tr>
+        <td align="center" colspan="12" bgcolor="#DDDDDD"><b><big>Lista de Créditos Solicitados - Vivienda</big></b></td>
+     </tr>
+      <tr class="titulodonforojo">
+        <td align="center" width="175px"><small>Tipo de Solicitud</small></td>
+        [%IF tpconsulta == 'N' %]<td align="center" width="120px"><small>Nombres y Apellidos</small></td>[%END %]
+        <td align="center" width="60px"><small>Nro. de Solicitud</small></td>
+        <td align="center" width="290px"><small>Estatus</small></td>
+        <td align="center" width="50px"><small>Fecha Estatus</small></td>
+        <td align="center" width="50px"><small>Fecha Solic.</small></td>
+        <td align="center" width="50px"><small>Monto Solic.</small></td>
+        <td align="center" width="50px"><small>Monto Aprob.</small></td>
+        <td align="center" width="25px"><small>Ver Historico</small></td>
+        <td align="center" width="15px"><small>Planilla</small></td>
+        <td align="center" width="15px"><small>Etiqueta</small></td>
+        <td align="center" width="25px"><small>Generar Archivo</small></td>
+      </tr>
+      [% FOREACH listaVivienda %]
+        <tr>
+          [% IF accion == 'reporteSolicitud' %]
+            <td width="175px" align="center" nowrap><small>[% id_tpsolicitud %]</small></td>
+          [% ELSE %]
+            [% IF bactivo == '' %]
+              <td width="175px" align="center" nowrap><a href="javascript:actFechaCreditoViv([% id_solicitud %]);"><small>[% id_tpsolicitud %]</small></td>
+            [% ELSE %]
+              <td width="175px" align="center" nowrap><a href="javascript:mostrarSolicitudVivienda([% id_solicitud %]);"><small>[% id_tpsolicitud %]</small></td>
+            [% END %]
+          [% END %]
+          [%IF tpconsulta == 'N' %]<td width="120px" align="center" nowrap><small>[%nombreapellido%]</small></td>[% END %]
+          <td width="60px" align="center">[% IF id_tpestatus == 3 OR id_tpestatus == 5 OR id_tpestatus == 9 %]<small>[% IF nroexpediente %][%nroexpediente%][%ELSE%][% nnrosolicitud %][% END %]</small>[%ELSE%]&nbsp;[% END %]</td>
+          <td width="290px" nowrap><small><font color="#DF0101">
+          [% IF dliquidacion %]
+          Crédito Liquidado
+          [% ELSIF dnegociacion %]
+          Crédito Protocolizado
+          [% ELSE%][% stpestatus %]
+          [%END%]</font></small></td>
+          [%IF dliquidacion%]
+            <td width="50px" nowrap><small>[% dliquidacion %]</td>
+          [% ELSIF dnegociacion %]
+            <td width="50px" nowrap><small>[% dnegociacion %]</td>
+          [% ELSIF daprobacion %]
+            <td width="50px" nowrap><small>[% daprobacion %]</td>
+          [%ELSE%]
+            <td width="50px" align="center" nowrap>---</td>
+          [% END %]
+          [% IF bactivo == '' %]
+            <td width="50px" align="center" nowrap>---</td>
+          [% ELSE %]
+            <td width="50px"><small>[% dsolicitud %]</small></td>
+          [% END %]
+          [% IF bactivo == '' %]
+            <td width="50px" align="center" nowrap>---</td>
+          [% ELSE %]
+            <td width="50px" align="right"><small>[% nmonto %]</small></td>
+          [% END %]
+          [% IF bactivo == '' %]
+            <td width="50px" align="center" nowrap>---</td>
+          [% ELSE %]
+            <td width="50px" align="right"><small>[%IF nmontoaprob%][% nmontoaprob %][%ELSE%]&nbsp;[%END%]</small></td>
+          [% END %]
+          <td width="25px" align="center"><a href="javascript:verHistoricoViv([% id_solicitud %]);"><img src="[%ruta_estatica%]/imagenes/menu/edit.gif" border="0" /></a></td>
+          [% IF id_tpestatus == 3  or  id_tpestatus == 5 and bactivo == '1'%]
+            <td width="15px" align="center"><a href="javascript:generarPlanillaViv([% id_solicitud %]);"><img src="[%ruta_estatica%]/imagenes/menu/iconPrint.gif" border="0" /></a></td>
+          [%ELSE%]
+            <td width="15px" align="center">---</td>
+          [% END %]
+          [% IF id_tpestatus == 3  or  id_tpestatus == 5 and bactivo == '1'%]
+            <td width="15px" align="center"><a href="javascript:generarEtiquetaViv([% id_solicitud %]);"><img src="[%ruta_estatica%]/imagenes/menu/iconNewNewsEntry.gif" border="0" /></a></td>
+          [%ELSE%]
+            <td width="15px" align="center">---</td>
+          [% END %]
+          [% IF bactivo == '' %]
+            <td width="25px" align="center" nowrap>---</td>
+          [% ELSE %]
+          <td width="25px" align="center"><a href="javascript:generarCvsViv([% id_solicitud %]);"><img src="[%ruta_estatica%]/imagenes/menu/icon17.gif" border="0" /></a></td>
+          [% END %]
+        </tr>
+      [% END %]
+      <tr>
+        <td align="left" colspan="12"><small>Cantidad de Créditos Solicitados - Vivienda:</small> <b>&nbsp;[%numregVivienda%]</b></td>
+     </tr>
+[% END %]
+[% IF listaVehiculo %]
+      <tr>
+        <td align="center" colspan="12">&nbsp;</td>
+     </tr>
+      <tr>
+        <td align="center" colspan="12" bgcolor="#DDDDDD"><b><big>Lista de Créditos Solicitados - Vehículo</big></b></td>
+     </tr>
+      <tr class="titulodonforojo">
+        <td align="center" width="175px"><small>Tipo de Solicitud</small></td>
+        [%IF tpconsulta == 'N' %]<td align="center" width="120px"><small>Nombres y Apellidos</small></td>[% END %]
+        <td align="center" width="60px"><small>Nro. de Solicitud</small></td>
+        <td align="center" width="290px"><small>Estatus</small></td>
+        <td align="center" width="50px"><small>Fecha Estatus</small></td>
+        <td align="center" width="50px"><small>Fecha Solic.</small></td>
+        <td align="center" width="50px"><small>Monto Solic.</small></td>
+        <td align="center" width="50px"><small>Monto Aprob.</small></td>
+        <td align="center" width="25px"><small>Ver Historico</small></td>
+        <td align="center" width="15px"><small>Planilla</small></td>
+        <td align="center" width="15px"><small>Etiqueta</small></td>
+        <td align="center" width="25px"><small>Generar Archivo</small></td>
+      </tr>
+      [% FOREACH listaVehiculo %]
+        <tr>
+          [% IF accion == 'reporteSolicitud' %]
+            <td width="175px" align="center" nowrap><small>[% id_tpsolicitud %]</small></td>
+          [% ELSE %]
+            [% IF bactivo == '' %]
+              <td width="175px" align="center" nowrap><a href="javascript:actFechaCreditoVeh([% id_solicitud %]);"><small>Adquisici&oacute;n de Veh&iacute;culo</small></td>
+            [% ELSE %]
+              <td width="175px" align="center" nowrap><a href="javascript:mostrarSolicitudVehiculo([% id_solicitud %]);"><small>[% id_tpsolicitud %]</small></td>
+            [% END %]
+          [% END %]
+          [%IF tpconsulta == 'N' %]<td width="120px" align="center" nowrap><small>[%nombreapellido%]</small></td>[% END %]
+          <td width="60px" align="center">[% IF id_tpestatus == 3 OR id_tpestatus == 5 OR id_tpestatus == 9 %]<small>[% nnrosolicitud %]</small>[%ELSE%]&nbsp;[% END %]</td>
+          <td width="290px" nowrap><small><font color="#DF0101">
+          [% IF dliquidacion %]
+          Crédito Liquidado
+          [% ELSIF dnegociacion %]
+          Crédito Otorgado
+          [% ELSIF dentregacheque %]
+          Cheque Entregado
+          [% ELSE%][% stpestatus %]
+          [%END%]</font></small></td>
+          [%IF dliquidacion%]
+            <td width="50px" nowrap><small>[% dliquidacion %]</td>
+          [% ELSIF dnegociacion %]
+            <td width="50px" nowrap><small>[% dnegociacion %]</td>
+          [% ELSIF dentregacheque %]
+            <td width="50px" nowrap><small>[% dentregacheque %]</td>
+          [% ELSIF daprobacion %]
+            <td width="50px" nowrap><small>[% daprobacion %]</td>
+          [%ELSE%]
+            <td width="50px" align="center" nowrap>---</td>
+          [% END %]
+          [% IF bactivo == '' %]
+            <td width="50px" align="center" nowrap>---</td>
+          [% ELSE %]
+            <td width="50px"><small>[% dsolicitud %]</small></td>
+          [% END %]
+          [% IF bactivo == '' %]
+            <td width="50px" align="center" nowrap>---</td>
+          [% ELSE %]
+            <td width="50px" align="right"><small>[% nmonto %]</small></td>
+          [% END %]
+          [% IF bactivo == '' && nmontoaprob == ''%]
+            <td width="50px" align="center" nowrap>---</td>
+          [% ELSE %]
+            <td width="50px" align="right"><small>[%IF nmontoaprob%][% nmontoaprob %][%ELSE%]&nbsp;[%END%]</small></td>
+          [% END %]
+          <td width="25px" align="center"><a href="javascript:verHistoricoVeh([% id_solicitud %]);"><img src="[%ruta_estatica%]/imagenes/menu/edit.gif" border="0" /></a></td>
+           [% IF id_tpestatus == 3  or  id_tpestatus == 5 and bactivo == '1'%]
+            <td width="15px" align="center" nowrap><a href="javascript:generarPlanillaVeh([% id_solicitud %]);"><img src="[%ruta_estatica%]/imagenes/menu/iconPrint.gif" border="0" /></a></td>
+          [%ELSE%]
+            <td width="15px" align="center">---</td>
+          [% END %]
+           [% IF id_tpestatus == 3  or  id_tpestatus == 5 and bactivo == '1'%]
+            <td width="15px" align="center" nowrap><a href="javascript:generarEtiquetaVeh([% id_solicitud %]);"><img src="[%ruta_estatica%]/imagenes/menu/iconNewNewsEntry.gif" border="0" /></a></td>
+          [%ELSE%]
+            <td width="15px" align="center">---</td>
+          [% END %]
+          [% IF bactivo == '' %]
+            <td width="25px" align="center" nowrap>---</td>
+          [% ELSE %]
+          <td width="25px" align="center" nowrap><a href="javascript:generarCvsVeh([% id_solicitud %]);"><img src="[%ruta_estatica%]/imagenes/menu/icon17.gif" border="0" /></a></td>
+          [% END %]
+        </tr>
+      [% END %]
+      <tr>
+        <td align="left" colspan="11"><small>Cantidad de Créditos Solicitados - Veh&iacute;culo:</small> <b>&nbsp;[%numregVehiculo%]</b></td>
+     </tr>
+[% END %]
+</table>
+<br>
+[% IF NOT accion == 'reporteSolicitud' || accion == ''%]
+<table align="center" colspan="3">
+  <tr>
+    <td align="center">[% formbuilder.field.btnnuevo.field %]</td>
+  </tr>
+</table>
+[% END %]
+<table align="center" colspan="3">
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]</td>
+  </tr>
+</table>
+[% formbuilder.field.id_solicitud.field %]
+[% formbuilder.field.id_finciamto.field %]
+[% formbuilder.end %]
+</body>
+</html>

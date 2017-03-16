@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+</head>
+<body onload="cargarMenu()">
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Registrar Desembolsos por licitaciones</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+<table align="center" cellpadding="2" width="60%" border="0">
+<tr>
+  <td align="center" colspan="2" class="titulodonforojo">Datos del Desembolso por Licitaci&oacute;n</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.id_proyectos.label %]</td>
+  <td width="65%" height="20px" align="left"><b>[% datos.id_proyectos %]</b></td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.id_licitaciones.label %]</td>
+  <td width="65%" height="20px" align="left"><b>[% datos.id_licitaciones %]</b></td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.id.label %]</td>
+  <td width="65%" height="20px" align="left"><b>[% datos.id %]</b></td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.sbeneficiario.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.sbeneficiario %]</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.scontratista.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.scontratista %]</td>
+</tr>
+<tr>
+  <td width="35%" height="60px" align="left" class="fondoetiqueta5">[% formbuilder.field.sconcepto.label %]</td>
+  <td width="65%" height="60px" align="left">[% datos.sconcepto %]</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.dsolicitud.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.dsolicitud %]</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.dpago.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.dpago %]</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.id_tpmoneda.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.id_tpmoneda %]</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.ntasacambio.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.ntasacambio %]</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.nmtoejec.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.nmtoejec %]</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.nmtocomision.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.nmtocomision %]</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.nmtototalmd.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.nmtototalmd %]&nbsp;<img src="[% ruta_estatica %]/imagenes/menu/help.gif" onmouseover="Tip('<b>Monto del Desembolso</b><br>Es la suma entre del monto de ejecución y monto de la comisión <br> expresado en la moneda del desembolso seleccionado')" onmouseout="UnTip()"/></td>
+</tr>
+<tr>
+  <td width="35%" align="left" class="fondoetiqueta5">[% formbuilder.field.nmtototaldolar.label %]&nbsp;($)</td>
+  <td width="65%" align="left">[% datos.nmtototaldolar %]&nbsp;<img src="[% ruta_estatica %]/imagenes/menu/help.gif" onmouseover="Tip('<b>Monto del Desembolso ($)</b><br>Es la suma entre del monto de ejecución y monto de la comisión <br> por la tasa de cambio al dolar')" onmouseout="UnTip()"/></td>
+</tr>
+<tr>
+  <td width="35%" height="60px" align="left" class="fondoetiqueta5">[% formbuilder.field.sobservaciones.label %]</td>
+  <td width="65%" height="60px" align="justify">[% datos.sobservaciones %]</td>
+</tr>
+</table>
+&nbsp;
+<table align="center" width="60%">
+  <tr>
+    <td align="center">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

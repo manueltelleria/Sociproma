@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+[% formbuilder.jshead %]
+
+<script type="text/javascript">
+
+    function upd(valor, ruta){
+//         document.forma_ini.id_proyectos.value = valor;
+        document.forma_ini.action = ruta;
+        document.forma_ini.submit();
+    }
+</script>
+
+<script language="JavaScript">
+
+
+function marcar() {
+  document.forma_ini.marca.value = 1;
+}
+</script>
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Datos Ciudadano</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+<table align="center" width="65%">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">Datos Ciudadano</td>
+  </tr>
+
+
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>Cédula/RIF</b></td>
+    <td align="left">[% formbuilder.field.id_tprif.field %][% formbuilder.field.scedularif.field %] <!--[% formbuilder.submit %]--></td>
+  </tr>
+
+
+  <tr>
+  <td colspan="2" align="center">&nbsp; [% formbuilder.submit %]
+    <!-- <input type=button  onclick="javascript: if (validate_forma_ini(document.forma_ini))upd(0,'/concac/atencion/atencion/entradaAtencion')" value='Buscar'/>   -->
+  </td>
+  </tr>
+  <tr class=''>
+    <td colspan=2 ><!--(*) Estos campos son obligatorios--></td>
+  </tr>
+</table>
+<!-- [% formbuilder.field.flag.field %] -->
+[% formbuilder.field.id_proyectos.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>
+

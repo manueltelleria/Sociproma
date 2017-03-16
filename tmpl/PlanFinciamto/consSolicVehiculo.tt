@@ -1,0 +1,884 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar-setup.js"></script>
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+[%formbuilder.jshead%]
+
+<script type="text/javascript">
+
+var arregloCampos = new Array(
+  new Array('id_tpentfederal','id_tpciudad')
+);
+
+//Función funcionCargarListas: se encarga de cargar el contenido de las listas dependientes de municipios o parroquias de acuerdo a la selección realizada (Entidad Federal seleccionada para el caso de un municipio, y municipio seleccionado para el caso de parroquias).
+function funcionCargarListas(nombreCampoSeleccionado){
+  var forma = document.consolicitudvehiculo;
+  var listaSeleccionada = eval('forma.'+nombreCampoSeleccionado);
+  var url = '[%ruta_listas%]';
+  var campoLlenar = buscarValorAsociadoEnArreglo(arregloCampos, '0', nombreCampoSeleccionado, 1);
+  var funcion = eval('llenar_' + campoLlenar);
+  var valorSeleccionado = listaSeleccionada.options[listaSeleccionada.selectedIndex].value;
+  if (valorSeleccionado) {
+    var pars = nombreCampoSeleccionado+"="+valorSeleccionado;
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: funcion});
+  }
+  else {
+    limpiarListas(campoLlenar);
+  }
+}
+
+//Función llenarListaDependiente: método encargado de traducir la respuesta del servidor con la lista de valores que deben ser incluidas y llenar las listas dependientes con la información.
+function llenarListaDependiente(originalRequest, nombreListaLlenar) {
+  var respuesta = originalRequest.responseText;
+  var forma = document.consolicitudvehiculo;
+  var listaLlenar = eval('forma.'+nombreListaLlenar);
+  limpiarListas(nombreListaLlenar);
+
+  //agregarOpcionLista(listaLlenar,new Option("- Seleccione -",''));
+  var primerarreglo = respuesta.split("|");
+  for(i=0;i<primerarreglo.length;i++){
+    var elemento  = primerarreglo[i].split(":");
+    agregarOpcionLista(listaLlenar,new Option(elemento[1],elemento[0]));
+  }
+}
+
+//Función limpiarListas: Método encargado de limpiar el contenido de una lista desplegable.
+function limpiarListas(nombreLista) {
+  var forma = document.consolicitudvehiculo;
+  vaciarLista(eval('forma.'+nombreLista));
+}
+
+//Función llenar_id_tpmunicipio: Método encargado de hacer el llamado al método llenarListaDependiente, indicando que la lista a trabajar es la de los municipios.
+function llenar_id_tpciudad(originalRequest) {
+  llenarListaDependiente(originalRequest, 'id_tpciudad');
+}
+
+function conMayusculas(nombreTextoEscrito) {
+  var forma = document.consolicitudvehiculo;
+  var palabra = eval('forma.'+nombreTextoEscrito);
+  palabra.value = palabra.value.toUpperCase()
+}
+
+
+function modificarSolicitud(){
+  document.consolicitudvehiculo.action = "[% url_modificarSolicitud %]";
+  document.consolicitudvehiculo.submit();
+}
+
+function enviarSolicitud(){
+  document.consolicitudvehiculo.action = "[% url_enviarSolicitud %]";
+  document.consolicitudvehiculo.submit();
+}
+
+function validarSolicitud(){
+  document.consolicitudvehiculo.action = "[% url_validarSolicitud %]";
+  document.consolicitudvehiculo.id_tpfinciamto.value = 2;
+  document.consolicitudvehiculo.submit();
+}
+
+function aprobarSolicitud(){
+  document.consolicitudvehiculo.action = "[% url_aprobarSolicitud %]";
+  document.consolicitudvehiculo.submit();
+}
+
+function mostrarValidacion(){
+  document.consolicitudvehiculo.action = "[% url_validarSolicitud %]";
+  document.consolicitudvehiculo.submit();
+}
+
+function mostrarReferenciasPer(id){
+  document.consolicitudvehiculo.id_referencia.value = id;
+  document.consolicitudvehiculo.action = "[% url_editarReferenciasPer %]";
+  document.consolicitudvehiculo.submit();
+}
+
+function editarReferenciasPer(){
+  document.consolicitudvehiculo.action = "[% url_editarReferenciasPer %]";
+  document.consolicitudvehiculo.submit();
+}
+
+function eliminarReferenciasPer(id){
+  if(!confirm(" Está seguro ?  \n Desea eliminar la Referencia Personal.")) {return;}
+  else {
+    document.consolicitudvehiculo.action = "[% url_eliminarReferenciasPer %]";
+    document.consolicitudvehiculo.id_referencia.value = id;
+    document.consolicitudvehiculo.submit();
+  }
+}
+
+function guardarNegociacion(){
+  var form = document.consolicitudvehiculo;
+
+  var dcredentregacheque = form.elements['dcredentregacheque'].value;
+  var dcrednegociado = form.elements['dcrednegociado'].value;
+  var dcredliquidado = form.elements['dcredliquidado'].value;
+
+  if (dcredentregacheque == ""){
+    if (form.elements['dentregacheque'].value == "") {
+      alert("Indique un valor válido para el campo Fecha de Entrega de Cheque");
+    }else{
+      validaEntregaCheque();
+    }
+  }else if ((dcredentregacheque) && (dcrednegociado =="")) {
+      if (form.elements['dnegociacion'].value == "") {
+        alert("Indique un valor válido para el campo Fecha de Otorgamiento");
+      }else{
+        validaOtorgamiento();
+      }
+  }
+
+    if (dcredliquidado == "") {
+    if (form.elements['dliquidacion'].value == "") {
+      alert("Indique un valor válido para el campo Fecha de Liquidacion");
+    }else{
+      validaLiquidacion();
+    }
+  }
+}
+
+var formato = 1;
+
+ function invFecha(nTipFormat,dFecIni){
+     var dFecIni = dFecIni.replace(/-/g,"/");                    // reemplaza el - por ⁄
+//      primera division fecha
+     var nPosUno  = ponCero(dFecIni.substr(0,dFecIni.indexOf("/")));
+//      2º divicion fecha
+     var nPosDos  = ponCero(dFecIni.substr(parseInt(dFecIni.indexOf("/")) + 1,parseInt(dFecIni.lastIndexOf("/")) - parseInt(dFecIni.indexOf("/")) - 1));
+//      3º divicion fecha
+     var nPosTres = ponCero(dFecIni.substr(parseInt(dFecIni.lastIndexOf("/")) + 1));
+
+     switch(nTipFormat){
+         case 1 :    //  DD/MM/YYYY
+             dReturnFecha = nPosTres + "" + nPosDos + "" + nPosUno;
+             break;
+     }
+     return dReturnFecha;    // retorna la fecha
+ }
+
+// ⁄⁄ Agrega un cero delante del strPon cuando tenga solo un caracter
+ function ponCero(strPon){
+     if(parseInt(strPon.length) < 2)
+         strPon = "0" + strPon;
+     return strPon;
+ }
+
+ function comparaFecha1(dFormat,dfecha1, dfecha2){
+     var dfecha1 = invFecha(dFormat,dfecha1);
+     var dfecha2 = invFecha(dFormat,dfecha2);
+
+     if(dfecha1 >= dfecha2)
+         return false;
+     else
+         return true;
+ }
+
+ function comparaFecha2(dFormat,dfecha2,dactual){
+     var dfecha2 = invFecha(dFormat,dfecha2);
+     var dactual = invFecha(dFormat,dactual);
+
+     if(dfecha2 > dactual)
+         return false;
+     else
+         return true;
+ }
+
+ function validaEntregaCheque(){
+  var form = document.consolicitudvehiculo;
+  var daprobacion = form.elements['daprobacion'].value;
+  var dentregacheque = form.elements['dentregacheque'].value;
+  var dactual = form.elements['dactual'].value;
+
+  if(comparaFecha1( formato,daprobacion,dentregacheque) == true){
+    if(comparaFecha2( formato,dentregacheque,dactual) == true){
+      document.consolicitudvehiculo.action = "[% url_guardarNegociacion %]";
+      document.consolicitudvehiculo.submit();
+    }else{
+      alert("La fecha de Entrega de Cheque no puede ser mayor que la fecha Actual.");
+    }
+  }else{
+    alert("La fecha de Entrega de Cheque no puede ser menor o igual que la fecha de Aprobación.");
+  }
+ }
+
+ function validaOtorgamiento(){
+  var form = document.consolicitudvehiculo;
+  var dcredentregacheque = form.elements['dcredentregacheque'].value;
+  var dnegociacion = form.elements['dnegociacion'].value;
+  var dactual = form.elements['dactual'].value;
+
+  if (dcredentregacheque){
+    var dentregacheque = dcredentregacheque;
+  }else{
+    dentregacheque = form.elements['dentregacheque'].value;
+  }
+  if(comparaFecha1( formato,dentregacheque,dnegociacion) == true){
+    if(comparaFecha2( formato,dnegociacion,dactual) == true){
+      document.consolicitudvehiculo.action = "[% url_guardarNegociacion %]";
+      document.consolicitudvehiculo.submit();
+    }else{
+      alert("La fecha de Otorgamiento no puede ser mayor que la fecha Actual.");
+    }
+  }else{
+    alert("La fecha de Otorgamiento no puede ser menor que la fecha de Entrega de Cheque.");
+  }
+ }
+
+ function validaLiquidacion(){
+  var form = document.consolicitudvehiculo;
+  var dfecha1 = form.elements['dcrednegociado'].value;
+  var dfecha2 = form.elements['dliquidacion'].value;
+  var dactual = form.elements['dactual'].value;
+
+  if(comparaFecha1( formato,dfecha1,dfecha2) == true){
+    if(comparaFecha2( formato,dfecha2,dactual) == true){
+      document.consolicitudvehiculo.action = "[% url_guardarNegociacion %]";
+      document.consolicitudvehiculo.submit();
+    }else{
+      alert("La fecha de Liquidación no puede ser mayor que la fecha Actual.");
+    }
+  }else{
+    alert("La fecha de Liquidación no puede ser menor o igual que la fecha de Otorgamiento.");
+  }
+ }
+
+function validaMontoSolic(form) {
+if (validate_consolicitudvehiculo(form)){
+  var form = document.consolicitudvehiculo;
+  var alertstr='';
+  var invalid=0;
+
+  var procedencia = form.elements['procedencia'].value;
+  var nlimite = form.elements['nlimite'].value;
+
+  var ahora = new Date();
+  anoact = ahora.getFullYear();
+  anoveh = form.elements['nano'].value;
+
+  var numAnos = anoact - anoveh;
+  if (numAnos > 5){
+    alertstr += "- El vehiculo a comprar no puede excederse de (05) años de antiguedad: " +anoveh+ "\n";
+    invalid++;
+  }
+
+  if (form.elements['id_tpsolicitud'].value == "4" || form.elements['id_tpsolicitud'].value == "5"){
+
+      var npreciovta = form.elements['npreciovta'].value;
+      var nmontoprestamo = form.elements['nmtoprestamo'].value;
+
+      nmontoprestamo=nmontoprestamo.replace(/\./g,'');
+      nmontoprestamo=nmontoprestamo.replace(',','.');
+      nmontoprestamo=parseFloat(nmontoprestamo);
+      npreciovta=npreciovta.replace(/\./g,'');
+      npreciovta=npreciovta.replace(',','.');
+      npreciovta=parseFloat(npreciovta);
+      nlimite=nlimite.replace(/\./g,'');
+      nlimite=nlimite.replace(',','.');
+      nlimite=parseFloat(nlimite);
+
+    if ( npreciovta > nmontoprestamo ) {
+        document.getElementById('fieldset4').style.display="";
+      if (procedencia == ""){
+          form.elements['procedencia'].disabled = false;
+          alertstr += "- Debe especificar la procedencia de los fondos para la solicitud del credito\n";
+          invalid++;
+      }
+    }else if (npreciovta < nmontoprestamo){
+          alertstr += "- El precio de venta Bs. "+ formatearMoneda(npreciovta) + " del Vehiculo no puede ser menor al monto del Prestamo Bs. "+ formatearMoneda(nmontoprestamo) +"\n";
+          invalid++;
+    }else{
+         document.getElementById('fieldset4').style.display='none';
+         form.elements['procedencia'].value = '';
+    }
+
+  }
+
+  if (form.elements['id_tpsolicitud'].value == "6"){
+      var npreciovtaref = form.elements['npreciovtaref'].value;
+      var nsaldoref = form.elements['nsaldoref'].value;
+      var nmtoprestamoref = form.elements['nmtoprestamoref'].value;
+
+      npreciovtaref=npreciovtaref.replace(/\./g,'');
+      npreciovtaref=npreciovtaref.replace(',','.');
+      npreciovtaref=parseFloat(npreciovtaref);
+      nmtoprestamoref=nmtoprestamoref.replace(/\./g,'');
+      nmtoprestamoref=nmtoprestamoref.replace(',','.');
+      nmtoprestamoref=parseFloat(nmtoprestamoref);
+      nsaldoref=nsaldoref.replace(/\./g,'');
+      nsaldoref=nsaldoref.replace(',','.');
+      nsaldoref=parseFloat(nsaldoref);
+      nlimite=nlimite.replace(/\./g,'');
+      nlimite=nlimite.replace(',','.');
+      nlimite=parseFloat(nlimite);
+
+    if ( nsaldoref > nmtoprestamoref ) {
+      document.getElementById('fieldset4').style.display="";
+      if (procedencia == ""){
+        form.elements['procedencia'].disabled = false;
+        alertstr += "- Debe especificar la procedencia de los fondos para la solicitud del credito\n";
+        invalid++;
+      }
+    }else{
+        document.getElementById('fieldset4').style.display='none';
+        form.elements['procedencia'].value = '';
+    }
+    if (nsaldoref < nmtoprestamoref){
+          alertstr += "- El saldo actual Bs. "+ formatearMoneda(nsaldoref) + " del Vehiculo no puede ser menor al monto del Prestamo Bs. "+ formatearMoneda(nmtoprestamoref) +"\n";
+          invalid++;
+    }
+    if (npreciovtaref < nsaldoref){
+          alertstr += "- El precio de venta Bs. "+ formatearMoneda(npreciovtaref) + " del Vehiculo no puede ser menor al saldo actual Bs. "+ formatearMoneda(nsaldoref) +"\n";
+          invalid++;
+    }
+  }
+
+    if (nlimite != ""){
+      if (form.elements['id_tpsolicitud'].value == "4" || form.elements['id_tpsolicitud'].value == "5"){
+        if (nmontoprestamo > nlimite){
+          alertstr += "- El monto máximo permitido para la solicitud de Credito es de Bs. "+ formatearMoneda(nlimite) +"\n";
+          invalid++;
+        }
+      }
+      if (form.elements['id_tpsolicitud'].value == "6" ){
+        if (nmtoprestamoref > nlimite){
+          alertstr += "- El monto máximo permitido para la solicitud de Credito es de Bs. "+ formatearMoneda(nlimite) +"\n";
+          invalid++;
+        }
+      }
+    }
+
+  var ahora = new Date();
+  var anoact = ahora.getFullYear();
+  var anoveh = form.elements['nano'].value;
+
+    var numAnos = anoact - anoveh;
+    if (numAnos <= -2) {
+      alertstr += "- El Año del Vehículo es inválido: "+ anoveh +" no puede excederse de (01) año con respecto al actual\n";
+      invalid++;
+    }
+    if (form.elements['id_tpsolicitud'].value == "4"){
+      if (numAnos > 0) {
+        alertstr += "- El vehiculo a comprar debe ser del año actual o superior: "+ anoveh +"\n";
+        invalid++;
+      }
+    } else if (form.elements['id_tpsolicitud'].value == "5"){
+      if (numAnos > 5){
+        alertstr += "- El vehiculo a comprar no puede excederse de (05) años de antiguedad: "+ anoveh +"\n";
+        invalid++;
+      }
+    }
+
+    if (invalid > 0 || alertstr != '') {
+      alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'
+              +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
+      return false;
+    }
+
+  }else{ return false; }
+}
+
+
+function validaAnoVehiculo(nombreTextoEscrito){
+var form = document.consolicitudvehiculo;
+var ahora = new Date();
+anoact = ahora.getFullYear();
+anoveh = form.elements['nano'].value;
+
+  var numAnos = anoact - anoveh;
+  if (numAnos <= -2) {
+     alert('El Año del Vehículo es inválido: ' +anoveh+ ' no puede excederse de (01) año con respecto al actual.');
+  }
+  if (form.elements['id_tpsolicitud'].value == "4"){
+    if (numAnos > 0) {
+      alert('El vehiculo a comprar debe ser del año actual o superior: ' +anoveh);
+      return false;
+    }
+  } else if (form.elements['id_tpsolicitud'].value == "5"){
+    if (numAnos > 5){
+      alert('El vehiculo a comprar no puede excederse de (05) años de antiguedad: ' +anoveh);
+      return false;
+    }
+  }
+}
+
+// Función desactivará todos los días el futuro de los días actuales, pero el día actual se mantendrá activo.
+function dateRange(date) {
+  var now = new Date();
+  return (date.getTime() >= now.getTime() )
+}
+</script>
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu(); mostrarFieldset();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <tr>
+      <td width="905px" colspan="4" align="center" class="titulodonfomarillo">[% descripestatus %]</td>
+    </tr>
+</table>
+<table width="800px" colspan="9" border="0" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td width="100px" colspan="1" style="vertical-align: top;"><small><b>
+    Fecha:</b></small>&nbsp;[%fecsolicitud%]</td>
+    <td width="700px" colspan="8" align="right" style="vertical-align: top;"><small><b>1.N° de Solicitud:</b></small>&nbsp;<b>GEGTH-VEH-</b>[% IF idestatus == 3 OR idestatus == 5 OR idestatus == 6 OR idestatus == 9%][%id%][% END %]</td>
+  </tr>
+</table>
+<div  align="center"><big><b>SOLICITUD DEL PROGRAMA DE VEHICULO</b></big>
+<br>
+<br>
+[% IF idestatus == 1 AND accion != 'validarSolicitud' %]
+[% FOREACH rrhh%]
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+<tbody>
+  <tr>
+    <td  width="800px" colspan="9" align="center" bgcolor="#DDDDDD"><b>DATOS DEL SOLICITANTE</b><br></td>
+  </tr>
+  <tr>
+    <td width="360px" align="left" style="vertical-align: top;"><small><b>2.
+    Apellidos y Nombres:</b></small><br>[%sapellido%]&nbsp;[%snombre%]</td>
+
+    <td width="150px" align="left" style="vertical-align: top;"><small><b>3.
+   Cédula de Identidad:</b></small><br>[%ncedula%]
+    </td>
+    <td width="160px" align="left" style="vertical-align: top;"><small><b>4.
+    Correo Personal:</b></small><br>[%formbuilder.field.scorreo.field %]
+    </td>
+    <td width="130px" align="left" style="vertical-align: top;"><small><b>5.
+    Estado Civil:</b></small><br>[% IF sedocivil == 'C' %]CASADO
+        [% ELSIF sedocivil == 'D' %]DIVORCIADO
+        [% ELSIF sedocivil == 'K' %]CONCUBINO
+        [% ELSIF sedocivil == 'S' %]SOLTERO
+        [% ELSIF sedocivil == 'V' %]VIUDO
+        [% ELSE %]---[% END %]
+    </td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+  <tr>
+    <td width="350px" align="left" style="vertical-align: top;"><small><b>6.
+    Cargo:</b></small><br>[%socupacion%]</td>
+    <td width="100px" align="left" style="vertical-align: top;"><small><b>7.
+    Sueldo Básico Mensual:</b></small><br>[%nsueldomensual%]
+    </td>
+    <td width="75px" align="left" style="vertical-align: top;"><small><b>8.
+   Fecha de Ingreso:</b></small><br>[%dfechaing%]
+    </td>
+    <td width="75px"  align="left" style="vertical-align: top;"><small><b>9.
+   Profesi&oacute;n:</b></small><br>[%formbuilder.field.sprofesion.field %]
+    </td>
+  </tr>
+  <tr>
+    <td width="300px" align="left" style="vertical-align: top;"><small><b>10.
+    Unidad de Adscripción:</b></small><br>[% subicacion %]</td>
+    <td width="100px" align="left" style="vertical-align: top;"><small><b>11.
+    Extensión:</b></small><br>[%ntelfoficina%]</td>
+    <td width="175px" align="left" style="vertical-align: top;"><small><b>12.
+   Teléfono (Nro. Celular):</b></small><br>[%formbuilder.field.codarea1.field %][%formbuilder.field.ntelefcelsolic.field %]<br>
+    </td>
+    <td width="175px" align="left" style="vertical-align: top;"><small><b>13.
+    Condición del Trabajador:</b></small><br>&nbsp;[% IF scondicion == 'EMPLEADOS' %]EMPLEADO
+        [% ELSE %]OBRERO[% END %]
+    </td>
+  </tr>
+</table>
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><b>DATOS DE LA VIVIENDA DONDE RESIDE ACTUALMENTE</b><br></td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+<tbody>
+  <tr>
+    <td width="800px" colspan="9" align="left" style="vertical-align: top;" ><small><b>14.
+        Dirección del Inmueble:</b></small><br>[%formbuilder.field.sdireccionsolic.field %]
+    </td>
+  </tr>
+  <tr>
+    <td width="266px" align="left" style="vertical-align: top;"><small><b>15.
+    Estado:</b></small><br>[%formbuilder.field.id_tpentfederal.field %]
+    </td>
+    <td width="266px" align="left" style="vertical-align: top;"><small><b>16.
+   Ciudad:</b></small><br>[%formbuilder.field.id_tpciudad.field %]
+    </td>
+    <td width="266px" align="left" style="vertical-align: top;"><small><b>17.
+    Tel&eacute;fono Habitaci&oacute;n:</b></small><br>[%formbuilder.field.codarea2.field %][%formbuilder.field.ntelefhabsolic.field %]
+    </td>
+  </tr>
+[%END%]
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+<tbody>
+  <tr>
+    <td width="200px" colspan="2" align="left" style="vertical-align: top;"><small><b>18.
+    Tipo de Vivienda:</b></small><br>
+      [%formbuilder.field.id_tpvivienda.field %]
+         <fieldset id=fieldset1 style="display:none">
+          <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>[%formbuilder.field.stpvivienda.field %]</td>
+            </tr>
+          </table>
+        </fieldset>
+    </td>
+    <td width="200px" colspan="2" align="left" style="vertical-align: top;"><small><b>19.
+   Tenencia:</b></small><br>
+      [%formbuilder.field.id_tptenencia.field %]
+         <fieldset id=fieldset2 style="display:none">
+          <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>[%formbuilder.field.stptenencia.field %]</td>
+            </tr>
+          </table>
+        </fieldset>
+    </td>
+    <td width="200px" colspan="2" align="left" style="vertical-align: top;"><small><b>20.
+    Couta Mensual en Bs.F:</b></small><br>[%formbuilder.field.ncuotamen.field %]
+    </td>
+    <td width="200px" colspan="2" align="left" style="vertical-align: top;"><small><b>21.
+    Carga Familiar:</b></small><br>[%formbuilder.field.ncargafliar.field %]
+    </td>
+  </tr>
+  <tr>
+    <td width="500px" colspan="6" align="left" style="vertical-align: top;" ><small><b>22.
+    Nombre del Propietario, Arrendadora y/o entidad Financiera:</b></small><br>
+      [%formbuilder.field.snombrearrend.field %]</td>
+
+    <td width="300px" colspan="3" align="left" style="vertical-align: top;"><small><b>23.
+    Tel&eacute;fonos:</b></small><br>
+      [%formbuilder.field.codarea3.field %][%formbuilder.field.ntelefarrend.field %]</td>
+  </tr>
+</table>
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><b>DATOS DE LA SOLICITUD</b><br></td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+  <tr>
+    <td width="200px"  align="left" style="vertical-align: top;"><small><b>
+        24.Programa de Veh&iacute;culo:</b></small><br>
+      <b><u>[%stpsolicitud%]</u></b>
+      </td>
+    <td width="200px"  align="left" style="vertical-align: top;"><small><b>
+        25.Clase:</b></small><br>
+      [%formbuilder.field.id_tpclase.field %]</td>
+    <td width="200px"  align="left" style="vertical-align: top;"><small><b>
+        26.Tipo:</b></small><br>
+      [%formbuilder.field.id_tptipoveh.field %]</td>
+    <td width="200px" colspan= "2" align="left" style="vertical-align: top;"><small><b>
+        27.Transmisi&oacute;n:</b></small><br>
+      [%formbuilder.field.id_tptransmision.field %]</td>
+    </td>
+  </tr>
+  <tr>
+    <td width="200px" align="left" style="vertical-align: top;"><small><b>
+        28.Marca:</b></small><br>
+      [%formbuilder.field.smarca.field %]</td>
+    <td width="200px" align="left" style="vertical-align: top;"><small><b>
+        29.Modelo:</b></small><br>
+      [%formbuilder.field.smodelo.field %]</td>
+    <td width="200px" align="left" style="vertical-align: top;"><small><b>
+        30.Color:</b></small><br>
+      [%formbuilder.field.scolor.field %]</td>
+    <td width="100px" align="left" style="vertical-align: top;"><small><b>
+        31.A&ntilde;o:</b></small><br>
+      [%formbuilder.field.nano.field %]</td>
+    </td>
+    <td width="100px" align="left" style="vertical-align: top;"><small><b>
+        32.Placa:</b></small><br>
+      [%formbuilder.field.splaca.field %]</td>
+    </td>
+  </tr>
+</table>
+<fieldset id=fieldset5 style="display:none">
+<table width="800px" border="0" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><b>DATOS DEL VENDEDOR</b><br></td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+<tbody>
+  <tr>
+    <td width="500px" colspan="6" align="left" style="vertical-align: top;"><small><b>33.
+   Raz&oacute;n Social del Concesionario y/o Apellidos y Nombres del Vendedor:</b></small><br>[%formbuilder.field.sdenominacion.field %]
+    </td>
+    <td width="300px" colspan="3" align="left" style="vertical-align: top;"><small><b>34.
+    R.I.F.: </b></small><br>[%formbuilder.field.id_tprifvendedor.field %][%formbuilder.field.srifvendedor.field %]<br><small><b>C&eacute;dula de Identidad:</b></small><br>[%formbuilder.field.id_tpnacionalidad.field %][%formbuilder.field.ncedulavendedor.field %]
+    </td>
+  </tr>
+  <tr>
+    <td width="600px" colspan="6" align="left" style="vertical-align: top;"><small><b>35.
+    Direcci&oacute;n Fiscal:</b></small><br>[%formbuilder.field.sdireccion.field %]</td>
+    <td width="200px" colspan="3" align="left" style="vertical-align: top;"><small><b>36.
+    T&eacute;lefonos:</b></small><br>[%formbuilder.field.codarea4.field %][%formbuilder.field.stelefvendedor.field %]
+    </td>
+  </tr>
+  <tr>
+    <td width="400px" colspan="6" align="left" valign="top"><small><b>37.
+   Precio de Venta del V&eacute;hiculo en Bs.F:</b></small><br>[%formbuilder.field.npreciovta.field %]
+    </td>
+    <td width="400px" colspan="3" align="left" valign="top"><small><b>38.
+    Monto del Pr&eacute;stamo solicitado en Bs.F:</b></small><br>[%formbuilder.field.nmtoprestamo.field %]
+    </td>
+  </tr>
+</table>
+</fieldset>
+<fieldset id=fieldset3 style="display:none">
+<table width="800px" border="0" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><b>EN CASO DE REFINANCIAMIENTO DE DEUDA</b><br></td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+<tbody>
+  <tr>
+    <td width="500px" colspan="6" align="left" style="vertical-align: top;"><small><b>33.
+   Raz&oacute;n Social de quien tiene la Reserva de Dominio:</b></small><br>[%formbuilder.field.srazonsocial.field %]
+    </td>
+    <td width="300px" colspan="3" align="left" style="vertical-align: top;"><small><b>34.RIF: </b></small>[% formbuilder.field.id_tprif.field %][% formbuilder.field.srif.field %]<br><small><b>35.NIT:</b></small>&nbsp;[% formbuilder.field.nnit.field %]
+    </td>
+  </tr>
+  <tr>
+    <td width="600px" colspan="6" align="left" style="vertical-align: top;"><small><b>36.
+    Direcci&oacute;n Fiscal:</b></small><br>[%formbuilder.field.sdireccionfiscal.field %]</td>
+    <td width="200px" colspan="3" align="left" style="vertical-align: top;"><small><b>37.
+    Tel&eacute;fonos:</b></small><br>[%formbuilder.field.codarea5.field %][%formbuilder.field.stelefono.field %]
+    </td>
+  </tr>
+  <tr>
+    <td width="266px" colspan="3" align="left" style="vertical-align: top;"><small><b>38.
+   Precio de Venta del Veh&iacute;culo en Bs.:</b></small><br>[%formbuilder.field.npreciovtaref.field %]
+    </td>
+    <td width="266px" colspan="3" align="left" style="vertical-align: top;"><small><b>39.
+   Saldo Actual en Bs.:</b></small><br>[%formbuilder.field.nsaldoref.field %]
+    </td>
+    <td width="266px" colspan="3" align="left" style="vertical-align: top;"><small><b>40.
+    Monto del Pr&eacute;stamo en Bs.F:</b></small><br>[%formbuilder.field.nmtoprestamoref.field %]
+    </td>
+  </tr>
+</table>
+</fieldset>
+      <table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+        <tr>
+          <td align="center" bgcolor="#DDDDDD"><b>DATOS ADICIONALES</b></td>
+        </tr>
+        </table>
+          <tr>
+            <td>
+              <table width="800px" colspan="9" id="challenge1" align="center" border="1" cellpadding="0" cellpadding="5" >
+                  <tr>
+                    <td colspan="9" align="center" bgcolor="#DDDDDD"><b>REFERENCIAS PERSONALES (Por favor colocar referencias de dos familiares)</b></td>
+                  </tr>
+                  <table width="800px" align="center" border="1">
+                  [% IF referenciaspersonales %]
+                    <tr class="titulodonforojo">
+                      <tr class="titulodonforojo">
+                      <td width="300px" align="center">Apellidos y Nombres</td>
+                      <td width="100px" align="center">C&eacute;dula</td>
+                      <td width="100px" align="center">Parentesco</td>
+                      <td width="100px" align="center">Direcci&oacute;n</td>
+                      <td width="100px" align="center">Tel&eacute;fono</td>
+                      <td width="100px" align="center">Eliminar</td>
+                    </tr>
+                    [% FOREACH referenciaspersonales %]
+                      [% IF accion != 'consultarSolicitud'%]
+                      <tr>
+                        <td width="300px" align="center" ><a href="javascript:mostrarReferenciasPer([% id %]);">[% sapellidoref %]&nbsp;[% snombreref %]</td>
+                        <td width="100px" align="left">[% id_tpnacionalidad %]-[% ncedularef %]</td>
+                        <td width="100px" align="left">[% id_tpparentesco %]</td>
+                        <td width="100px" align="left">[% sdireccion %]</td>
+                        <td width="100px" align="left">
+                        ([%codarea%])&nbsp;[% stelefono %]</td>
+                        <td width="100px" align="center"><a href="javascript:eliminarReferenciasPer([% id %]);"><img src="[%ruta_estatica%]/imagenes/menu/delete.gif" border="0" /></a></td>
+                      </tr>
+                      [% ELSE %]
+                        <tr>
+                          <td width="100px" align="left">[% sapellidoref %]&nbsp;[% snombreref %]</td>
+                          <td width="100px" align="left">[% id_tpnacionalidad %]-[% ncedularef %]</td>
+                          <td width="150px" align="left">[% id_tpparentesco %]</td>
+                          <td width="250px" align="left">[% sdireccion %]</td>
+                          <td width="100px" align="left">([%codarea%])&nbsp;[% stelefono %]</td>
+                          <td width="100px" align="left">&nbsp;</td>
+                        </tr>
+                      [% END %]
+                    [% END %]
+                    [% END %]
+                  </table>
+                  [% IF accion != 'consultarSolicitud'%]
+                  [%IF regReferenciasP <= 1%]
+                  <table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+                    <tr>
+                      <td valign="top" align="left" width="20%">
+                        <div id="add_new" style="display: " align="center">
+                          <a href="javascript:editarReferenciasPer();">Agregar otra Referencia Personal</a>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                  [%END%]
+                  [%END%]
+              </table>
+            </td>
+          </tr>
+        </table>
+
+<fieldset id=fieldset4 style="display:">
+  <table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <tr>
+      <td  align="center" bgcolor="#DDDDDD"><b>PROCEDENCIA DE FONDOS</b><br></td>
+    </tr>
+  </table>
+  <table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+  <tbody>
+    <tr>
+      <td width="800px" colspan="9" align="left" style="vertical-align: top;">[%formbuilder.field.procedencia.field %]
+      </td>
+    </tr>
+  </table>
+</fieldset>
+[% ELSE %]
+    [%INCLUDE PlanFinciamto/datosVehiculo.tt %]
+[% END %]
+<br>
+[% IF idestatus == 4 OR idestatus == 6 OR idestatus == 5 OR idestatus == 1 OR idestatus == 10%]
+<legend><b>Observación de la Solicitud</b></legend>
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    [% IF idestatus == 5%]
+    <td width="400px" align="left"><b>[% descripestatus %] el:</b>&nbsp;[% daprobacion %]</td>
+    [% ELSE %]
+    <td width="400px" align="left"><b>[% descripestatus %] por:</b>&nbsp;[% observacion %]</td>
+    [% END %]
+      [% IF dentregacheque%]
+        <td width="275px" align="left"><b>Entrega de Cheque:&nbsp;</b>[%dentregacheque%]</td>
+      [%ELSE%]
+        [% IF accion == 'validarSolicitud' AND idestatus == '5'%]
+        <td width="275px" align="left"><b>Entrega de Cheque:&nbsp;</b>[%formbuilder.field.dentregacheque.field%]
+                    <img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="f_dentregacheque" style="cursor: pointer; border: 1px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onMouseOut="this.style.background=''"/>
+                    <script type="text/javascript">
+                    Calendar.setup({
+                                  inputField     :    "dentregacheque",     // id of the input field
+                                  button         :    "f_dentregacheque",  // trigger for the calendar (button ID)
+                                  align          :    "Tl",           // alignment (defaults to "Bl")
+                                  singleClick    :    true,
+                                  dateStatusFunc :    dateRange
+                                });
+                    </script></td>
+        [% END %]
+      [% END %]
+      [% IF dnegociacion%]
+        <td width="275px" align="left"><b>Otorgamiento:&nbsp;</b>[%dnegociacion%]</td>
+        [% IF dliquidacion%]
+          <td width="275px" align="left"><b>Liquidacion:&nbsp;</b>[%dliquidacion%]</td>
+        [%ELSE%]
+            <td width="275x" align="left"><b>Liquidaci&oacute;n:&nbsp;</b>[%formbuilder.field.dliquidacion.field%]
+                    <img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="f_dliquidacion" style="cursor: pointer; border: 1px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onMouseOut="this.style.background=''"/>
+                    <script type="text/javascript">
+                    Calendar.setup({
+                                  inputField     :    "dliquidacion",     // id of the input field
+                                  button         :    "f_dliquidacion",  // trigger for the calendar (button ID)
+                                  align          :    "Tl",           // alignment (defaults to "Bl")
+                                  singleClick    :    true,
+                                  dateStatusFunc :    dateRange
+                                });
+                    </script></td>
+        [%END%]
+      [%ELSE%]
+        [% IF accion == 'validarSolicitud' AND idestatus == '5'%]
+        <td width="275px" align="left"><b>Otorgamiento:&nbsp;</b>[%formbuilder.field.dnegociacion.field%]
+                    <img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="f_dnegociacion" style="cursor: pointer; border: 1px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onMouseOut="this.style.background=''"/>
+                    <script type="text/javascript">
+                    Calendar.setup({
+                                  inputField     :    "dnegociacion",     // id of the input field
+                                  button         :    "f_dnegociacion",  // trigger for the calendar (button ID)
+                                  align          :    "Tl",           // alignment (defaults to "Bl")
+                                  singleClick    :    true,
+                                  dateStatusFunc :    dateRange
+                                });
+                    </script></td>
+        [% END %]
+      [% END %]
+  </tr>
+</table>
+<br>
+[% END %]
+[% IF idestatus == 3 OR idestatus == 5 %]
+  <fieldset id=fieldset4 style="display:">
+    <table width="800px" border="1" cellspacing="0" cellpadding="5" align="center" >
+      <tr>
+        [% IF nplazo %]
+        <td colspan="10" align="left"><b>Plazo de la Solicitud del Cr&eacute;dito:</b>&nbsp;[%nplazo%]&nbsp;a&ntilde;os</td>
+        [% END %]
+      </tr>
+    </table>
+  </fieldset>
+[% END %]
+<table align="center" colspan="3">
+  <tr>
+  [% IF  idestatus == '4' AND accion == 'verSolicitud' %]
+    <td align="center">[% formbuilder.submit  %]</td>
+  [% END %]
+  [% UNLESS accion == 'consultarSolicitud' OR accion == 'solicitudEnviada' %]
+    [% IF idestatus == 1  AND accion == 'verSolicitud' %]
+      <td align="center">[% formbuilder.submit %]</td>
+      <td align="center">[% formbuilder.field.btnenviar.field %]</td>
+    [% ELSIF  idestatus == '2' OR idestatus == '4'%]
+      [% IF accion == 'validarSolicitud' %]
+        [% IF accesoValidar == '1' AND accesoReporte == '1' %]
+          <td align="center">[% formbuilder.field.btnvalidar.field %]</td>
+        [% END %]
+      [% END %]
+    [% ELSIF  idestatus == '3' || idestatus == '5' || idestatus == '9'%]
+      <td align="center">[% formbuilder.field.btnmostrar.field %]</td>
+    [% ELSIF accion == 'aprobarSolicitud' %]
+      [% IF  idestatus == '3' %]
+        <td align="center">[% formbuilder.field.btnaprobar.field %]</td>
+      [% END %]
+    [% END %]
+  [% END %]
+  </tr>
+</table>
+<table align="center" colspan="3">
+<td align="center">[% formbuilder.field.btnvolver.field %]</td>
+[% IF idestatus == 5 %]
+  [% UNLESS dnegociacion AND dliquidacion%]
+    [% IF accion == 'validarSolicitud'%]
+      <td align="center">[% formbuilder.field.btnguardar.field %]</td>
+    [% END %]
+  [% END %]
+[% END %]
+</table>
+[% formbuilder.field.id_referencia.field %]
+[% formbuilder.field.id_tpfinciamto.field %]
+[% formbuilder.field.id_tpsolicitud.field %]
+[% formbuilder.field.id_tpestatus.field %]
+[% formbuilder.field.nlimite.field %]
+[% formbuilder.field.daprobacion.field %]
+[% formbuilder.field.dcrednegociado.field %]
+[% formbuilder.field.dcredentregacheque.field %]
+[% formbuilder.field.dactual.field %]
+[% formbuilder.field.dcredliquidado.field %]
+[%formbuilder.end%]
+</body>
+</html>

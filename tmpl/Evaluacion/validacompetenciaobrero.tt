@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+<legend>Datos del Evaluado</legend>
+<table border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td border="1"><b>Nro. C&eacute;dula:</b></td>
+    <td border="1">[% cedula %]
+    <td border="1"><b>Nombres y Apellidos:</b></td>
+    <td border="1">[% nombreapellido %]
+    <td border="1"><b>Cargo:</b></td>
+    <td border="1">[% cargo %]</td>
+  </tr>
+</table>
+</fieldset>
+<br>
+[% IF  procedencia == 'regtoevaluacion' %]
+  [% IF NOT listado %]
+<fieldset>
+  <table border="1" align="center">
+    <tr>
+      <td><b>[% mensajecompetencia %]</b></td>
+    </tr>
+  </table>
+  [% END %]
+</fieldset>
+[% END %]
+<br>
+[% IF listado %]
+<fieldset>
+<legend>Competencia por Evaluado</legend>
+<table width="905px" align="center" border="1">
+[% IF idestatuscomp %]
+    <tr>
+      <td width="905px" colspan="4" align="center" class="titulodonfomarillo">[% descestatuscomp %]</td>
+    </tr>
+[% END %]
+    <tr class="titulodonforojo">
+      <tr class="titulodonforojo">
+      <td width="450px" align="center">Categoria</td>
+      <td width="5px" align="center">Peso</td>
+      <td width="275px" align="center">Competencia</td>
+    </tr>
+    [% FOREACH listado %]
+    <tr>
+      <td width="450px" align="justify"><input type="hidden" name="id" value="[% id %]" id="id"><b>[% categoria %]</td>
+      <td width="5px" align="center">[% peso %]</td>
+      <td width="275px">[% competencia %]</td>
+    </tr>
+    [% END %]
+[% END %]
+</table>
+</fieldset>
+[% IF listado OR listadoodi%]
+<fieldset>
+<legend>Resultado de la Evaluación</legend>
+<table align="center" cellspacing="0" cellpadding="5">
+      <table align="center" border="1">
+        <tr>
+          <td nowrap><b>Total Evaluación Competencia:</b></td>
+            <td width="5px" nowrap>[% IF npesorangocomp %][% npesorangocomp %][% ELSE %] 0 [% END %]</td>
+        </tr>
+        <tr>
+          <td nowrap><b>Total Resultado:</b></td>
+            <td width="5px" nowrap>[% IF tresultado %][% tresultado %][% ELSE %] 0 [% END %]</td>
+        </tr>
+        <tr>
+          <td nowrap><b>Rango de Actuación:</b></td>
+            <td width="300px" nowrap>[% IF rangoact %][% rangoact %][% ELSE %] 0 [% END %]</td>
+        </tr>
+      </table>
+  </table>
+</fieldset>
+[% END %]
+
+[% IF listado AND  idestatuscomp == 2 %]
+[% IF tienerol == 1 %]
+  <table align="center" colspan="3">
+[% ELSE %]
+  <table align="center" colspan="2">
+[% END %]
+[% IF tienerol == 1 %]
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]</td>
+    <td align="center">[% formbuilder.field.btnaprobar.field %]</td>
+[% END %]
+  </tr>
+</table>
+[% ELSE %]
+<table align="center" colspan="3">
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]</td>
+[% IF tienerol != 1  AND rolevaluado != 1 %]
+    <td align="center">[% formbuilder.field.btnodi.field %]</td>
+[% END %]
+  </tr>
+</table>
+[% END %]
+[%formbuilder.end%]
+<br/>
+</body>
+</html>

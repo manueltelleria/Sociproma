@@ -1,0 +1,258 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<script>
+
+function validar(form) {
+
+    var alertstr='';
+    var invalid=0;
+
+    //validaciones para los proveedores
+    var prov = validar_proveedores(alertstr,invalid);
+    alertstr = prov[0];
+    invalid = prov[1];
+
+    if (invalid > 0 || alertstr != '') {
+      alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'
+              +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
+      return false;
+    }
+
+    return true;
+
+}
+
+function validar_proveedores(alertstr,invalid){
+  var aux = 0;
+  var forma = document.proveedoresayuda;
+  var total = 0;
+
+  for (i = 0; i < forma.elements.length; i++) {
+
+    if (forma.elements[i].id.search("id_tprifprov") != -1){
+      var tprif = forma.elements[i];
+      if (tprif.selectedIndex == 0) {
+        aux++; break;
+      }
+    }
+
+    if (forma.elements[i].id.search("irifprov") != -1){
+      var irif = forma.elements[i];
+      if(irif.value == null || irif.value === ""){
+        aux++; break;
+      }
+    }
+
+    if (forma.elements[i].id.search("sproveedor") != -1){
+      var prov = forma.elements[i];
+      prov.value = trimSpaces(prov.value);
+      if(prov.value == null || prov.value === ""){
+        aux++; break;
+      }
+    }
+
+    if (forma.elements[i].id.search("nmonto") != -1){
+      var monto = forma.elements[i];
+      if(monto.value == null || monto.value === ""){
+        aux++; break;
+      }
+
+      //formateo el monto para calcular
+      var valor = monto.value;
+      valor = valor.replace(/\./g,'');
+      valor = valor.replace(',','.');
+      valor = parseFloat(valor);
+
+      total += valor;
+
+    }
+
+  }
+
+  if ( aux > 0 ) {
+    alertstr += '- Debe ingresar todos los datos obligatorios para los campos de los Proveedores/Deudores habilitados \n';
+    invalid++;
+  }
+
+  var nmntoaprobado = "[% datos.nmntoaprobado %]";
+  nmntoaprobado = nmntoaprobado.replace(/\./g,'');
+  nmntoaprobado = nmntoaprobado.replace(',','.');
+  nmntoaprobado = parseFloat(nmntoaprobado);
+
+  if ( total != nmntoaprobado ) {
+    alertstr += '- El total de los montos de los Proveedores/Deudores ingresados deben ser igual a la del monto aprobado en la Ayuda Social \n';
+    invalid++;
+  }
+
+  return [alertstr, invalid];
+
+}
+
+
+</script>
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+
+<fieldset>
+<legend>Registrar Ayuda Social</legend>
+
+<table align="center" width="100%">
+  <tr>
+    <td>[% INCLUDE 'cssmenu.tt' %]</td>
+  </tr>
+</table>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+<table align="center" width="70%">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">Datos Ayuda Social</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>N&deg; Ayuda:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.nayuda %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Solicitante:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_solicitante %]&nbsp;-&nbsp;[% datos.ssolicitante %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Beneficiario:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_beneficiario %]&nbsp;-&nbsp;[% datos.sbeneficiario %]&nbsp;&nbsp;&nbsp;[% IF datos.parentesco %]<b>Parentesco:</b> [% datos.parentesco %][% END %][% IF datos.id_tpempresa %]<b>Tipo de Empresa:</b> [% datos.id_tpempresa %][% END %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Fecha de Registro:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.dfecha %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Monto Solicitado:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.nmntosolicitado %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Monto Aprobado:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.nmntoaprobado %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Destinos:</b></td>
+    <td width="75%" height="25px" align="left" >
+      <ul>
+      [% FOREACH datos.destinos %]
+        <li>[% sdescripcion %]</li>
+      [% END %]
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="25%" height="80px" align="left" class="fondoetiqueta"><b>Motivo:</b></td>
+    <td width="75%" height="80px" align="left" >[% datos.smotivo %]</td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Estatus:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.id_tpedosolicitud %]</td>
+  </tr>
+
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Anexos:</b></td>
+    <td width="75%" height="25px" align="left" >
+      <ul>
+      [% FOREACH datos.anexos %]
+        <li>[% sdescripcion %]</li>
+      [% END %]
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="25%" height="25px" align="left" class="fondoetiqueta"><b>Elaborado por:</b></td>
+    <td width="75%" height="25px" align="left" >[% datos.scedulausuarios %]&nbsp;-&nbsp;[% datos.susuarios %]</td>
+  </tr>
+</table>
+
+<br>
+
+<table id="tbl_proveedor" align="center" width="80%">
+  <tr>
+    <td align="center" colspan="9" class="fondoetiqueta5">Proveedores/Deudores Asociados&nbsp;&nbsp;(M&aacute;ximo 3)</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta"><b>[% formbuilder.field.irifprov.label %]</b></td>
+    <td align="left">[% formbuilder.field.id_tprifprov.field %]-[% formbuilder.field.irifprov.field %]&nbsp;<font color="red" size="3">*</font></td>
+    <td align="left" class="fondoetiqueta"><b>[% formbuilder.field.sproveedor.label %]</b></td>
+    <td align="left">[% formbuilder.field.sproveedor.field %]&nbsp;<font color="red" size="3">*</font></td>
+    <td align="left" class="fondoetiqueta"><b>[% formbuilder.field.id_tpempresaprov.label %]</b></td>
+    <td align="left">[% formbuilder.field.id_tpempresaprov.field %]</td>
+    <td align="left" class="fondoetiqueta"><b>[% formbuilder.field.nmonto.label %]</b></td>
+    <td align="left">[% formbuilder.field.nmonto.field %]&nbsp;<font color="red" size="3">*</font></td>
+    <td align="left"><a href="#delete" onclick="borrarProveedor(this);">Borrar</a></td>
+  </tr>
+  [% IF campos %]
+  [% FOREACH k IN campos %]
+  <tr>
+    <td width="8%" colspan="1" align="left" class="fondoetiqueta"><b>C.I./RIF:</b></td>
+    <td width="21%" colspan="1" align="left">
+      <select id="id_tprifprov" name="id_tprifprov">
+        <option value="">-Seleccione-</option>
+        <option [% IF k.id_tprifprov == 1 %] selected [% END %] value="1">V</option>
+        <option [% IF k.id_tprifprov == 2 %] selected [% END %] value="2">E</option>
+        <option [% IF k.id_tprifprov == 3 %] selected [% END %] value="3">J</option>
+        <option [% IF k.id_tprifprov == 4 %] selected [% END %] value="4">G</option>
+      </select>-<input id="irifprov" name="irifprov" onkeypress="checkInteger(event)" size="10" type="text" value="[% k.irifprov %]" />&nbsp;<font color="red" size="3">*</font></td>
+    <td width="8%" colspan="1" align="left" class="fondoetiqueta"><b>Nombre:</b></td>
+    <td width="17%" colspan="1" align="left"><input id="sproveedor" name="sproveedor" type="text" value="[% k.sproveedor %]" />&nbsp;<font color="red" size="3">*</font></td>
+    <td width="12%" colspan="1" align="left" class="fondoetiqueta"><b>Tipo de Empresa:</b></td>
+    <td width="13%" colspan="1" align="left">
+      <select id="id_tpempresaprov" name="id_tpempresaprov">
+        <option value="">-Seleccione-</option>
+        <option [% IF k.id_tpempresaprov == 1 %] selected [% END %] value="1">Pública</option>
+        <option [% IF k.id_tpempresaprov == 2 %] selected [% END %] value="2">Privada</option>
+      </select></td>
+    <td width="8%" colspan="1" align="left" class="fondoetiqueta"><b>Monto:</b></td>
+    <td width="13%" colspan="1" align="left"><input id="nmonto" maxlength="18" name="nmonto" size="10" type="text" value="[% k.nmonto %]" onblur="this.value = formatearMoneda(this.value.replace(',','.'));" onfocus="this.value=editarValorMoneda(this.value);" onkeypress="checkFloat(event,'coma');" />&nbsp;<font color="red" size="3">*</font></td>
+    <td align="left"><a href="#delete" onclick="borrarProveedor(this);">Borrar</a></td>
+  </tr>
+  [% END %]
+  [% END %]
+  <tbody>
+  </tbody>
+</table>
+<br/>
+<table align="center" width="80%">
+  <tr>
+    <td align="right" width="50%">
+      <div id="add" align="center">
+        <a href="#create" onclick="crearProveedor('tbl_proveedor');">Agregar Proveedor/Deudor</a>
+      </div>
+    </td>
+  </tr>
+</table>
+<br>
+<table align="center" width="60%">
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]&nbsp;&nbsp;[% formbuilder.submit %]</td>
+  </tr>
+</table>
+[% formbuilder.end %]
+</legend>
+</body>
+</html>

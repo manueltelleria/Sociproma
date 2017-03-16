@@ -1,0 +1,12 @@
+Estimado(a) [% nombre_correo %]:
+
+Se ha [% accion_usuario %] su cuenta de acceso al Portal de Aplicaciones Bandes.
+
+Puede utilizar el siguiente enlace para ingresar al sistema:
+[% ruta_acceso %]
+
+Nota: Esta es una cuenta de correo no monitoreada, Por favor no responder a este correo.
+
+---
+Atentamente,
+[% titulo %]

@@ -1,0 +1,225 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<script language="JavaScript" type="text/javascript">
+
+function cargarComboCargos(campo){
+
+  document.getElementById('categ-new').innerHTML = '';
+  document.getElementById('scodcategoria').value = '';
+
+  if ( campo.value == 1 ) {
+    document.getElementById('cargo-old').style.display = 'none';
+    document.getElementById('cargo-new').style.display = '';
+    document.getElementById('categ-old').style.display = 'none';
+    document.getElementById('categ-new').style.display = '';
+    document.getElementById('id_tpcargo').options[0].selected = true;
+  }else{
+    document.getElementById('cargo-old').style.display = '';
+    document.getElementById('cargo-new').style.display = 'none';
+    document.getElementById('categ-old').style.display = '';
+    document.getElementById('categ-new').style.display = 'none';
+    document.getElementById('id_tpcargo').options[0].selected = true;
+  }
+
+}
+
+function cambiarCategoria(campo){
+
+  var url = "[% ruta_cambiarCategoria %]";
+
+  new Ajax.Request(url, {
+    method: 'post',
+    asynchronous: true,
+    parameters: 'scodcargo='+campo.value,
+    onSuccess: function(response) {
+        var respuesta = response.responseText;
+        if ( respuesta != 'undef' ){
+          var arreglo = respuesta.split("|");
+          $('scodcategoria').value = arreglo[0];
+          $('categ-new').innerHTML = arreglo[1];
+          $('categ-old').hide(); $('categ-new').show();
+        }
+    },
+  });
+
+}
+
+function validar(form) {
+
+    var alertstr='';
+    var invalid=0;
+
+    [% IF tipo == 'E' %]
+
+      //verificar que si es encargaduria se seleccione un valor del combo de cargos
+      var bencargaduria = form.elements['bencargaduria'];
+
+      if ( bencargaduria[1].checked ) {
+
+        //verificar que el combo de cargo tenga una opcion seleccionada
+        var id_tpcargo = null;
+        var selected_id_tpcargo = 0;
+        for (var loop = 0; loop < form.elements['id_tpcargo'].options.length; loop++) {
+            if (form.elements['id_tpcargo'].options[loop].selected) {
+                id_tpcargo = form.elements['id_tpcargo'].options[loop].value;
+                selected_id_tpcargo++;
+                if (id_tpcargo == null || id_tpcargo === "") {
+                    alertstr += '- Seleccione una opción para el campo "Cargo:"\n';
+                    invalid++;
+                }
+            }
+        }
+
+        if (! selected_id_tpcargo) {
+            alertstr += '- Seleccione una opción para el campo "Cargo:"\n';
+            invalid++;
+        }
+
+      }
+
+    [% END %]
+
+    if (invalid > 0 || alertstr != '') {
+      alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'
+                +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
+      return false;
+    }
+
+    return true;
+
+}
+
+</script>
+
+
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+
+<fieldset>
+<legend>Solicitar Vi&aacute;tico</legend>
+
+<table align="center" width="100%">
+  <tr>
+    <td>[% INCLUDE 'cssmenu.tt' %]</td>
+  </tr>
+</table>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+<br/>
+[% IF solicitante %]
+<table align="center" width="50%">
+  <tr>
+    <td width="30%" align="center" class="titulodonforojo">Solicitante activo:</td>
+    <td width="70%" align="left" ><b>[% id_tprif_sol %]-[% icedula_sol %]</b>&nbsp;&nbsp;[% snombres_sol %]&nbsp;&nbsp;<b>Categor&iacute;a:</b>&nbsp;&nbsp;[% scategoria_sol %]</td>
+  </tr>
+</table>
+[% END %]
+
+<br/>
+
+<table align="center" width="50%" border="0">
+  <tr>
+    <td align="center" colspan="4" class="titulodonforojo">[% titulo %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>C&eacute;dula:</b></td>
+    <td width="75%" colspan="3" align="left"><b>[% id_tprif %]-[% icedula %]</b></td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>Nombres:</b></td>
+    <td width="75%" colspan="3" align="left">[% snombres %]</td>
+  </tr>
+[% IF tipo == 'E' %]
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>Apellidos:</b></td>
+    <td width="75%" colspan="3" align="left">[% sapellidos %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>G&eacute;nero:</b></td>
+    <td width="75%" colspan="3" align="left">[% sgenero %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>Cargo:</b></td>
+    <td width="45%" align="left">
+      <div id="cargo-old">[% scargo %]</div>
+      <div id="cargo-new">[% formbuilder.field.id_tpcargo.field %]</div>
+    </td>
+    <td width="15%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.bencargaduria.label %]</b></td>
+    <td width="15%" align="left">[% formbuilder.field.bencargaduria.field %]</td>
+
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>Unidad de Adscripci&oacute;n:</b></td>
+    <td width="75%" colspan="3" align="left">[% sunidad %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>Comisi&oacute;n de Servicio:</b></td>
+    <td width="75%" colspan="3" align="left">[% bcomision %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>Categoria:</b></td>
+    <td width="75%" colspan="3" align="left">
+      <div id="categ-old">[% scategoria %]</div>
+      <div id="categ-new"></div>
+    </td>
+  </tr>
+[% ELSE %]
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>Cargo:</b></td>
+    <td width="75%" align="left">[% scargo %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>Unidad Solicitante:</b></td>
+    <td width="75%" colspan="3" align="left">[% sunidad %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>Categoria:</b></td>
+    <td width="75%" align="left">[% formbuilder.field.id_tpcategoria.field %]</td>
+  </tr>
+[% END %]
+</table>
+
+<table align="center" width="50%">
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]&nbsp;[% formbuilder.submit %]</td>
+  </tr>
+</table>
+<script language="JavaScript" type="text/javascript">
+[% IF tipo == 'E' %]
+  document.getElementById('cargo-new').style.display = 'none';
+  document.getElementById('categ-new').style.display = 'none';
+[% ELSE %]
+  document.getElementsByName('id_tpcategoria')[0].checked = true;
+[% END %]
+</script>
+[% formbuilder.field.scodcategoria.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar-setup.js"></script>
+
+[% formbuilder.jshead %]
+
+
+<script type="text/javascript">
+
+    function upd(valor, ruta){
+        document.forma_c.id_ciudadanos.value = valor;
+        document.forma_c.action = ruta;
+        document.forma_c.submit();
+    }
+
+    function guard(ruta){
+//         alert ('FCK');
+        document.forma_c.flag.value = 1;
+
+document.forma_c.id_tpcaso.disabled = false;
+document.forma_c.slugar.disabled = false;
+document.forma_c.sasunto.disabled = false;
+document.forma_c.id_tpareaatencion.disabled = false;
+document.forma_c.nmonto.disabled = false;
+document.forma_c.sdescripcion.disabled = false;
+document.forma_c.id_remitidopor.disabled = false;
+
+
+        document.forma_c.action = ruta;
+        document.forma_c.submit();
+    }
+
+function marcar() {
+  document.forma_c.marca.value = 1;
+}
+</script>
+
+
+<script language="JavaScript">
+
+var arregloCampos = new Array(
+  new Array('id_tpcaso','id_tpareaatencion'),
+  new Array('id_tpareaatencion')
+);
+
+//Función funcionCargarListas: se encarga de cargar el contenido de las listas dependientes deL valor del indicador de acuerdo a la selección realizada (Tipo de Antecedente seleccionada para el caso de un indicador).
+function funcionCargarListas(nombreCampoSeleccionado){
+  var forma = document.forma_c;
+  var listaSeleccionada = eval('forma.'+nombreCampoSeleccionado);
+  var url = '[% ruta_listas %]';
+  var campoLlenar = buscarValorAsociadoEnArreglo(arregloCampos, '0', nombreCampoSeleccionado, 1);
+  var funcion = eval('llenar_' + campoLlenar);
+  var valorSeleccionado = listaSeleccionada.options[listaSeleccionada.selectedIndex].value;
+  if (valorSeleccionado) {
+    var pars = nombreCampoSeleccionado+"="+valorSeleccionado;
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: funcion});
+  }
+  else {
+    limpiarListas(campoLlenar);
+  }
+}
+
+//Función llenarListaDependiente: método encargado de traducir la respuesta del servidor con la lista de valores que deben ser incluidas y llenar las listas dependientes con la información.
+function llenarListaDependiente(originalRequest, nombreListaLlenar) {
+  var respuesta = originalRequest.responseText;
+  var forma = document.forma_c;
+  var listaLlenar = eval('forma.'+nombreListaLlenar);
+  limpiarListas(nombreListaLlenar);
+
+  if ( respuesta != 'undef' ){
+    var primerarreglo = respuesta.split("|");
+    for(i=0;i<primerarreglo.length;i++){
+      var elemento  = primerarreglo[i].split(":");
+      agregarOpcionLista(listaLlenar,new Option(elemento[1],elemento[0]));
+    }
+  }
+}
+
+// Función limpiarListas: Método encargado de limpiar el contenido de una lista desplegable.
+function limpiarListas(nombreLista) {
+  var forma = document.forma_c;
+  vaciarLista(eval('forma.'+nombreLista));
+}
+
+//Función llenar_id_tpindicador: Método encargado de hacer el llamado al método llenarListaDependiente, indicando que la lista a trabajar es la de los indicadores.
+function llenar_id_tpareaatencion(originalRequest) {
+  llenarListaDependiente(originalRequest, 'id_tpareaatencion');
+}
+
+</script>
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Datos del Caso</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+<table align="center" width="65%">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">Datos del Caso</td>
+                     
+
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_tpcaso.label %]</b></td>
+    <td align="left">[% formbuilder.field.id_tpcaso.field %](*)</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.slugar.label %]</b></td>
+    <td align="left">[% formbuilder.field.slugar.field %](*)</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.sasunto.label %]</b></td>
+    <td align="left">[% formbuilder.field.sasunto.field %](*)</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_tpareaatencion.label %]</b></td>
+    <td align="left">[% formbuilder.field.id_tpareaatencion.field %]</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.nmonto.label %]</b></td>
+    <td align="left">[% formbuilder.field.nmonto.field %] Bs.</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.sdescripcion.label %]</b></td>
+    <td align="left">[% formbuilder.field.sdescripcion.field %](*)</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_remitidopor.label %]</b></td>
+    <td align="left">[% formbuilder.field.id_remitidopor.field %]</td>
+  </tr>
+  <tr>    
+    <td align="left" colspan=2><hr></td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>Atenci&oacute;n Telef&oacute;nica: </b></td>
+    <td align="left"><img src="/static/imagenes/phone.png" width=20 ><input type=checkbox name='bllamada' value='1'></td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.sobservacion.label %]</b></td>
+    <td align="left">[% obs %]<br>[% formbuilder.field.sobservacion.field %](*)</td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2" align="center">
+<!--     <input type=button  onclick="javascript:if (validate_forma_c(document.forma_c))document.forma_c.submit();" value='Guarda'/>&nbsp; -->
+
+    <input type=button  onclick="javascript:if (validate_forma_c(document.forma_c)) guard('/concac/atencion/atencion/entradaCaso')" value='Guarda'/> 
+    
+
+    <input type=button  onclick="javascript:document.forma_c.id_casos.value =''; upd(document.forma_c.id_ciudadanos.value,'/concac/atencion/atencion/listarCasos')" value='<< Regresar'/>
+  </td>
+  </tr>
+  <tr class=''>
+    <td colspan=2 >(*)Campos son obligatorios</td>
+  </tr>
+</table>
+[% formbuilder.field.flag.field %]
+[% formbuilder.field.id_casos.field %]
+[% formbuilder.field.id_ciudadanos.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>
+

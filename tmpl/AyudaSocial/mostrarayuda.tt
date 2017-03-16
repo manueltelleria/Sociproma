@@ -1,0 +1,255 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar-setup.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<script type="text/javascript">
+
+function habilitarCampo(campo){
+
+  var valor = campo.value;
+  var nombre = campo.name;
+
+  if ( nombre == 'id_tpedosolicitud' ) {
+
+    var texto = campo.options[campo.selectedIndex].text;
+
+    if ( texto == 'Aprobado' || texto == 'Liquidado' ) {
+      document.getElementById('id_tpformapago').disabled = false;
+      document.getElementById('norden').disabled = false;
+    }else{
+      document.getElementById('id_tpformapago').selectedIndex = 3;
+      document.getElementById('norden').value = '';
+      document.getElementById('norden').disabled = true;
+      document.getElementById('id_tpformapago').disabled = true;
+    }
+
+    if ( texto == 'Aprobado' ) {
+      document.getElementById('nmntoaprobado').disabled = false;
+    }else{
+      document.getElementById('nmntoaprobado').disabled = true;
+    }
+
+  }
+
+  if ( nombre == 'id_tpformapago' ) {
+
+    if ( valor == 3 || valor == 2 || valor == 5 ) {
+        document.getElementById('norden').disabled = false;
+    } else {
+      document.getElementById('norden').value = '';
+      document.getElementById('norden').disabled = true;
+    }
+
+  }
+
+}
+
+function validar(form) {
+  if (validate_mostrarayuda(form)){
+
+      document.getElementById('id_tpformapago').disabled = false;
+
+      var alertstr='';
+      var invalid=0;
+
+      var campo = form.elements['id_tpedosolicitud'];
+      var texto = campo.options[campo.selectedIndex].text;
+
+      //valido que la fecha efectiva no sea menor que la fecha de registro de la ayuda
+      var dregistro   = "[% dfecha %]";
+      var dfechaliq   = form.elements['dfechaliq'].value.split('/');
+      dregistro  = dregistro.split('/');
+      var dref   = dregistro[2]+dregistro[1]+dregistro[0];
+      var dref2  = dfechaliq[2]+dfechaliq[1]+dfechaliq[0];
+
+      if ( dref2 < dref ) {
+        alertstr += "- La fecha efectiva debe ser mayor o igual que la fecha de registro de la Ayuda Social\n";
+        invalid++;
+      }
+
+      //valido que el monto no supere al disponible anual para este año
+      if ( texto == 'Aprobado' ) {
+        var nmntodispanual = "[% nmntodispanual %]";
+        var nmntosolicitado = "[% nmntosolicitado %]";
+        var nmntoaprobado = form.elements['nmntoaprobado'].value;
+
+        nmntodispanual=nmntodispanual.replace(/\./g,'');
+        nmntodispanual=nmntodispanual.replace(',','.');
+        nmntodispanual=parseFloat(nmntodispanual);
+
+        nmntosolicitado=nmntosolicitado.replace(/\./g,'');
+        nmntosolicitado=nmntosolicitado.replace(',','.');
+        nmntosolicitado=parseFloat(nmntosolicitado);
+
+        nmntoaprobado=nmntoaprobado.replace(/\./g,'');
+        nmntoaprobado=nmntoaprobado.replace(',','.');
+        nmntoaprobado=parseFloat(nmntoaprobado);
+
+        if ( nmntoaprobado > nmntosolicitado ) {
+          alertstr += "- El monto aprobado debe ser menor o igual al monto solicitado para la ayuda social\n";
+          invalid++;
+        }
+
+        if ( nmntoaprobado > nmntodispanual ) {
+          alertstr += "- El monto solicitado para la ayuda social supera al monto disponible anual para este año\n";
+          invalid++;
+        }
+
+      }
+
+      if (invalid > 0 || alertstr != '') {
+        alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'
+                +alertstr+'\n'+'- Por favor verifique la información y trate de nuevo');
+        return false;
+      }
+
+      return true;
+
+  }else{ return false; }
+}
+
+</script>
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+[% IF msg_mntodisp %]
+<div align="center">
+<span class="titulodonfomarillo" id="msg_mntodisp">[% msg_mntodisp %]</span>
+</div>
+[% END %]
+<fieldset>
+<legend>Cambiar Estatus Ayuda Social</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+<table align="center" width="70%">
+<tr>
+  <td align="center" colspan="4" class="titulodonforojo">Datos de Ayuda Social</td>
+</tr>
+<tr>
+  <td width="25%" align="left" class="fondoetiqueta"><b>N&#176; de Ayuda Social:</b></td>
+  <td width="25%" align="left" ><b>[% nro %]</b></td>
+  <td width="25%" align="left" class="fondoetiqueta"><b>Fecha de Registro:</b></td>
+  <td width="25%" align="left" >[% dfecha %]</td>
+</tr>
+<tr>
+  <td width="25%" align="left" class="fondoetiqueta"><b>Solicitante:</b></td>
+  <td width="25%" align="left" >[% id_solicitante %]&nbsp;[% solicitante %]</td>
+  <td width="25%" align="left" class="fondoetiqueta"><b>Beneficiario:</b></td>
+  <td width="25%" align="left" >[% id_beneficiario %]&nbsp;[% beneficiario %]</td>
+</tr>
+<tr>
+  <td width="25%" align="left" class="fondoetiqueta"><b>Monto Solicitado:</b></td>
+  <td width="25%" align="left" >[% nmntosolicitado %]</td>
+  <td width="25%" align="left" class="fondoetiqueta"><b>Monto disponible anual:</b></td>
+  <td width="25%" align="left" >[% nmntodispanual %]</td>
+</tr>
+<tr>
+  <td width="25%" align="left" class="fondoetiqueta"><b>Saldo Total Cuenta Corriente:</b></td>
+  <td width="25%" align="left" ><b>[% saldoTotal %]</b></td>
+  <td width="25%" align="left" class="fondoetiqueta"><b>Saldo Diario Cuenta Corriente:</b></td>
+  <td width="25%" align="left" ><b>[% saldoDiario %]</b></td>
+</tr>
+<tr>
+  <td width="25%" align="left" class="fondoetiqueta"><b>Motivo:</b></td>
+  <td width="75%" colspan="3" align="left" >[% smotivo %]</td>
+</tr>
+</table>
+<br/><br/>
+<table align="center" width="60%">
+<tr>
+  <td align="center" colspan="4" class="titulodonforojo">Cambiar Estatus actual de la Ayuda Social</td>
+</tr>
+<tr>
+  <td width="30%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.id_tpedosolicitud.label %]</b></td>
+  <td width="70%" align="left" >[% formbuilder.field.id_tpedosolicitud.field %]&nbsp;<font color="red" size="3">*</font></td>
+</tr>
+<tr>
+  <td width="30%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.nmntoaprobado.label %]</b></td>
+  <td width="70%" align="left" >[% formbuilder.field.nmntoaprobado.field %]</td>
+</tr>
+<tr>
+  <td width="30%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.id_tpformapago.label %]</b></td>
+  <td width="70%" align="left" >[% formbuilder.field.id_tpformapago.field %]&nbsp;&nbsp;<b>[% formbuilder.field.norden.label %]</b>&nbsp;[% formbuilder.field.norden.field %]</td>
+</tr>
+<tr>
+  <td width="30%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.dfechaliq.label %]</b></td>
+  <td width="70%" align="left">[% formbuilder.field.dfechaliq.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" alt="Calendario" width="25" height="18" id="t_dfechaliq" style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onmouseout="this.style.background=''"/>
+           <script type="text/javascript">
+           Calendar.setup({
+                    inputField     :    "dfechaliq",     // id of the input field
+                    ifFormat       :    "%d/%m/%Y",      // format of the input field
+                    button         :    "t_dfechaliq",  // trigger for the calendar (button ID)
+                    align          :    "Tl",           // alignment (defaults to "Bl")
+                    singleClick    :    true
+                        });
+           </script>&nbsp;<font color="red" size="3">*</font></td>
+</tr>
+<tr>
+  <td width="30%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.sobservaciones.label %]</b></td>
+  <td width="70%" align="left" >[% formbuilder.field.sobservaciones.field %]&nbsp;<font color="red" size="3">*</font></td>
+</tr>
+<td colspan="2" align="left" ><font color="#0F305A" size="0" >Nota: (<font color="red" size="1">*</font>) Estos campos son obligatorios.</font></td>
+<tr>
+  <td width="100%" colspan="2" align="center">[% formbuilder.field.btnvolver.field %]&nbsp;[% formbuilder.submit %]</td>
+</tr>
+</table>
+<br/>
+
+<table align="center" width="85%">
+<tr>
+  <td align="center" colspan="4" class="titulodonforojo">Historial de cambio de estatus de la Ayuda Social</td>
+</tr>
+<tr>
+  <td width="10%" align="center" class="fondoetiqueta5">Fecha Efectiva</td>
+  <td width="15%" align="center" class="fondoetiqueta5">Estatus</td>
+  <td width="60%" align="center" class="fondoetiqueta5">Observaciones</td>
+  <td width="20%" align="center" class="fondoetiqueta5">Especialista</td>
+</tr>
+[% IF registros %]
+  [% FOREACH registros %]
+  <tr bgcolor="[% sclase %]">
+    <td width="10%" align="center" >[% defectiva %]</td>
+    <td width="15%" align="center">[% id_tpedosolicitud %]</td>
+    <td width="60%" align="justify" >[% sobservaciones %]</td>
+    <td width="20%" align="justify">[% especialista %]</td>
+  </tr>
+  [% END %]
+[% ELSE %]
+<tr>
+  <td align="center" colspan="4" class="titulodonfomarillo">No existe historial de cambios de estatus de la Ayuda Social.</td>
+</tr>
+[% END %]
+</table>
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

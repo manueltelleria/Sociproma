@@ -1,0 +1,610 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+<table align="left" width="100%" border="0">
+<tr>
+  <td colspan="3" width="100%" align="left"><b>CÓDIGO DEL ENTE</td>
+</tr>
+<tr>
+  <td colspan="3" width="100%" align="left">DENOMINACIÓN DEL ENTE</td>
+</tr>
+<tr>
+  <td colspan="3" width="100%" align="left">ORGANO DE ADSCRIPCIÓN</td>
+</tr>
+<tr>
+  <td colspan="3" width="100%" align="left">PERÍODO PRESUPUESTARIO &nbsp; [% ianio %]</b></td>
+</tr>
+<tr>
+<tr>
+  <td colspan="3" width="100%" align="center"><b>CUENTA AHORRO/INVERSIÓN/FINANCIMAIENTO - CON FINES EMPRESARIALES</b></td>
+</tr>
+<tr>
+  <td colspan="3" width="100%" align="center"><b>(En Bolívares)</b></td>
+</tr>
+<tr>
+  <td width="20%" align="center" class="fondoetiqueta5">C&Oacute;DIGO</td>
+  <td width="60%" align="center" class="fondoetiqueta5">DENOMINACIÓN</td>
+  <td width="20%" align="center" class="fondoetiqueta5">MONTO</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><b>I.-CUENTA CORRIENTE</b></td>
+  <td align="right">[% total_cuentacorriente %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;</code><b>INGRESOS CORRIENTES</b></td>
+  <td align="right">[% total_ingresoscorrientes %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>INGRESOS DE LA PROPIEDAD</b></td>
+  <td align="right">[% total_ingresospropiedad %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Interéses</b></td>
+  <td align="right">[% total_interes %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Interéses Internos</b></td>
+  <td align="right">[% total_interesinternos %]</td>
+</tr>
+<tr>
+  <td align="center"><b>303.03.02.00/303.04.02.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Interéses por préstamos</td>
+  <td align="right">[% total_interesxprestamos %]</td>
+</tr>
+<tr>
+  <td align="center"><b>301.10.05.02/301.10.05.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Interéses por títulos-valores</td>
+  <td align="right">[% total_interesxtitulos %]</td>
+</tr>
+<tr>
+  <td align="center"><b>303.03.03.00/303.03.99.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Ingresos por Administración de Fideicomisos y (Comisisión acuerdos financieros internacionales)</b></td>
+  <td align="right">[% total_ingradmfideico %]</td>
+</tr>
+<tr>
+  <td align="center"><b>301.10.06.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Ingresos por inversiones en empresa filiales, afiliadas y sucursales</b></td>
+  <td align="right">[% total_ingrinverfiliales %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><b>OTROS INGRESOS</b></td>
+  <td align="right">[% total_otrosingreos %]</td>
+</tr>
+<tr>
+  <td align="center"><b>304.99.01.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Otros ingresos ajenos a la operación</td>
+  <td align="right">[% total_otrosingrajenosopera %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Otros ingresos de operación</td>
+  <td align="right">[% total_otrosingropera %]&nbsp;</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;</code><b>GASTOS CORRIENTES</b></td>
+  <td align="right">[% total_gastoscorrientes %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>GASTOS DE OPERACIÓN</b></td>
+  <td align="right">[% total_gastosopera %]</td>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Remuneraciones</b></td>
+  <td></td>
+</tr>
+<tr>
+  <td align="center"><b>401.01.00.00/401.02.00.00/401.03.00.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Sueldos, salarios y otras retribuciones</td>
+  <td align="right">[% total_sueldosalarios %]</td>
+</tr>
+<tr>
+  <td align="center"><b>401.04.00.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Beneficios y complementos de sueldos y salarios</td>
+  <td align="right">[% total_benefsueldosalarios %]</td>
+</tr>
+<tr>
+  <td align="center"><b>401.06.00.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Aportes Patronales</td>
+  <td align="right">[% total_aportespatronal %]</td>
+</tr>
+<tr>
+  <td align="center"><b>401.08.00.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Prestaciones sociales y otras indemnizaciones</td>
+  <td align="right">[% total_prestacionesindem %]</td>
+</tr>
+<tr>
+  <td align="center"><b>401.07.00.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Asistencia socioeconómica</td>
+  <td align="right">[% total_asistenciasocioecon %]</td>
+</tr>
+<tr>
+  <td align="center"></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Compra de bienes y servicios</b></td>
+  <td align="right">[% total_comprabienesserv %]</td>
+</tr>
+<tr>
+  <td align="center"><b>402.00.00.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Bienes de consumo</td>
+  <td align="right">[% total_bienesconsumo %]</td>
+</tr>
+<tr>
+  <td align="center"><b>404.03.00.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Servicios no personales</td>
+  <td align="right">[% total_servicionoper %]</td>
+</tr>
+<tr>
+  <td align="center"><b>408.01.00.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Depreciación y amortización</td>
+  <td align="right">[% total_depreciaamort %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Provisiones y otros Gastos</td>
+  <td align="right">[% total_provgastos %]</td>
+</tr>
+<tr>
+  <td align="center"><b>408.06.04.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Cuentas incobrables</td>
+  <td align="right">[% total_cuentasincobrable %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>TRANSFERENCIAS Y DONACIONES CORRIENTES</b></td>
+  <td align="right">[% total_transferencias %]</td>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Al sector privado</b></td>
+  <td align="right">[% total_transprivado %]</td>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Transferencias corrientes al sector privado</td>
+  <td align="right">[% total_transcorrientespriva %]</td>
+<tr>
+<tr>
+  <td align="center">
+    <b>407.01.01.00/407.01.01.09/407.01.01.10/407.01.01.12</br>
+       407.01.01.02/407.01.01.13/407.01.01.14/407.01.01.15</br>
+       407.01.01.16
+    </b>
+  </td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Pensiones y otros beneficios asociados</td>
+  <td align="right">[% total_pensionesotrosbenef %]</td>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Jubilaciones y otros beneficios asociados</td>
+  <td align="right">[% total_jubilaotrosbenef %]</td>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Al sector público</b></td>
+  <td align="right">[% total_transpublico %]</td>
+<tr>
+<tr>
+  <td align="center"><b>407.01.03.04</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>A instituciones del sector Social</td>
+  <td align="right">[% total_transinstsocial %]</td>
+<tr>
+<tr>
+  <td align="center"><b>407.01.03.09</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>A Entes descentralizados Financieros no bancarios</td>
+  <td align="right">[% total_transentesnobancarios %]</td>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;</code><b>RESULTADO ECONÓMICO  EN CUENTA CORRIENTE : AHORRO (DESAHORRO)</b></td>
+  <td align="right">[% total_resultadocuentacorriente %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><b>II.-CUENTA CAPITAL</b></td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;</code><b>INGRESOS DE CAPITAL</b></td>
+  <td align="right">[% total_ingrcapital %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>RECURSOS PROPIOS DE CAPITAL</b></td>
+  <td align="right">[% total_ingrcapital %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code>Ahorro/Desahorro en Cuenta Corriente</td>
+  <td align="right">[% total_resultadocuentacorriente %]</td>
+</tr>
+<tr>
+  <td align="center"><b>306.03.01.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Incremento de la depreciación y amortización acumulada</td>
+  <td align="right">[% totalincredepreamort %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;</code><b>GASTOS DE CAPITAL</b></td>
+  <td align="right">[% total_gastoscapital %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code>INVERSIÓN REAL DIRECTA</td>
+  <td align="right">[% total_gastoscapital %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Formación Bruta de Capital Fijo</td>
+  <td align="right">[% total_gastoscapital %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Edificios e instalaciones</td>
+  <td align="right">[% total_edifinstala %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Maquinaria, equipos y otros bienes muebles</td>
+  <td align="right">[% total_maquinaequipotros %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Bienes intangible</td>
+  <td align="right">[% total_bienesintangible %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;</code><b>RESULTADO FINANCIERO: SUPERÁVIT (DEFICIT)</b></td>
+  <td align="right">[% total_resultadofinanciero %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><b>III.-CUENTA FINANCIERA</b></td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;</code><b>FUENTES DE FINANCIAMIENTO</b></td>
+  <td align="right">[% total_fuentefinancia %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;</code><b>DISMINUCIÓN DE LA INVERSIÓN FINANCIERA</b></td>
+  <td align="right">[% total_dismininvfinacia %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;</code>Recuperación de préstamos de largo plazo otorgados por entes descentralizados con fines empresariales</td>
+  <td align="right">[% total_recuperapreslp %]</td>
+</tr>
+<tr>
+  <td align="center"><b>310.01.01.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code>Al sector privado</td>
+  <td align="right">[% total_recuperapresprivado %]</td>
+</tr>
+<tr>
+  <td align="center"><b>310.02.02.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code>Al sector público</td>
+  <td align="right">[% total_recuperaprespublico %]</td>
+</tr>
+<tr>
+  <td align="center"><b>310.02.02.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code>Al sector externo</td>
+  <td align="right">[% total_recuperapresexterno %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;</code>Venta de títulos - valores que no otorgan propiedad</td>
+  <td align="right">[% total_ventatitnp %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code>Venta de títulos y valores de corto plazo</td>
+  <td align="right">[% totalventatitvalcp %]</td>
+</tr>
+<tr>
+  <td align="center"><b>307.01.01.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Venta de títulos y valores privados</td>
+  <td align="right">[% total_ventatitvalcpprivado %]</td>
+</tr>
+<tr>
+  <td align="center"><b>307.01.02.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Venta de títulos y valores públicos</td>
+  <td align="right">[% total_ventatitvalcppublico %]</td>
+</tr>
+<tr>
+  <td align="center"><b>307.01.03.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Venta de títulos y valores externos</td>
+  <td align="right">[% total_ventatitvalcpexterno %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code>Venta de títulos y valores de largo plazo</td>
+  <td align="right">[% total_ventatitvallp %]</td>
+</tr>
+<tr>
+  <td align="center"><b>307.02.01.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Venta de títulos y valores privados</td>
+  <td align="right">[% total_ventatitvallpprivado %]</td>
+</tr>
+<tr>
+  <td align="center"><b>307.02.02.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Venta de títulos y valores públicos</td>
+  <td align="right">[% total_ventatitvallppublico %]</td>
+</tr>
+<tr>
+  <td align="center"><b>307.02.03.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Venta de títulos y valores externos</td>
+  <td align="right">[% total_ventatitvallpexterno %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;</code>Disminución de otros activos financieros</td>
+  <td align="right">[% total_disminotrosactvfinan %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code>Disminución de disponibilidades</td>
+  <td align="right">[% total_disminotrosactvfinan %]</td>
+</tr>
+<tr>
+  <td align="center"><b>311.01.01.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Disminución de caja</td>
+  <td align="right">[% total_disminotrosactvfinan %]</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td><code>&nbsp;&nbsp;</code><b>INCREMENTO DE PASIVOS</b></td>
+  <td align="right">[% total_incrementopasivo %]</td>
+</tr>
+<tr>
+  <td align="center"><b>312.08.01.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Incremento de provisiones</td>
+  <td align="right">[% total_incrementopasivo %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code>RESULTADO FINANCIERO: SUPERÁVIT</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;</code><b>APLICACIONES FINANCIERAS</b></td>
+  <td align="right">[% total_aplicacionesfinan %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;</code><b>ACTIVOS</b></td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>INVERSIÓN FINANCIERA</b></td>
+  <td align="right">[% total_invfinanciera %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Compra de acciones y participaciones de capital</b></td>
+  <td align="right">[% total_compraprtccapital %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.01.02.05</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>A entes descentralizados financieros bancarios</td>
+  <td align="right">[% total_compraentesdesc %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.01.02.06</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>A entes descentralizados financieros no bancarios</td>
+  <td align="right">[% total_compraenetesdescnobanca %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</code><b>Al sector externo</b></td>
+  <td align="right">[% totalcompraexterno %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>A organismos internacionales</td>
+  <td align="right">[% totalcompraorginternac %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Otros soportes al sector externo</td>
+  <td align="right">[% total_otrossosprtesexterno %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Concesión de préstamos a corto plazo</b></td>
+  <td align="right">[% total_concesionprescp %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.03.01.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Al sector privado</td>
+  <td align="right">[% total_concesionprivado %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Al sector público</td>
+  <td align="right">[% total_concesionpublico %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.03.02.06</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>A entes descentralizados financieros bancarios</td>
+  <td align="right">[% total_concesiondescfinban %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.03.02.07</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>A entes descentralizados financieros no bancarios</td>
+  <td align="right">[% total_concesiondescfinnoban %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Concesión de préstamos a largo plazo</b></td>
+  <td align="right">[% total_concesionprestamolp %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.04.01.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Al sector privado</b></td>
+  <td align="right">[% total_concesionpreslpprivado %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Al sector público</b></td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td align="center"><b>405.04.02.06</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>A entes descentralizados financieros bancarios</td>
+  <td align="right">[% total_concesionenetesfinanban %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.04.02.07</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>A entes descentralizados financieros no bancarios</td>
+  <td align="right">[% total_concesionenetesfinannoban %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Al sector externo</b></td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td align="center"><b>405.04.03.02</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>A gobiernos extranjeros</td>
+  <td align="right">[% total_concesionesgobextranjero %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Adquisición de títulos y valores que no otorgan propiedad</b></td>
+  <td align="right">[% total_adquititvalnp %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Adquisición de títulos y valores a corto plazo</b></td>
+  <td align="right">[% total_adquititvalcp %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.02.01.02</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Adquisición de títulos y valores privados</td>
+  <td align="right">[% total_adquititvalcpprivado %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.02.01.01</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Adquisición de títulos y valores públicos</td>
+  <td align="right">[% total_adquititvalcppublico %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.02.01.03</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Adquisición de títulos y valores externos</td>
+  <td align="right">[% total_adquititvalcpexterno %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Adquisición de títulos y valores a largo plazo</b></td>
+  <td align="right">[% total_adquititvallp %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.02.02.01</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Adquisición de títulos y valores privados</td>
+  <td align="right">[% total_adquititvallpprivado %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.02.02.02</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Adquisición de títulos y valores públicos</td>
+  <td align="right">[% total_adquititvallppublico %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.02.02.03</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Adquisición de títulos y valores externos</td>
+  <td align="right">[% total_adquititvallpexterno %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code><b>Incremento de otros activos financieros</b></td>
+  <td align="right">[% total_increotrosactvfinan %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.10.03.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Incremento de fondos en fideicomiso</td>
+  <td align="right">[% total_increfondosfideico %]</td>
+</tr>
+<tr>
+  <td align="center"><b>405.99.01.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code>Incremento de otros activos financieros</td>
+  <td align="right">[% total_increotrosactvfinan %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;</code><b>PASIVOS</b></td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;</code><b>DISMINUCIÓN DE PASIVOS</b></td>
+  <td align="right">[% total_disminucionpasivos %]&nbsp;</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;</code><b>Disminución de cuentas y efectos por pagar</b></td>
+  <td align="right">[% total_dismincuentaspagar %]</td>
+</tr>
+<tr>
+  <td align="center"><b>411.02.00.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code>Disminución de aportes patronales y retenciones laborales por pagar</td>
+  <td align="right">[% total_disminaportespatron %]</td>
+</tr>
+<tr>
+  <td align="center"><b>411.38.01.00</b></td>
+  <td><code>&nbsp;&nbsp;&nbsp;&nbsp;</code>Disminución de otros pasivos a corto plazo</td>
+  <td align="right">[% total_disminotrospasivos %]</td>
+</tr>
+<tr>
+  <td></td>
+  <td><code>&nbsp;&nbsp;</code><b>RESULTADO FINANCIERO: DEFICIT</b></td>
+  <td align="right">&nbsp;</td>
+</tr>
+</table>
+
+<table align="center" width="95%" border="0">
+  <tr>
+    <td align="center">[% formbuilder.field.btningresar.field %]</td>
+  </tr>
+</table>
+
+[% formbuilder.field.id_producto.field %]
+[% formbuilder.field.page.field %]
+[% formbuilder.end %]
+</body>
+</html>

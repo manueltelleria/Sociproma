@@ -1,0 +1,296 @@
+[% FOREACH rrhh%]
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+<tbody>
+  <tr>
+    <td  width="800px" colspan="9" align="center" bgcolor="#DDDDDD"><b>DATOS DEL SOLICITANTE</b><br></td>
+  </tr>
+  <tr>
+    <td width="360px" align="left" style="vertical-align: top;"><small><b>2.
+    Apellidos y Nombres:</b></small><br>[%sapellido%]&nbsp;[%snombre%]</td>
+
+    <td width="150px" align="left" style="vertical-align: top;"><small><b>3.
+   Cédula de Identidad:</b></small><br>[%ncedula%]
+    </td>
+    <td width="130px" align="left" style="vertical-align: top;"><small><b>4.
+    Correo Personal:</b></small><br>[%scorreo%]
+    </td>
+    <td width="130px" align="left" style="vertical-align: top;"><small><b>5.
+    Estado Civil:</b></small><br>[% IF sedocivil == 'C' %]CASADO
+        [% ELSIF sedocivil == 'D' %]DIVORCIADO
+        [% ELSIF sedocivil == 'K' %]CONCUBINO
+        [% ELSIF sedocivil == 'S' %]SOLTERO
+        [% ELSIF sedocivil == 'V' %]VIUDO
+        [% ELSE %]---[% END %]
+    </td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+  <tr>
+    <td width="350px" colspan="4" align="left" style="vertical-align: top;"><small><b>6.
+    Cargo:</b></small><br>[%socupacion%]</td>
+    <td width="100px" colspan="1" align="left" style="vertical-align: top;"><small><b>7.
+    Sueldo B&aacute;sico Mensual:</b></small><br>[%nsueldomensual%]
+    </td>
+    <td width="75px" colspan="1" align="left" style="vertical-align: top;"><small><b>8.
+   Fecha de Ingreso:</b></small><br>[%dfechaing%]
+    </td>
+    <td width="75px"  colspan="2" align="left" style="vertical-align: top;"><small><b>9.
+   Profesi&oacute;n:</b></small><br>[%sprofesion%]
+    </td>
+  </tr>
+  <tr>
+    <td width="300px" colspan="4" align="left" style="vertical-align: top;"><small><b>10.
+    Unidad de Adscripci&oacute;n:</b></small><br>[% subicacion %]</td>
+    <td width="100px" colspan="1" align="left" style="vertical-align: top;"><small><b>11.
+    Extensi&oacute;n:</b></small><br>[%ntelfoficina%]</td>
+    <td width="175px" colspan="1" align="left" style="vertical-align: top;"><small><b>12.
+   Tel&eacute;fono (Nro. Celular):</b></small><br>
+    [%stelefcelsolic%]<br>
+    </td>
+    <td width="175px" colspan="2" align="left" style="vertical-align: top;"><small><b>13.
+    Condici&oacute;n del Trabajador:</b></small><br>&nbsp;[% IF scondicion == 'EMPLEADOS' %]EMPLEADO
+        [% ELSE %]OBRERO[% END %]
+    </td>
+  </tr>
+</table>
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><b>DATOS DE LA VIVIENDA DONDE RESIDE ACTUALMENTE</b><br></td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+<tbody>
+  <tr>
+    <td width="800px" colspan="9" align="left" style="vertical-align: top;" ><small><b>14.
+        Dirección del Inmueble:</b></small><br>[%sdireccionsolic%]
+    </td>
+  </tr>
+  <tr>
+    <td width="266px" align="left" style="vertical-align: top;"><small><b>15.
+    Estado:</b></small><br>[%id_tpentfederalsolic%]
+    </td>
+    <td width="266px" align="left" style="vertical-align: top;"><small><b>16.
+   Ciudad:</b></small><br>[%id_tpciudadsolic%]
+    </td>
+    <td width="266px" align="left" style="vertical-align: top;"><small><b>17.
+    Tel&eacute;fono Habitaci&oacute;n:</b></small><br>[%stelefhabsolic%]
+    </td>
+  </tr>
+[%END%]
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+<tbody>
+  <tr>
+    <td width="200px" colspan="2" align="left" style="vertical-align: top;"><small><b>18.
+    Tipo de Vivienda:</b></small><br>
+      [%id_tpvivienda%][%IF stpvivienda %]:&nbsp;[%stpvivienda%][%END%]
+    </td>
+    <td width="200px" colspan="2" align="left" style="vertical-align: top;"><small><b>19.
+   Tenencia:</b></small><br>
+      [%id_tptenencia%][%IF stptenencia %]:&nbsp;[%stptenencia%][%END%]
+    </td>
+    <td width="200px" colspan="2" align="left" style="vertical-align: top;"><small><b>20.
+    Couta Mensual en Bs.F:</b></small><br>[%ncuotamen%]
+    </td>
+    <td width="200px" colspan="2" align="left" style="vertical-align: top;"><small><b>21.
+    Carga Familiar:</b></small><br>[%ncargafliar%]
+    </td>
+  </tr>
+  <tr>
+    <td width="500px" colspan="6" align="left" style="vertical-align: top;" ><small><b>22.
+    Nombre del Propietario, Arrendadora y/o entidad Financiera:</b></small><br>
+      [%snombrearrend%]</td>
+
+    <td width="300px" colspan="3" align="left" style="vertical-align: top;"><small><b>23.
+    Tel&eacute;fonos:</b></small><br>
+      [%ntelefarrend%]</td>
+  </tr>
+</table>
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><b>DATOS DE LA SOLICITUD</b><br></td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+  <tr>
+    <td width="200px"  align="left" style="vertical-align: top;"><small><b>
+        24.Programa de Veh&iacute;culo:</b></small><br>
+            <b><u>[%stpsolicitud%]</u></b>
+      </td>
+    <td width="200px"  align="left" style="vertical-align: top;"><small><b>
+        25.Clase:</b></small><br>
+      [%id_tpclase%]</td>
+    <td width="200px"  align="left" style="vertical-align: top;"><small><b>
+        26.Tipo:</b></small><br>
+      [%id_tptipoveh%]</td>
+    <td width="200px" colspan= "2" style="vertical-align: top;"><small><b>
+        27.Transmisi&oacute;n:</b></small><br>
+      [%id_tptransmision%]</td>
+    </td>
+  </tr>
+  <tr>
+    <td width="200px" align="left" style="vertical-align: top;"><small><b>
+        28.Marca:</b></small><br>
+      [%smarca%]</td>
+    <td width="200px" align="left" style="vertical-align: top;"><small><b>
+        29.Modelo:</b></small><br>
+      [%smodelo%]</td>
+    <td width="200px" align="left" style="vertical-align: top;"><small><b>
+        30.Color:</b></small><br>
+      [%scolor%]</td>
+    <td width="100px" align="left" style="vertical-align: top;"><small><b>
+        31.A&ntilde;o:</b></small><br>
+      [%nano%]</td>
+    </td>
+    <td width="100px" align="left" style="vertical-align: top;"><small><b>
+        32.Placa:</b></small><br>
+      [%splaca%]</td>
+    </td>
+  </tr>
+</table>
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><b>DATOS DEL VENDEDOR</b><br></td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+<tbody>
+
+  <tr>
+    <td width="500px" colspan="6" align="left" style="vertical-align: top;"><small><b>33.
+   Raz&oacute;n Social del Concesionario y/o Apellidos y Nombres del Vendedor:</b></small><br>[%sdenominacion%]
+    </td>
+    <td width="300px" colspan="3" align="left" style="vertical-align: top;"><small><b>34.
+    R.I.F.: </b></small><br>[%IF sdenominacion %][%id_tprifvendedor%]-[%srifvendedor%][%END%]<br><small><b>C&eacute;dula de Identidad:</b></small><br>[%IF sdenominacion %][%id_tpnacionalidad%]-[%ncedvendedor%][%END%]
+    </td>
+  </tr>
+  <tr>
+    <td width="600px" colspan="6" align="left" style="vertical-align: top;"><small><b>35.
+    Direcci&oacute;n Fiscal:</b></small><br>[%sdireccion%]</td>
+    <td width="200px" colspan="3" align="left" style="vertical-align: top;"><small><b>36.
+    T&eacute;lefonos:</b></small><br>[%stelefvendedor%]
+    </td>
+  </tr>
+  <tr>
+    <td width="400px" colspan="6" align="left" style="vertical-align: top;"><small><b>37.
+   Precio de Venta del V&eacute;hiculo en Bs.F:</b></small><br>[%IF sdenominacion %][%npreciovta%][%END%]
+    </td>
+    <td width="400px" colspan="3" align="left" style="vertical-align: top;"><small><b>38.
+    Monto del Pr&eacute;stamo solicitado en Bs.F:</b></small><br>[%IF sdenominacion %][%nmtoprestamo%][%END%]
+    </td>
+  </tr>
+</table>
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><b>EN CASO DE REFINANCIAMIENTO DE DEUDA</b><br></td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+<tbody>
+  <tr>
+    <td width="500px" colspan="6" align="left" style="vertical-align: top;"><small><b>33.
+   Raz&oacute;n Social de quien tiene la Reserva de Dominio:</b></small><br>[%srazonsocial%]
+    </td>
+    <td width="300px" colspan="3" align="left" style="vertical-align: top;"><small><b>34.RIF: </b></small>[% IF srif%][% id_tprif%]-[% srif%][% END %]<br><small><b>35.NIT:</b></small>&nbsp;[%nnit%]
+    </td>
+  </tr>
+  <tr>
+    <td width="600px" colspan="6" align="left" style="vertical-align: top;"><small><b>36.
+    Direcci&oacute;n Fiscal:</b></small><br>[%sdireccionfiscal%]</td>
+    <td width="200px" colspan="3" align="left" style="vertical-align: top;"><small><b>37.
+    Tel&eacute;fonos:</b></small><br>[%stelefono%]
+    </td>
+  </tr>
+  <tr>
+    <td width="266px" colspan="3" align="left" style="vertical-align: top;"><small><b>38.
+   Precio de Venta del Veh&iacute;culo en Bs.:</b></small><br>[%npreciovtaref%]
+    </td>
+    <td width="266px" colspan="3" align="left" style="vertical-align: top;"><small><b>39.
+   Saldo Actual en Bs.:</b></small><br>[%nsaldoref%]
+    </td>
+    <td width="266px" colspan="3" align="left" style="vertical-align: top;"><small><b>40.
+    Monto del Pr&eacute;stamo en Bs.F:</b></small><br>[%nmtoprestamoref%]
+    </td>
+  </tr>
+</table>
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td align="center" bgcolor="#DDDDDD"><b>DATOS ADICIONALES</b></td>
+  </tr>
+</table>
+    <tr>
+      <td>
+        <table width="800px" colspan="9" id="challenge1" align="center" border="1" cellpadding="0" cellpadding="5" >
+            <tr>
+              <td colspan="9" align="center" bgcolor="#DDDDDD"><b>REFERENCIAS PERSONALES (Por favor colocar referencias de dos familiares)</b></td>
+            </tr>
+              <table width="800px" align="center" border="1">
+              [% IF referenciaspersonales %]
+                [% IF idestatus == 4 AND accion != 'consultarSolicitud'%]
+                  <tr class="titulodonforojo">
+                    <tr class="titulodonforojo">
+                    <td width="300px" align="center">Apellidos y Nombres</td>
+                    <td width="100px" align="center">C&eacute;dula</td>
+                    <td width="100px" align="center">Parentesco</td>
+                    <td width="100px" align="center">Direcci&oacute;n</td>
+                    <td width="100px" align="center">Tel&eacute;fono</td>
+                    <td width="100px" align="center">Eliminar</td>
+                  </tr>
+                [% ELSE %]
+                <tr class="titulodonforojo">
+                  <td width="300px" align="center">Apellidos y Nombres</td>
+                  <td width="100px" align="center">C&eacute;dula</td>
+                  <td width="200px" align="center">Parentesco</td>
+                  <td width="100px" align="center">Direcci&oacute;n</td>
+                  <td width="100px" align="center">Tel&eacute;fono</td>
+                </tr>
+                [% END %]
+                [% FOREACH referenciaspersonales %]
+                  [% IF idestatus == 4 AND accion != 'consultarSolicitud' AND accion != 'aprobarSolicitud'%]
+                    <tr>
+                      <td width="300px" align="center" ><a href="javascript:mostrarReferenciasPer([% id %]);">[% sapellidoref %]&nbsp;[% snombreref %]</td>
+                      <td width="100px" align="left">[% id_tpnacionalidad %]-[% ncedulareferf %]</td>
+                      <td width="100px" align="left">[% id_tpparentesco %]</td>
+                      <td width="100px" align="left">[% sdireccion %]</td>
+                      <td width="100px" align="left">[% stelefono %]</td>
+                      <td width="100px" align="center"><a href="javascript:eliminarReferenciasPer([% id %]);"><img src="[%ruta_estatica%]/imagenes/menu/delete.gif" border="0" /></a></td>
+                    </tr>
+                  [% ELSE %]
+                    <tr>
+                      <td width="100px" align="left">[% sapellidoref %]&nbsp;[% snombreref %]</td>
+                      <td width="100px" align="left">[% id_tpnacionalidad %]-[% ncedulareferf %]</td>
+                      <td width="150px" align="left">[% id_tpparentesco %]</td>
+                      <td width="250px" align="left">[% sdireccion %]</td>
+                      <td width="100px" align="left">([% codarea %])&nbsp;[% stelefono %]</td>
+                    </tr>
+                  [% END %]
+                [% END %]
+                [% END %]
+              </table>
+            [%IF regReferenciasP <= 1%]
+            <table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+              <tr>
+                <td valign="top" align="left" width="20%">
+                  <div id="add_new" style="display: " align="center">
+                    <a href="javascript:editarReferenciasPer();">Agregar otra Referencia Personal</a>
+                  </div>
+                </td>
+              </tr>
+            </table>
+            [%END%]
+        </table>
+      </td>
+    </tr>
+  </table>
+  <table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <tr>
+      <td  align="center" bgcolor="#DDDDDD"><b>PROCEDENCIA DE FONDOS</b><br></td>
+    </tr>
+  </table>
+  <table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+  <tbody>
+    <tr>
+      <td width="800px" colspan="9" align="left" style="vertical-align: top;">&nbsp;[%procedencia%]
+      </td>
+    </tr>
+  </table>

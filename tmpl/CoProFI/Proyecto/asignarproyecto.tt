@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+[% formbuilder.jshead %]
+<script type="text/javascript">
+    function upd(ruta){
+// // //                 document.forma.id_proyectos.value = valor;
+                document.forma.action = ruta;
+                document.forma.submit();
+    }
+</script>
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Asignar Proyectos</legend>
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+<table align="center" width="65%">
+
+
+    <tr>
+        <td width="20%" class="fondoetiqueta" align="left" colspan=3><b>[% formbuilder.field.id_usuarios.label %]<b></td>
+        <td align="left">[% formbuilder.field.id_usuarios.field %] <input type=button  onclick="javascript:upd('/coprofi/proyecto/proyecto/asignarProyectoGuardar')" value='Asignar'/></td>
+    </tr>
+
+    <tr>
+        <td width="20%" align="left" colspan=12><HR></td>
+    </tr>
+
+    <tr>
+        <td width="20%" class="fondoetiqueta" align="left" colspan=3>
+        <b>[% formbuilder.field.criterio.label %]</b></td>
+        <td align="left" valign="middle" colspan=9>[% formbuilder.field.criterio.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/menu/help.gif" onmouseover="Tip('<b>Criterio de Busqueda</b><br>Debe especificar un parámetro que concuerden con los campos:<br>Código del Proyecto, Solicitante y Nombre del Proyecto')" onmouseout="UnTip()"/>&nbsp;&nbsp;[% formbuilder.submit %]<!--[% formbuilder.field.id_proyectos.field %]--></td>
+        </tr>
+
+    <tr class=''>
+      <td colspan=6 >(*) Estos campos son obligatorios</td>
+    </tr>
+<!--  <tr>
+    <td colspan="2" align="center">[% formbuilder.submit %]&nbsp;<input type=button  onclick="javascript:upd(0,'/coprofi/proyecto/proyecto/listar')" value='<< Regresar'/></td>
+  </tr>-->
+</table>
+<br>
+
+ <table align="center" border=0 cellspacing="1" cellpadding="2" width="65%">
+        <tr class=titulodonforojo>
+            <th width=40 colspan=12> Lista de Proyectos</th>
+        </tr>
+  <tr class=fondoetiqueta5>
+            <th width=40>N°</th>
+            <th width=200>Solicitante</th>
+            <th width=200>Nombre del Proyecto</th>
+           <!-- <th width=70>Monto Proyecto ($)</th>
+            <th width=70>Monto Financiar ($)</th>-->
+            <th width=70>Pais</th>
+            <th width=100>Ente Ejecutor</th>
+            <th width=70>Sector</th>
+            <th width=100>Status</th>
+            <th width=40>Funcionario <br>ejecutor</th>
+            <th width=40>Marcar</th>
+        </tr>
+        [% FOREACH field IN tabla %]
+        <tr class=[% field.clase %]>
+            <td>[% field.id %]</td>
+            <td>[% field.ssolicitante %]</td>
+            <td>[% field.snombproy %]</td>
+
+      <!--      <td  align=right nowrap>[% field.nmtoproyecto %]</td>
+            <td  align=right nowrap>[% field.nmtofinanc %]</td>-->
+            
+            <td>[% field.pais %]</td>
+            <td>[% field.senteejecutor %]</td>
+            <td>[% field.id_tpsector %]</td>
+            <td>[% field.stpedoproy %]</td>
+            <td>[% field.usuario %]</td>
+            <td align=center><input type='checkbox' name='id_proyectos' id='id_proyectos' value=[% field.id %]></td>
+        </tr>
+        [% END %]
+        <tr >
+            <tD colspan=11><hr></tD>            
+        </tr>
+      </table>
+
+[% formbuilder.field.flag.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

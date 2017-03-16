@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+[% INCLUDE estilosgenerales.tt %]
+[%formbuilder.jshead%]
+
+<script language ="JavaScript">
+
+function imprime(){
+//desaparece el boton
+document.getElementById("noprint").style.visibility='hidden';
+//se imprime la pagina
+print();
+setTimeout("showlayer()",2000);
+}
+function showlayer(){
+     document.getElementById("noprint").style.visibility='visible';
+}
+</script>
+</head>
+[%formbuilder.start%]
+[% IF error_instrumento  %]
+<div id=noprint>
+  <TABLE width="93%" cellpadding="0">
+   <div align="center">
+      <span class="titulodonfomarillo" id="error_msg">[% error_msg %]</span>
+   </div>
+    <tr align="center">
+      <td colspan="6">[% formbuilder.field.btnCerrar.field %]</td>
+    </tr>
+  </TABLE>
+</div>
+[% ELSE %]
+<table width="100%" cellspacing="0" cellpadding="1" border="0">
+  <tr>
+    <td align="left">
+      <img src="[% ruta_estatica %]/imagenes/bandes.jpg" width="126" height="52" />
+      <center><h3>EVALUACI&Oacute;N DEL DESEMPE&Ntilde;O<br/>NIVEL [% nivelevaluado %]</h2></center>
+    </td>
+  </tr>
+</table>
+<br/>
+<small>
+<table align="right" width="30%" cellspacing="1" cellpadding="4" border="1">
+  <tr align="center">
+    <td height="12px" colspan="2" valign="top" bgcolor="#DDDDDD"><b><small>Per&iacute;odo Evaluado</small></b><br></td>
+  </tr>
+  <tr>
+    <td height="12px" align="center" bgcolor="#DDDDDD"><b><small>1. Desde</small></b><br></td>
+    <td height="12px" align="center" bgcolor="#DDDDDD"><b><small>2. Hasta</small></b><br></td>
+  </tr>
+  <tr>
+    <td height="15px" align="center"><small>[% diainicio %]|[% mesinicio %]|[% anioinicio %]</small><br></td>
+    <td height="10px" align="center"><small>[% diafin %]|[% mesfin %]|[% aniofin %]</small><br></td>
+  </tr>
+</table>
+<br/><br/><br/><br/><br/><br/><br/>
+
+<table width="100%" cellspacing="1" cellpadding="4" border="1">
+  <tr>
+    <td colspan="4" bgcolor="#DDDDDD">
+    <b><div align="center"><small>Secci&oacute;n "A" Datos de Identificaci&oacute;n</small></div></b>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4" bgcolor="#DDDDDD">
+    <b><div align="center"><small>Datos del Evaluado</small></div></b>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" width="47%" bgcolor="#DDDDDD"><small><b>3. Apellidos y Nombres</b></small></td>
+    <td colspan="2" width="53%" bgcolor="#DDDDDD"><small><b>4. C&eacute;dula de Identidad</b></small></td>
+  </tr>
+  <tr>
+    <td colspan="2" width="47%"><small>[% nombreevaluado %]</small></td>
+    <td colspan="2" width="53%"><small>[% ncedulaevaluado %]</small></td>
+  </tr>
+  <tr>
+    <td colspan="1" width="50%" bgcolor="#DDDDDD"><small><b>5. T&Iacute;tulo del Cargo</b></small></td>
+    <td colspan="1" width="10%" bgcolor="#DDDDDD"><small><b>6. Grado</b></small></td>
+    <td colspan="2" width="40%" bgcolor="#DDDDDD"><small><b>7. Ubicaci&oacute;n Administrativa</b></small></td>
+  </tr>
+  <tr>
+    <td colspan="1" width="50%"><small>[% cargoevaluado %]</small></td>
+    <td colspan="1" width="10%"><small>[% gradoevaluado %]</small></td>
+    <td colspan="2" width="40%"><small>[% ubicacionevaluado %]</small></td>
+  </tr>
+  <tr>
+    <td colspan="4" bgcolor="#DDDDDD">
+    <b><div align="center"><small>Datos del Evaluador</small></div></b>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" width="47%" bgcolor="#DDDDDD"><small><b>8. Apellidos y Nombres</b></small></td>
+    <td colspan="2" width="53%" bgcolor="#DDDDDD"><small><b>9. C&eacute;dula de Identidad</b></small></td>
+  </tr>
+  <tr>
+    <td colspan="2" width="47%"><small>[% nombreevaluador %]</small></td>
+    <td colspan="2" width="53%"><small>[% ncedulaevaluador %]</small></td>
+  </tr>
+  <tr>
+    <td colspan="1" width="50%" bgcolor="#DDDDDD"><small><b>10. T&Iacute;tulo del Cargo</b></small></td>
+    <td colspan="1" width="10%" bgcolor="#DDDDDD"><small><b>11. Grado</b></small></td>
+    <td colspan="2" width="40%" bgcolor="#DDDDDD"><small><b>12. Ubicaci&oacute;n Administrativa</b></small></td>
+  </tr>
+  <tr>
+    <td colspan="1" width="50%"><small>[% cargoevaluador %]</small></td>
+    <td colspan="1" width="10%"><small>[% codigoevaluador %]</small></td>
+    <td colspan="2" width="40%"><small>[% ubicacionevaluador %]</small></td>
+  </tr>
+  <tr>
+    <td colspan="4" bgcolor="#DDDDDD">
+    <b><div align="center"><small>Datos del Supervisor del Evaluador</small></div></b>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="1" width="50%" bgcolor="#DDDDDD"><small><b>13. Apellidos y Nombres</b></small></td>
+    <td colspan="1" width="20%" bgcolor="#DDDDDD"><small><b>14. C&eacute;dula de Identidad</b></small></td>
+    <td colspan="2" width="30%" bgcolor="#DDDDDD"><small><b>15. Cargo</b></small></td>
+  </tr>
+  <tr>
+    <td colspan="1" width="50%"><small>[% nombresupervisor %]</small></td>
+    <td colspan="1" width="20%"><small>[% ncedulasupervisor %]</small></td>
+    <td colspan="2" width="30%"><small>[% cargosupervisor %]</small></td>
+  </tr>
+</table>
+<table width="100%" cellspacing="1" cellpadding="4" border="1">
+<tr>
+  <td colspan="4" rowspan="1" width="100%" bgcolor="#DDDDDD"><b><div align="center"><small>S&oacute;lo para ser llenado por la Coordinaci&oacute;n del Talento Humano</small></div></b>
+  </td>
+</tr>
+<tr>
+  <td colspan="2" rowspan="1" width="50%" align="center" bgcolor="#DDDDDD"><small><b>Evaluado</b></small>
+  </td>
+  <td colspan="2" rowspan="1" width="50%" align="center" bgcolor="#DDDDDD"><small><b>Supervisor Evaluador</b></small></td>
+</tr>
+<tr>
+  <td width="25%" align="left" bgcolor="#DDDDDD"><small><b>16. C&oacute;digo de Nomina </b></small></td>
+  <td width="25%" align="left" bgcolor="#DDDDDD"><small><b>17. C&oacute;digo de Clase</b></small></td>
+  <td width="25%" align="left" bgcolor="#DDDDDD"><small><b>18. C&oacute;digo de Nomina</b></small></td>
+  <td width="25%" align="left" bgcolor="#DDDDDD"><small><b>19. C&oacute;digo de Clase</b></small></td>
+</tr>
+<tr>
+  <td width="25%">&nbsp;</td>
+  <td width="25%">&nbsp;</td>
+  <td width="25%">&nbsp;</td>
+  <td width="25%">&nbsp;</td>
+</tr>
+</table>
+<br/>
+<div id=noprint>
+  <TABLE width="93%" cellpadding="0">
+    <tr align="center">
+      <td colspan="6">[% formbuilder.field.btnCerrar.field %][% formbuilder.field.btnImprimir.field %][% formbuilder.submit %]</td>
+    </tr>
+  </TABLE>
+</div>
+[% formbuilder.field.ncedula.field %]
+[% formbuilder.end %]
+</small>
+[% END %]
+</body>
+</html>

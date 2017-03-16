@@ -1,0 +1,195 @@
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="670px">
+<tr height="900px">
+<td height="900px" width="670px" valign="top">
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="670px">
+<tr>
+  <td>
+  <table border="0" cellpadding="0" cellspacing="0" align="center" width="670px">
+    <tr>
+      <td height="62px" width="116px" ><img src="[% ruta_estatica %]/imagenes/bandes.jpg" width="116px" height="62px" /></td>
+      <td height="62px" width="470px" align="center" valign="middle"><font size="6"><b>AGENDA DE CUENTA DE AYUDA SOCIAL</b></font></td>
+      <td height="62px" width="84px" align="center">&nbsp;</td>
+    </tr>
+  </table>
+  </td>
+</tr>
+</table>
+<br>
+<br>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="30px" width="243px" valign="top"><font size="2"><b>No:</b><div align="center">[% id %]</div></font></td>
+    <td height="30px" width="243px" valign="top"><font size="2"><b>Fecha:</b><div align="center">[% dfecha %]</div></font></td>
+    <td height="30px" width="184px" valign="top"><font size="2"><b>P&aacute;gina:</b><div align="center">[% pagina %] / [% totalpaginas %]</div></font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="20px" width="670px" align="center" bgcolor="#A3A8A3"><font size="3"><b>PRESENTACI&Oacute;N DE SOLICITUDES DE AYUDA SOCIAL</b></font></td>
+  </tr>
+</table>
+[% FOREACH ayudas %]
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tbody>
+    <tr>
+      <td height="235px" width="50px" align="center" valign="top" rowspan="12">
+        <table border="0" cellpadding="2" cellspacing="0" align="center" width="50px">
+          <tr>
+            <td height="10px" width="50px" align="center"><b>Punto No:</b></td>
+          </tr>
+          <tr>
+            <td height="100px" width="50px" align="center" valign="middle"><b>[% nro %]</b></td>
+          </tr>
+        </table>
+      </td>
+      <td height="10px" width="50px" align="center" bgcolor="#A3A8A3"><b>N&#176; Ayuda</b></td>
+      <td height="10px" width="290px" align="left" bgcolor="#A3A8A3"><b>Nombres y Apellidos / Raz&oacute;n Social del Solicitante:</b></td>
+      <td height="10px" width="200px" align="left" bgcolor="#A3A8A3"><b>C&eacute;dula de Identidad / RIF:</b></td>
+      <td height="10px" width="80px" align="center" bgcolor="#A3A8A3"><b>Resultado</b></td>
+    </tr>
+    <tr>
+      <td height="15px" width="50px" align="center" >[% nayuda %]</td>
+      <td height="15px" width="290px" align="left" >[% ssolicitante %]</td>
+      <td height="15px" width="200px" align="left" >[% sidentificador %]</td>
+      <td height="275px" width="80px" align="center" rowspan="12">
+        <table border="0" cellpadding="2" cellspacing="0" align="center" width="80px">
+          <tr>
+            <td height="20px" width="80px" align="left" valign="middle">
+              <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11px" height="9px" />&nbsp;APROBADO
+            </td>
+          </tr>
+          <tr>
+            <td height="20px" width="80px" align="left" valign="middle">
+              <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11px" height="9px" />&nbsp;NEGADO
+            </td>
+          </tr>
+          <tr>
+            <td height="20px" width="80px" align="left" valign="middle">
+              <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11px" height="9px" />&nbsp;DIFERIDO
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="10px" width="540px" colspan="3" align="left" bgcolor="#A3A8A3"><b>Tipo de Ayuda</b></td>
+    </tr>
+    <tr>
+      <td height="60px" width="340px" colspan="2" align="left" >
+      <table border="0" cellpadding="2" cellspacing="0" align="center" width="340px">
+        <tr>
+          <td height="20px" width="340px">
+            [% IF destinos.20 %]
+              <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Intervenciones Quir&uacute;rgicas en Centros de Salud P&uacute;blica
+              [% ELSE %]
+              <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Intervenciones Quir&uacute;rgicas en Centros de Salud P&uacute;blica
+            [% END %]
+          </td>
+        </tr>
+        <tr>
+          <td height="20px" width="340px">
+            [% IF destinos.19 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Ex&aacute;menes y Estudios M&eacute;dicos
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Ex&aacute;menes y Estudios M&eacute;dicos
+            [% END %]
+          </td>
+        </tr>
+        <tr>
+          <td height="20px" width="340px">
+            [% IF destinos.11 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Pr&oacute;tesis
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Pr&oacute;tesis
+            [% END %]
+          </td>
+        </tr>
+      </table>
+      </td>
+      <td height="60px" width="200px" align="left" >
+        <table border="0" cellpadding="2" cellspacing="0" align="center" width="200px">
+          <tr>
+            <td height="30px" width="200px">
+              [% IF destinos.22 %]
+              <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Refacci&oacute;n y/o Ampliaci&oacute;n de Infraestructura en Centros de Salud P&uacute;blica
+              [% ELSE %]
+              <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Refacci&oacute;n y/o Ampliaci&oacute;n de Infraestructura en Centros de Salud P&uacute;blica
+              [% END %]
+            </td>
+          </tr>
+          <tr>
+            <td height="30px" width="200px">
+              [% IF destinos.21 %]
+              <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Dotaci&oacute;n (Insumos, Mobiliario, Materiales y Equipos) a Centros de Salud P&uacute;blica
+              [% ELSE %]
+              <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Dotaci&oacute;n (Insumos, Mobiliario, Materiales y Equipos) a Centros de Salud P&uacute;blica
+              [% END %]
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="10px" width="540px" align="left" colspan="3" bgcolor="#A3A8A3"><b>Motivo de la Solicitud</b></td>
+    </tr>
+    <tr>
+      <td height="50px" width="540px" align="justify" valign="top" colspan="3">[% smotivo %]</td>
+    </tr>
+    <tr>
+      <td height="10px" width="340px" align="left" colspan="2" bgcolor="#A3A8A3"><b>Nombre del Proveedor / Deudor</b></td>
+      <td height="15px" width="200px" align="left" bgcolor="#A3A8A3"><b>RIF / C.I.</b></td>
+    </tr>
+    <tr>
+      <td height="15px" width="340px" colspan="2" align="left" >[% proveedores.1.sproveedor %]</td>
+      <td height="15px" width="200px" align="left" >[% proveedores.1.irifprov %]</td>
+    </tr>
+    <tr>
+      <td height="15px" width="340px" colspan="2" align="left" >[% proveedores.2.sproveedor %]</td>
+      <td height="15px" width="200px" align="left" >[% proveedores.2.irifprov %]</td>
+    </tr>
+    <tr>
+      <td height="15px" width="340px" colspan="2" align="left" >[% proveedores.3.sproveedor %]</td>
+      <td height="15px" width="200px" align="left" >[% proveedores.3.irifprov %]</td>
+    </tr>
+    <tr>
+      <td height="10px" width="340px" colspan="2" align="left" bgcolor="#A3A8A3"><b>Monto Solicitado:</b></td>
+      <td height="10px" width="200px" align="left" bgcolor="#A3A8A3"><b>Monto Aprobado:</b></td>
+    </tr>
+    <tr>
+      <td height="15px" width="340px" colspan="2" align="right">[% nmntosolicitado %]</td>
+      <td height="15px" width="200px" align="right">&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="50px" colspan="4" valign="top"><b>Observaciones:</b><br/>[% sobservaciones %]</td>
+    </tr>
+  </tbody>
+</table>
+[% END %]
+[% IF footer %]
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="15px" width="81px" align="left" bgcolor="#A3A8A3"><b>N&#176; Solicitudes Consideradas</b></td>
+    <td height="15px" width="81px" align="center" bgcolor="#A3A8A3"><b>Aprobadas</b></td>
+    <td height="15px" width="81px" align="center" bgcolor="#A3A8A3"><b>Negadas</b></td>
+    <td height="15px" width="81px" align="center" bgcolor="#A3A8A3"><b>Diferidas</b></td>
+    <td height="15px" width="111px" align="center" bgcolor="#A3A8A3"><b>Monto Total aprobado</b></td>
+    <td height="15px" width="235px" align="center" bgcolor="#A3A8A3"><b>FIRMAS Y SELLOS</b></td>
+  </tr>
+  <tr>
+    <td height="50px" width="81px" >&nbsp;</td>
+    <td height="50px" width="81px" >&nbsp;</td>
+    <td height="50px" width="81px" >&nbsp;</td>
+    <td height="50px" width="81px" >&nbsp;</td>
+    <td height="50px" width="111px" >&nbsp;</td>
+    <td height="50px" width="235px" >&nbsp;</td>
+  </tr>
+</table>
+<table border="0" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px" colspan="6"><font size="1"><b>FORM.B_ASO_01_10</b></font></td>
+  </tr>
+</table>
+[% END %]
+</td>
+</tr>
+</table>

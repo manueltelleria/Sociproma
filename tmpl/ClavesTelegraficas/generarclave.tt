@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+   <head> 
+      <title> Claves Telegr&aacute;ficas BCV </title> 
+      [% formbuilder.jshead %]
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar-setup.js"></script>
+   </head>
+
+
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+     
+     <!-- Crea una tabla que contiene el formulario con los campos de entrada -->
+     [% formbuilder.start -%]
+     <table border = "0" bordercolor = "black" align = "center"> 
+       <tr> <td>
+       
+       <table border = "0" >
+         <tr> <td> &nbsp; </td> </tr> 
+[% IF secuencia %]       
+         <tr> <td colspan="2" align="center"><strong> Editar Clave</strong> </td> </tr> 
+         <tr>
+           <td> <strong> &nbsp; Prefijo: &nbsp; </strong> </td> 
+           <td> 
+                  [% secuencia %] 
+           </td>  
+         </tr> 
+
+[% END %]
+         <tr>
+           <td> <strong> &nbsp; Monto: &nbsp; </strong> </td> 
+           <td> 
+                  [%formbuilder.field.Monto.field %] 
+           </td>  
+         </tr> 
+
+         <tr> <td> &nbsp; </td> </tr>
+
+         <tr> 
+            <td> <strong> &nbsp; Moneda: &nbsp; </strong> </td>  
+            <td> 
+                   [%formbuilder.field.Moneda.field %]  
+            </td> 
+         </tr>
+         
+         <tr> <td> &nbsp; </td> </tr>         
+ 
+         <tr> 
+           <td> <strong> &nbsp; Fecha: &nbsp; </strong> </td>  
+           <td> 
+                     [%formbuilder.field.Fecha.field %] &nbsp;
+                     <img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="fechareg" 
+                     style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" 
+                     onMouseOut="this.style.background=''"/>
+                     <script type="text/javascript">
+                        Calendar.setup
+                        ({
+                           inputField   :  "Fecha",      // id of the input field
+                           ifFormat     :  "%d/%m/%Y",   // format of the input field
+                           button       :  "fechareg",   // trigger for the calendar (button ID)
+                           align        :  "Tl",         // alignment (defaults to "Bl")
+                           singleClick  :  true
+                        });
+                     </script>
+           </td> 
+         </tr> 
+         
+         <tr> <td> &nbsp; </td> </tr>
+         
+         <tr> <td colspan = "2" align = "center"> 
+           <table border = "0" colorborder = "black">
+             <tr>
+                <td> &nbsp; [% formbuilder.reset  %] &nbsp; </td>
+                <td> &nbsp; [% formbuilder.submit %] &nbsp; </td>
+             </tr>
+           </table>
+         </td> </tr> 
+        
+         <tr> <td> &nbsp; </td> </tr> 
+
+       </table> 
+     </td> </tr> </table>  
+     [% formbuilder.end %]
+    
+     <br> <br> <br> <br>
+
+
+     <!-- Esta tabla se utiliza para mostrar la clave generada width = 100 -->
+     
+[% IF clave %]
+     <table border = "1" bordercolor = "black" align = "center">
+        <caption>  <strong> Clave Generada </strong> </caption> 
+        <tr height = "40" align = "center"> 
+           <td><strong>Monto</strong></td>
+           <td><strong>Moneda</strong></td> 
+           <td><strong>Fecha</strong></td> 
+           <td><strong>Prefijo</strong></td>
+           <td><strong>Clave</strong></td>
+           <td><strong>Lote</strong></td> 
+        </tr>
+
+        <tr height = "40" align = "center"> 
+           <td > [% monto   %] </td>
+           <td > [% moneda  %] </td> 
+           <td > [% fecha   %] </td> 
+           <td > <strong> [% prefijo %] </strong> </td>
+           <td > <strong> [% clave   %] </strong> </td>
+           <td > [% lote %] </td> 
+        </tr> 
+     </table>
+[% END %] 
+   </body>
+</html>

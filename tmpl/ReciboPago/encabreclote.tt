@@ -1,0 +1,51 @@
+<div align="left"><img src="[% ruta_estatica %]/imagenes/bandes.jpg" width="116" height="52" />
+</div>
+<br>
+<table align="center" width="670px" border="0" colspan="2" cellpadding="1" cellspacing="0">
+<tr>
+  <td colspan="1" width="280px" height="5px" align="left"><font face="Helvetica" size="3"><b>[% IF codproceso == '1' %]PERIODO DE DISFRUTE:&nbsp;[%fecinivaca%]&nbsp;AL&nbsp;[%fecfinvaca%][% END %]</b></font></td>
+  <td colspan="1" width="390px" height="5px"><font face="Helvetica" size="4" align="center"><b>RECIBO DE PAGO&nbsp;</b></font></td><br>
+</tr>
+<tr>
+  <td colspan="1" width="280px" height="5px" align="left"><font face="Helvetica" size="3"><b>[% IF codproceso == '1'  %]FECHA DE REINCORPORACION:&nbsp;[%fecreincorpora%][% END %]</b></font></td>
+  <td colspan="1" width="390px" height="5px"><font face="Helvetica" size="3"><b>TIPO DE NOMINA:&nbsp;[% ttrabaj %]</b></font><br></td>
+</tr>
+<tr>
+  <td colspan="1" width="280px" height="5px" align="left"><font face="Helvetica" size="3"><b>[% IF codproceso == '1'  %]PERIODO VACACIONAL:&nbsp;[%pervacacional%][% END %]</b></font></td>
+  <td colspan="1" width="390px" height="5px"><font face="Helvetica" size="3"><b>PROCESO:&nbsp;[% tproceso %]</b></font><br></td>
+</tr>
+</table>
+<table width="670px" border="1" cellpadding="1" cellspacing="0">
+  <tr>
+    <td colspan="2" height="10px" width="350px" align="center" valign="center" bgcolor="D70000">
+      <font color="white"><b>APELLIDOS Y NOMBRES</b></font>
+    </td>
+    <td colspan="1" height="10x" width="35px" align="center" valign="center" bgcolor="D70000">
+      <font color="white"><b>C.I.</b></font>
+    </td>
+    <td colspan="2" height="10px" width="285px" align="center" valign="center" bgcolor="D70000">
+      <font color="white"><b>UBICACION ADMINISTRATIVA</b></font>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" height="10px" align="left">[% nombre %]&nbsp;[% apellido %]</td>
+    <td colspan="1" height="10px" align="right">[% cedula %]</td>
+    <td colspan="2" height="10px" align="left">[% unidad %]</td>
+  </tr>
+  <tr>
+    <td colspan="2" height="10px" width="350px" align="center" valign="center" bgcolor="005288">
+      <font color="white"><b>CARGO</b></font>
+    </td>
+    <td colspan="1" height="10px" width="35px" align="center" valign="center" bgcolor="005288">
+      <font color="white"><b>SUELDO/SALARIO</b></font>
+    </td>
+    <td colspan="2" height="10px" width="285px" align="center" valign="center" bgcolor="005288">
+      <font color="white"><b>PERIODO DE PAGO</b></font>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" height="10px" align="left">[% codcargo %]&nbsp;[% desccargo %]</td>
+    <td colspan="1" height="10px" align="right">[% sueldo %]</td>
+    <td colspan="2" height="10px" align="center">[% perinicio %]&nbsp;AL&nbsp;[% perfin %]</td>
+  </tr>
+</table>

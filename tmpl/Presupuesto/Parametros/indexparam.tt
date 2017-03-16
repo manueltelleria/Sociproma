@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+<script type="text/javascript">
+
+function runMode( id, accion ){
+  document.indexparam.action = accion;
+  document.indexparam.id_producto.value = id;
+  document.indexparam.submit();
+}
+
+
+</script>
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Registrar Par&aacute;metros Financieros</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+<table align="center" cellpadding="2" width="55%" border="0">
+<tr>
+  <td align="center" colspan="7" class="titulodonforojo">Detalle de Par&aacute;metros Financieros</td>
+</tr>
+<tr>
+  <td width="25%" align="center" class="fondoetiqueta5" nowrap>[% formbuilder.field.niva.label %]</td>
+  <td width="25%" align="left">[% formbuilder.field.niva.field %]</td>
+  <td width="25%" align="left"><b>Valor actual:</b></td>
+  <td width="25%" align="left">[% niva %] <b>%</b></td>
+</tr>
+<tr>
+  <td width="25%" align="center" class="fondoetiqueta5" nowrap>[% formbuilder.field.nut.label %]</td>
+  <td width="25%" align="left" >[% formbuilder.field.nut.field %]</td>
+  <td width="25%" align="left"><b>Valor actual:</b></td>
+  <td width="25%" align="left">[% nut %] <b>BSF.</b></td>
+</tr>
+<tr>
+  <td width="25%" align="center" class="fondoetiqueta5" nowrap>[% formbuilder.field.nipc.label %]</td>
+  <td width="25%" align="left" >[% formbuilder.field.nipc.field %]</td>
+  <td width="25%" align="left"><b>Valor actual:</b></td>
+  <td width="25%" align="left">[% nipc %] <b>%</b></td>
+</tr>
+<tr>
+  <td width="25%" align="center" class="fondoetiqueta5" nowrap>[% formbuilder.field.ntasacambio.label %]</td>
+  <td width="25%" align="left" >[% formbuilder.field.ntasacambio.field %]</td>
+  <td width="25%" align="left"><b>Valor actual:</b></td>
+  <td width="25%" align="left">[% ntasacambio %] <b>BSF.</b></td>
+</tr>
+<tr>
+  <td width="25%" align="center" class="fondoetiqueta5">Establecido a la fecha:</td>
+  <td width="25%" align="left" >[% tcreacion %]</td>
+</tr>
+<tr>
+  <td colspan="4" align="left" ><font color="#0F305A" size="0" >Nota: (*) Si desea cambiar alguno de los par&aacute;metros s&oacute;lo indique el nuevo valor.</font></td>
+</tr>
+</table>
+
+
+<br>
+<table align="center" width="95%" border="0">
+  <tr>
+    <td align="center">[% formbuilder.submit %]&nbsp;&nbsp;[% formbuilder.field.btnhistorico.field %]</td>
+  </tr>
+</table>
+
+[% formbuilder.field.id_param.field %]
+[% formbuilder.field.dcreacion.field %]
+
+[% formbuilder.field.id_producto.field %]
+[% formbuilder.field.page.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

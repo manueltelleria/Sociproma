@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+<legend>Criterio de Busqueda</legend>
+<table border="0" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td border="1"><b>[% formbuilder.field.chktipo.label %]:</b></td>
+    <td border="1">[% formbuilder.field.chktipo.field %]</td>
+  </tr>
+  <tr>
+    <td border="1"><b>N&uacute;mero de C&eacute;dula:</b></td>
+    <td border="1">[% formbuilder.field.ncedula.field %]</td>
+  </tr>
+  <tr>
+    <td border="1"><b>[% formbuilder.field.nnombre.label %]:</b></td>
+    <td border="1">[% formbuilder.field.nnombre.field %]</td>
+  </tr>
+  <tr>
+    <td border="1"><b>[% formbuilder.field.apellido.label %]:</b></td>
+    <td border="1">[% formbuilder.field.apellido.field %]</td>
+  </tr>
+  <tr>
+    <td border="1"><b>Resultado de la evaluaci&oacute;n:</b></td>
+    <td border="1">[% formbuilder.field.nresultado.field %]</td>
+  </tr>
+  <tr>
+    <td border="1"><b>[% formbuilder.field.unidad.label %]:</b></td>
+    <td border="1">[% formbuilder.field.unidad.field %]</td>
+  </tr> 
+  <tr>
+    <td><b>Campos a ocultar</b></td>
+    <td>&nbsp;</td>
+    <td><b>Campos a mostrar</b></td>
+  </tr>
+  <tr>
+    <td>[% formbuilder.field.campos.field %]</td>
+    <td align="left">
+      <input type="button" value=" >> " onclick="move(this.form.campos,this.form.campos_sel)" name="B1"><br>
+      <input type="button" value=" << " onclick="move(this.form.campos_sel,this.form.campos)" name="B2"> 
+    </td>
+    <td> [% formbuilder.field.campos_sel.field %] </td>
+  </tr>
+
+</table>
+</fieldset>
+<table align="center" colspan="3">
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]</td>
+    <td align="center">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+[% formbuilder.end %]
+<br/>
+</body>
+</html>

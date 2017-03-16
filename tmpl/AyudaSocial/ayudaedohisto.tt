@@ -1,0 +1,105 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+
+<fieldset>
+<legend>Hist&oacute;rico de Cambio Estatus de la Ayuda Social</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+<table align="center" width="80%">
+<tr>
+  <td align="center" colspan="4" class="titulodonforojo">Datos B&aacute;sicos de Ayuda Social</td>
+</tr>
+<tr>
+  <td width="15%" align="left" class="fondoetiqueta"><b>N&#176; de Ayuda Social:</b></td>
+  <td width="35%" align="left" ><b>[% datos.nayuda %]</b></td>
+  <td width="15%" align="left" class="fondoetiqueta"><b>Fecha de Registro:</b></td>
+  <td width="35%" align="left" >[% datos.dfecha %]</td>
+</tr>
+<tr>
+  <td width="15%" align="left" class="fondoetiqueta"><b>Solicitante:</b></td>
+  <td width="35%" align="left" >[% datos.id_solicitante %]&nbsp;[% datos.ssolicitante %]</td>
+  <td width="15%" align="left" class="fondoetiqueta"><b>Beneficiario:</b></td>
+  <td width="35%" align="left" >[% datos.id_beneficiario %]&nbsp;[% datos.sbeneficiario %][% IF datos.id_tpempresa %]&nbsp;&nbsp;&nbsp;<b>Tipo de Empresa:</b> [% datos.id_tpempresa %][% END %]</td>
+</tr>
+<tr>
+  <td width="15%" align="left" class="fondoetiqueta"><b>Monto Solicitado:</b></td>
+  <td width="35%" align="left" ><b>[% datos.nmntosolicitado %]</b></td>
+  <td width="15%" align="left" class="fondoetiqueta"><b>Monto Aprobado:</b></td>
+  <td width="35%" align="left" ><b>[% datos.nmntoaprobado %]</b></td>
+</tr>
+<tr>
+  <td width="15%" align="left" class="fondoetiqueta"><b>Estatus Actual:</b></td>
+  <td width="35%" align="left" ><b>[% datos.estatus %]</b></td>
+  <td width="15%" align="left" class="fondoetiqueta"><b>Tipo de Registro:</b></td>
+  <td width="35%" align="left" >[% datos.id_tpregistro %]</td>
+</tr>
+<tr>
+  <td width="15%" align="left" class="fondoetiqueta"><b>Elaborado por</b></td>
+  <td width="85%" align="left" colspan="3" >[% datos.susuario %]</td>
+</tr>
+<tr>
+  <td width="15%" align="left" class="fondoetiqueta"><b>Destinos:</b></td>
+  <td width="85%" colspan="3" align="left" >[% datos.destinos %]</td>
+</tr>
+</table>
+<br/><br/>
+<table align="center" width="80%">
+<tr>
+  <td align="center" colspan="4" class="titulodonforojo">Registros hist&oacute;ricos disponibles de la Ayuda Social</td>
+</tr>
+<tr>
+  <td width="10%" align="center" class="fondoetiqueta5">Fecha Efectiva</td>
+  <td width="25%" align="center" class="fondoetiqueta5">Estatus</td>
+  <td width="35%" align="center" class="fondoetiqueta5">Observaciones</td>
+  <td width="30%" align="center" class="fondoetiqueta5">Especialista</td>
+</tr>
+[% IF datos.registros %]
+  [% FOREACH datos.registros %]
+  <tr bgcolor="[% sclase %]">
+    <td width="10%" align="center" >[% defectiva %]</td>
+    <td width="25%" align="center">[% id_tpedosolicitud %]</td>
+    <td width="35%" align="justify" >[% sobservaciones %]</td>
+    <td width="35%" align="justify">[% especialista %]</td>
+  </tr>
+  [% END %]
+[% ELSE %]
+<tr>
+  <td align="center" colspan="4" class="titulodonfomarillo">No existe historial de cambios de estatus de la Ayuda Social.</td>
+</tr>
+[% END %]
+</table>
+<br/>
+<table align="center" width="80%">
+  <tr>
+    <td align="center">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

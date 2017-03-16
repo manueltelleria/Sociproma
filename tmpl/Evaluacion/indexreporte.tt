@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+<legend>Datos para la B&uacute;squeda</legend>
+<table align="center" colspan="3">
+  <tr>
+    <td><b>C&eacute;dula:</b></td>
+    <td>[% formbuilder.field.ncedula.field %]</td>
+  </tr>
+<!--  <tr>
+    <td><b>[% formbuilder.field.nrango_inic.label %]</b></td>
+    <td>[% formbuilder.field.nrango_inic.field %]</td>
+    <td><b>[% formbuilder.field.nrango_fin.label %]</b>&nbsp;[% formbuilder.field.nrango_fin.field %]</td>
+  </tr> -->
+  <tr>
+    <td><b>[% formbuilder.field.estatusodi.label %]</b></td>
+    <td>[% formbuilder.field.estatusodi.field %]</td>
+  </tr>
+  <tr>
+    <td><b>[% formbuilder.field.estatusseg.label %]</b></td>
+    <td>[% formbuilder.field.estatusseg.field %]</td>
+  </tr>
+  <tr>
+  <!--  <td><b>[% formbuilder.field.cadena_busqueda.label %]</b></td> -->
+    <td><b>[% formbuilder.field.stunidad.label %]</b></td>
+    <td>[%formbuilder.field.stunidad.field %]</td>
+  </tr>
+</table>
+</fieldset>
+<table align="center" colspan="3">
+  <tr>
+    <td align="center">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+[%formbuilder.end%]
+<br/>
+</body>
+</html>

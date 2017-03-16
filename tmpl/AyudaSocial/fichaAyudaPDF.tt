@@ -1,0 +1,411 @@
+<!-- HEADER -->
+<table border="0" cellpadding="2" cellspacing="0" align="center" width="670px">
+<tr>
+  <td width="275px"><img src="[% ruta_estatica %]/imagenes/bandes.jpg" width="166" height="92" /></td>
+  <td width="395px" colspan="2" align="left"><font size="6">AYUDA SOCIAL</font></td>
+</tr>
+<tr>
+  [% IF id_tppersona == 1 %]
+  <td width="285px" align="center" valign="middle"><big><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;PERSONA NATURAL</big></td>
+  <td width="285px" align="center" valign="middle"><big><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;PERSONA JUR&Iacute;DICA</big></td>
+  [% ELSE %]
+  <td width="285px" align="center" valign="middle"><big><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;PERSONA NATURAL</big></td>
+  <td width="285px" align="center" valign="middle"><big><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;PERSONA JUR&Iacute;DICA</big></td>
+  [% END %]
+  <td width="100px" align="center" >
+    <table border="0" cellspacing="0" cellpadding="0" align="center" width="100%">
+      <tr>
+        <td align="left" valign="top"><b>Solicitud N&#176;:</b>&nbsp;&nbsp;[% nayuda %]
+        </td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><b>Fecha:</b>&nbsp;&nbsp;[% dfecha %]
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<!-- BODY -->
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+<tr>
+  <td width="670px" colspan="3" align="center" bgcolor="#DDDDDD"><b>SOLICITANTE</b></td>
+</tr>
+<tr>
+  <td width="420px" height="40px" align="left" valign="top">
+    <font size="2">NOMBRE Y APELLIDO:</font><br>[% solicitante.snombre %]
+  </td>
+  <td width="120px" height="40px" align="left" valign="top">
+    <font size="2">C.I.:</font><br>[% solicitante.id %]
+  </td>
+  <td width="130px" height="40px" align="left" valign="top">
+    <font size="2">FECHA DE NACIMIENTO:</font><br>[% solicitante.dfechanac %]
+  </td>
+</tr>
+
+<tr>
+  <td width="670px" colspan="3" align="center" bgcolor="#DDDDDD"><b>BENEFICIARIO</b></td>
+</tr>
+<tr>
+  <td width="420px" height="40px" align="left" valign="top">
+    <font size="2">NOMBRE Y APELLIDO:</font><br>[% IF beneficiario.tppersona == 1 %][% beneficiario.snombre %][% END %]
+  </td>
+  <td width="120px" height="40px" align="left" valign="top">
+    <font size="2">C.I.:</font><br>[% IF beneficiario.tppersona == 1 %][% beneficiario.id %][% END %]
+  </td>
+  <td width="130px" height="40px" align="left" valign="top">
+    <font size="2">FECHA DE NACIMIENTO:</font><br>[% IF beneficiario.tppersona == 1 %][% beneficiario.dfechanac %][% END %]
+  </td>
+</tr>
+
+<tr>
+  <td width="420px" height="60px" align="left" valign="top">
+    <font size="2">DIRECCI&Oacute;N:</font><br>[% IF beneficiario.tppersona == 1 %][% beneficiario.sdireccion %][% END %]
+  </td>
+  <td width="120px" height="60px" align="left" valign="top">
+    <font size="2">TEL&Eacute;FONO:</font><br>[% IF beneficiario.tppersona == 1 %][% beneficiario.stelefono %][% END %]
+  </td>
+  <td width="130px" height="60px" align="left" valign="top">
+    <font size="2">ESTADO:</font><br>[% IF beneficiario.tppersona == 1 %][% beneficiario.id_tpentfederal %][% END %]
+  </td>
+</tr>
+
+<tr>
+  <td width="420px" height="40px" align="left" valign="top">
+    <font size="2">NOMBRE DE LA EMPRESA:</font><br>[% IF beneficiario.tppersona == 2 %][% beneficiario.snombre %][% END %]
+  </td>
+  <td width="120px" height="40px" align="left" valign="top">
+    <font size="2">RIF:</font><br>[% IF beneficiario.tppersona == 2 %][% beneficiario.id %][% END %]
+  </td>
+  <td width="130px" height="40px" align="left" valign="top">
+    <font size="2">
+    [% IF beneficiario.id_tpempresa == 1 %]
+    <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;P&Uacute;BLICA<br><br><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;PRIVADA
+    [% ELSIF id_tpempresa == 2 %]
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;P&Uacute;BLICA<br><br><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;PRIVADA
+    [% ELSE %]
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;P&Uacute;BLICA<br><br><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;PRIVADA
+    [% END %]
+</font>
+  </td>
+</tr>
+
+<tr>
+  <td width="420px" height="60px" align="left" valign="top">
+    <font size="2">DIRECCI&Oacute;N:</font><br>[% IF beneficiario.tppersona == 2 %][% beneficiario.sdireccion %][% END %]
+  </td>
+  <td width="120px" height="60px" align="left" valign="top">
+    <font size="2">TEL&Eacute;FONO:</font><br>[% IF beneficiario.tppersona == 2 %][% beneficiario.stelefono %][% END %]
+  </td>
+  <td width="130px" height="60px" align="left" valign="top">
+    <font size="2">ESTADO:</font><br>[% IF beneficiario.tppersona == 2 %][% beneficiario.dfechanac %][% END %]
+  </td>
+</tr>
+</table>
+
+
+<table width="670px" cellspacing="0" border="1" cellpadding="2" align="center">
+  <tr>
+    <td width="670px" colspan="6" align="center" bgcolor="#DDDDDD"><b>DECRIPCI&Oacute;N DE LA SOLICITUD</b></td>
+  </tr>
+  <tr>
+    <td width="30px" valign="top" align="left" ><font size="2">MONTO SOLICITADO (BsF):</font><br><br>[% nmntosolicitado %]</td>
+    <td width="650px" colspan="5">
+
+      <table width="100%" cellspacing="0" border="0" cellpadding="2" align="center">
+        <tr>
+        <td width="25%">
+          [% IF destinos.9 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;INTERVENCI&Oacute;N QUIR&Uacute;RGICA</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;INTERVENCI&Oacute;N QUIR&Uacute;RGICA</font>
+          [% END %]
+        </td>
+        <td width="19%">
+          [% IF destinos.1 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;MEDICINAS</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;MEDICINAS</font>
+          [% END %]
+        </td>
+        <td width="19%">
+          [% IF destinos.11 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;PR&Oacute;TESIS</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;PR&Oacute;TESIS</font>
+          [% END %]
+        </td>
+        <td width="19%">
+          [% IF destinos.12 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;TRATAMIENTOS M&Eacute;DICOS</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;TRATAMIENTOS M&Eacute;DICOS</font>
+          [% END %]
+        </td>
+        <td width="19%">
+          [% IF destinos.13 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;QUIMIOTERAPIA</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;QUIMIOTERAPIA</font>
+          [% END %]
+        </td>
+      </tr>
+      <tr>
+        <td width="25%">
+          [% IF destinos.17 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;ARTEFACTOS ELECTRODOMESTICOS</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;ARTEFACTOS ELECTRODOMESTICOS</font>
+          [% END %]
+        </td>
+        <td width="19%">
+          [% IF destinos.15 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;MATERIAL QUIR&Uacute;RGICO</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;MATERIAL QUIR&Uacute;RGICO</font>
+          [% END %]
+        </td>
+        <td width="19%">
+          [% IF destinos.16 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;PAGO DE DEUDA</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;PAGO DE DEUDA</font>
+          [% END %]
+        </td>
+        <td width="19%">
+          [% IF destinos.14 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;RADIOTERAPIA</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;RADIOTERAPIA</font>
+          [% END %]
+        </td>
+        <td width="19%">
+          [% IF destinos.3 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;MOBILIARIO</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;MOBILIARIO</font>
+          [% END %]
+        </td>
+      </tr>
+      <tr>
+        <td width="25%">
+          [% IF destinos.10 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;MATERIALES DE CONSTRUCCI&Oacute;N</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;MATERIALES DE CONSTRUCCI&Oacute;N</font>
+          [% END %]
+        </td>
+        <td width="19%">
+          [% IF destinos.4 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;EXAMENES M&Eacute;DICOS&nbsp;</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;EXAMENES M&Eacute;DICOS&nbsp;</font>
+          [% END %]
+        </td>
+        <td width="19%">
+          [% IF destinos.18 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;SILLAS DE RUEDAS</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;SLLAS DE RUEDAS</font>
+          [% END %]
+        </td>
+        <td width="37%" colspan="2">
+          [% IF destinos.8 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;OTRO, ESPECIFIQUE:&nbsp;&nbsp;[% sotrodestino %]</font>
+          [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;OTRO, ESPECIFIQUE:_____________</font>
+          [% END %]
+        </td>
+      </tr>
+
+      </table>
+
+    </td>
+  </tr>
+
+</table>
+
+
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+<tr>
+  <td width="670px" colspan="3" align="left">
+    <table border="0" cellspacing="0" cellpadding="3" align="center" width="100%">
+    <tr>
+      <td width="100%" colspan="2" align="left" valign="top">
+        <font size="2">ANEXOS:</font>
+      </td>
+    </tr>
+    <tr>
+      <td width="25%" align="left">
+      [% IF anexos.1  %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;INFORME M&Eacute;DICO</font>
+      [% ELSE %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;INFORME M&Eacute;DICO</font>
+      [% END %]
+      </td>
+
+     <td width="25%" align="left">
+      [% IF anexos.3 %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;DOCUMENTO CONSTITUTIVO</font>
+      [% ELSE %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;DOCUMENTO CONSTITUTIVO</font>
+      [% END %]
+      </td>
+
+      <td width="25%" align="left">
+      [% IF anexos.4 %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;ESTATUTOS</font>
+      [% ELSE %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;ESTATUTOS</font>
+      [% END %]
+      </td>
+
+      <td width="25%" align="left">
+      [% IF anexos.7 %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;RESULTADOS DE EX&Aacute;MENES</font>
+      [% ELSE %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;RESULTADOS DE EX&Aacute;MENES</font>
+      [% END %]
+      </td>
+
+    </tr>
+    <tr>
+
+      <td width="25%" align="left">
+      [% IF anexos.2 %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;PRESUPUESTOS O COTIZACIONES</font>
+      [% ELSE %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;PRESUPUESTOS O COTIZACIONES</font>
+      [% END %]
+      </td>
+
+      <td width="25%" align="left">
+      [% IF anexos.6 %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;FOTOCOPIA DE LA C.I./RIF</font>
+      [% ELSE %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;FOTOCOPIA DE LA C.I./RIF</font>
+      [% END %]
+      </td>
+
+      <td width="80%" colspan="2" align="left">
+      [% IF anexos.5 %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;OTRO, ESPECIFIQUE:&nbsp;[% sotroanexo %]</font>
+      [% ELSE %]
+        <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;OTRO, ESPECIFIQUE:______________</font>
+      [% END %]
+      </td>
+
+    </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+<tr>
+  <td width="670px" colspan="4" align="center" bgcolor="#DDDDDD"><b>PROVEEDOR/DEUDOR</b></td>
+</tr>
+[% IF provs %]
+[% FOREACH provs %]
+<tr>
+  <td width="400px" height="37px" align="left" valign="top">
+    <font size="2"> NOMBRE PROVEEDOR/DEUDOR:</font><br>[% sproveedor %]
+  </td>
+  <td width="100px" height="37px" align="left" valign="top">
+    <font size="2">C.I./RIF:</font><br>[% srifprov %]
+  </td>
+  <td width="80px" height="37px" align="left" valign="top">
+    <font size="2">
+    [% IF id_tpempresaprov == 1 %]
+    <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;P&Uacute;BLICA<br><br><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;PRIVADA
+    [% ELSIF id_tpempresaprov == 2 %]
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;P&Uacute;BLICA<br><br><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="11" height="9" />&nbsp;PRIVADA
+    [% ELSE %]
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;P&Uacute;BLICA<br><br><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;PRIVADA
+    [% END %]
+</font>
+  </td>
+  <td width="90px" height="37px" align="left" valign="top">
+    <font size="2">MONTO:</font><br>[% nmonto %]
+  </td>
+</tr>
+[% END %]
+[% ELSE %]
+<tr>
+  <td width="400px" height="37px" align="left" valign="top">
+    <font size="2"> NOMBRE PROVEEDOR/DEUDOR:</font><br>&nbsp;
+  </td>
+  <td width="100px" height="37px" align="left" valign="top">
+    <font size="2">C.I./RIF:</font><br>&nbsp;
+  </td>
+  <td width="70px" height="37px" align="left" valign="top">
+    <font size="2">
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;P&Uacute;BLICA<br><br><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11" height="9" />&nbsp;PRIVADA
+</font>
+  </td>
+  <td width="100px" height="37px" align="left" valign="top">
+    <font size="2">MONTO:</font><br>&nbsp;
+  </td>
+</tr>
+[% END %]
+</table>
+<!-- FOOTER -->
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+<tr height="80px">
+  <td width="670px" colspan="6" align="left" valign="top">
+    <font size="2">OBSERVACIONES:</font><br>[% sobservaciones %]
+  </td>
+</tr>
+<tr>
+  <td width="224px" colspan="2" align="center" bgcolor="#DDDDDD"><b>GERENTE EJECUTIVO(A) DE PROGRAMAS SOCIALES</b></td>
+  <td width="223px" colspan="2" align="center" bgcolor="#DDDDDD"><b>VICEPRESIDENTE(A) EJECUTIVO(A)</b></td>
+  <td width="223px" colspan="2" align="center" bgcolor="#DDDDDD"><b>PRESIDENTE(A) DE BANDES</b></td>
+</tr>
+<tr height="80px">
+  <td width="70px" align="left"><font size="2">
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11px" height="9px" />&nbsp;APROBADO
+   <br><br>
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11px" height="9px" />&nbsp;NEGADO
+  <br><br>
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11px" height="9px" />&nbsp;DIFERIDO
+  </font>
+ </td>
+  <td width="154px" align="center" valign="bottom">
+    <small>Nombre y Apellido<br>Firma y Sello<small><br>&nbsp;
+  </td>
+  <td width="70px" align="left"><font size="2">
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11px" height="9px" />&nbsp;APROBADO
+   <br><br>
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11px" height="9px" />&nbsp;NEGADO
+  <br><br>
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11px" height="9px" />&nbsp;DIFERIDO
+  </font>
+ </td>
+  <td width="154px" align="center" valign="bottom">
+    <small>Nombre y Apellido<br>Firma y Sello<small><br>&nbsp;
+  </td>
+  <td width="70px" align="left"><font size="2">
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11px" height="9px" />&nbsp;APROBADO
+   <br><br>
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11px" height="9px" />&nbsp;NEGADO
+  <br><br>
+    <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="11px" height="9px" />&nbsp;DIFERIDO
+  </font>
+ </td>
+  <td width="154px" align="center" valign="bottom">
+    <small>Nombre y Apellido<br>Firma y Sello<small><br>&nbsp;
+  </td>
+</tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+<tr height="40px">
+  <td width="374px" align="left" colspan="1" valign="top">
+    <font size="2">ELABORADO POR:</font><br>[% susuarios %]
+  </td>
+  <td width="150px" align="left" valign="top">
+    <font size="2">C.I.:</font><br>[% scedulausuarios %]
+  </td>
+  <td width="150px" align="left" valign="top">
+    <font size="2">FIRMA:</font><br>
+  </td>
+</tr>
+</table>

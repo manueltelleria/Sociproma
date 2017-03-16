@@ -1,0 +1,50 @@
+<div align="left"><img src="[% ruta_estatica %]/imagenes/bandes.jpg" width="116" height="52" />
+</div>
+<table align="center" width="670px" border="0" colspan="2" cellpadding="1" cellspacing="0">
+<tr>
+  <td colspan="1" width="280px" align="left" style="vertical-align: top;"><font face="Helvetica" size="1"><small>[% IF codproceso == '1' %]PERIODO DE DISFRUTE:&nbsp;[%fecinivaca%]&nbsp;AL&nbsp;[%fecfinvaca%][% END %]</small></font></td>
+  <td colspan="1" width="390px"><font face="Helvetica" size="2" align="center"><b>RECIBO DE PAGO&nbsp;</b></font></td><br>
+</tr>
+<tr>
+  <td colspan="1" width="280px" align="left" style="vertical-align: top;"><font face="Helvetica" size="1"><small>[% IF codproceso == '1'  %]FECHA DE REINCORPORACION:&nbsp;[%fecreincorpora%][% END %]</small></font></td>
+  <td colspan="1" width="390px" style="vertical-align: top;"><font face="Helvetica" size="1"><b><small>TIPO DE NOMINA:&nbsp;[% ttrabaj %]</small></b></font><br></td>
+</tr>
+<tr>
+  <td colspan="1" width="280px" align="left" style="vertical-align: top;"><font face="Helvetica" size="1"><small>[% IF codproceso == '1'  %]PERIODO VACACIONAL:&nbsp;[%pervacacional%][% END %]</small></font></td>
+  <td colspan="1" width="390px" tyle="vertical-align: top;"><font face="Helvetica" size="1"><b><small>PROCESO:&nbsp;[% tproceso %]</small></b></font><br></td>
+</tr>
+</table>
+<table align="center" width="670px" border="1" cellpadding="1" cellspacing="0">
+  <tr>
+    <td colspan="2" height="10px" width="350px" align="center" valign="center" bgcolor="#e43117">
+      <p style="font-family:Helvetica;font-size:55%;color:white"><b>APELLIDOS Y NOMBRES</b></p>
+    </td>
+    <td colspan="1" height="10px" width="35px" align="center" valign="center" bgcolor="#e43117">
+      <p style="font-family:Helvetica;font-size:55%;color:white"><b>C.I.</b></p>
+    </td>
+    <td colspan="2" height="10px" width="285px" align="center" valign="center" bgcolor="#e43117">
+      <p style="font-family:Helvetica;font-size:55%;color:white"><b>UBICACION ADMINISTRATIVA</b></p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" height="10px" align="left"><font face="Helvetica" size="1"><small>[% nombre %]&nbsp;[% apellido %]</small></font></td>
+    <td colspan="1" height="10px" align="right"><font face="Helvetica" size="1"><small>[% cedula %]</small></font></td>
+    <td colspan="2" height="10px" align="left"><font face="Helvetica" size="1"><small>[% unidad %]</small></font></td>
+  </tr>
+  <tr>
+    <td colspan="2" height="10px" width="350px" align="center" valign="center" bgcolor="#005288">
+      <p style="font-family:Helvetica;font-size:55%;color:white"><b>CARGO</b></p>
+    </td>
+    <td colspan="1" height="10px" width="35px" align="center" valign="center" bgcolor="#005288">
+      <p style="font-family:Helvetica;font-size:55%;color:white"><b>SUELDO/SALARIO</b></p>
+    </td>
+    <td colspan="2" height="10px" width="285px" align="center" valign="center" bgcolor="#005288">
+      <p style="font-family:Helvetica;font-size:55%;color:white"><b>PERIODO DE PAGO</b></p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" height="10px" align="left"><font face="Helvetica" size="1"><small>[% codcargo %]&nbsp;[% desccargo %]</small></font></td>
+    <td colspan="1" height="10px" align="right"><font face="Helvetica" size="1"><small>[% sueldo %]</small></font></td>
+    <td colspan="2" height="10px" align="center"><font face="Helvetica" size="1"><small>[% perinicio %]&nbsp;AL&nbsp;[% perfin %]</small></font></td>
+  </tr>
+</table>

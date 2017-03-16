@@ -1,0 +1,44 @@
+[% INCLUDE doctype.tt %]
+<html>
+<body>
+<table width="100%" align="center" border="0">
+  <tr>
+    <td align="left" width="35%"><img src="[% ruta_estatica %]/imagenes/bandes.jpg" width="118px" height="54px" /></td>
+    <td align="left" width="65%"><b><big>Listado de Ayudas Sociales Registradas</big></b></td>
+  </tr>
+</table>
+<br><br><br>
+<table align="center" cellpadding="2" width="100%" border="0">
+<tr bgcolor="#015289">
+  <td width="2%" align="center"><font size="4" color="white"><b>Nro.</b></font></td>
+  <td width="6%" align="center"><font size="4" color="white"><b>Fecha</b></font></td>
+  <td width="6%" align="right"><font size="4" color="white"><b>Monto Solicitado</b></font></td>
+  <td width="11%" align="left"><font size="4" color="white"><b>Estatus</b></font></td>
+  <td width="7%" align="center"><font size="4" color="white"><b>Destino</b></font></td>
+  <td width="7%" align="left"><font size="4" color="white"><b>Forma de Pago</b></font></td>
+  <td width="9%" align="center"><font size="4" color="white"><b>Tipo de Empresa</b></font></td>
+  <td width="12%" align="left"><font size="4" color="white"><b>Solicitante</b></font></td>
+  <td width="12%" align="left"><font size="4" color="white"><b>Beneficiario</b></font></td>
+  <td width="14%" align="center"><font size="4" color="white"><b>Regi&oacute;n&nbsp;/&nbsp;Entidad Federal</b></font></td>
+  <td width="14%" align="center"><font size="4" color="white"><b>Municipio&nbsp;/&nbsp;Eje</b></font></td>
+<tr>
+[% IF registros %]
+  [% FOREACH registros %]
+  <tr bgcolor="[% sclase %]">
+    <td width="2%" height="39px" align="center" >[% nayuda %]</td>
+    <td width="6%" height="39px" align="center" >[% dfecha %]</td>
+    <td width="6%" height="39px" align="right" >[% nmntosolicitado %]</td>
+    <td width="11%" height="39px" align="justify">[% id_tpedosolicitud %]</td>
+    <td width="7%" height="39px" align="center">[% id_tpdestino %]</td>
+    <td width="7%" height="39px" align="center" >[% id_tpformapago %]</td>
+    <td width="9%" height="39px" align="center">[% id_tpempresa %]</td>
+    <td width="12%" height="39px" align="justify">[% sidsolicitante %]<br>[% solicitante %]</td>
+    <td width="12%" height="39px" align="justify">[% sidbeneficiario %]<br>[% beneficiario %]</td>
+    <td width="14%" height="39px" align="justify">[% id_tpregion %]<br>[% id_tpentfederal %]</td>
+    <td width="14%" height="39px" align="justify">[% id_tpmunicipio %]<br>[% id_tpeje %]</td>
+  <tr>
+  [% END %]
+[% END %]
+</table>
+</body>
+</html>

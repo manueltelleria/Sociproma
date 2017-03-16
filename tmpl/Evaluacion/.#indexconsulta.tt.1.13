@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+<script type="text/javascript">
+
+function openWin(){
+  [% IF openWin == 1 %]
+    var ncedula = [% ncedula %];
+    var url = "/evaluacion/regtoodi/imprimirSeguimiento/"+ncedula;
+    window.open(url,'','toolbar=0,menubar=0,scrollbars=1,status=0,resizable=1,width =750,height=750');
+  [% END %]
+}
+
+function runMode( ){
+  var form = document.getElementById('indexConsulta');
+
+  if (!form.ncedula.value){
+    form.ncedula.value = form.nombreevaluado.value;
+  }
+  [% IF revestatus == 1 %]
+    form.action = '/evaluacion/revestatus/verEstatus';
+  [% ELSIF regtoodi == 1 %]
+    form.action = '/evaluacion/regtoodi/verOdis';
+  [% ELSIF seguimiento == 1 %]
+    form.action = '/evaluacion/regtoodi/crearSeguimientos';
+  [% ELSE %]
+    form.action = '/evaluacion/reportes/determinarTransacRuta';
+  [% END %]
+
+  if (form.action == '/evaluacion/reportes/determinarTransacRuta') {
+      var url = form.action +"/"+form.ncedula.value;
+      window.open(url,'','toolbar=0,menubar=0,scrollbars=1,status=0,resizable=1,width =750,height=750');
+      return false;
+  } 
+  else{
+      form.submit();
+      return true;
+  }
+}
+</script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu(); openWin();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+<legend>Consulta por Cedula del Evaluado</legend>
+<br>
+<table align="center" colspan="3">
+  <tr>
+    <td>
+        <table border="0" cellspacing="0" cellpadding="5" align="center" >
+          <tr>
+            <td><b>Nro. C&eacute;dula:</b></td>
+            <td>[%formbuilder.field.ncedula.field %]</td>
+            <td><b>[%formbuilder.field.nombreevaluado.label%]</b></td>
+            <td>[%formbuilder.field.nombreevaluado.field %]</td>
+          </tr>
+        </table>
+    </td>
+  </tr>
+</table>
+</fieldset>
+<table align="center" colspan="3">
+  <tr>
+    <td align="center">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+[% formbuilder.field.origen.field %]
+[%formbuilder.end%]
+<br/>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+<script language="javascript">
+function funcionBuscarCompObrero(combo, id_categoria){
+  var texto = combo.options[combo.selectedIndex].text;
+  var forma = document.listacompetenciaobrero;
+  var campo = eval('forma.descripcion_'+ id_categoria);
+  campo.value = texto;
+}
+</script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+<legend>Datos del Evaluado</legend>
+<table border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td border="1"><b>Nro. C&eacute;dula:</b></td>
+    <td border="1">[% cedula %]
+    <td border="1"><b>Nombres y Apellidos:</b></td>
+    <td border="1">[% nombreapellido %]
+    <td border="1"><b>Cargo:</b></td>
+    <td border="1">[% cargo %]</td>
+  </tr>
+</table>
+</fieldset>
+<br>
+<fieldset>
+<table align="center" cellspacing="0" cellpadding="5">
+  [% IF listado %]
+<legend>Competencia por Evaluado</legend>
+      <table align="center" border="1">
+      [% IF idestatuscomp %]
+        <tr>
+          <td colspan="3" align="center" class="titulodonfomarillo">[% descestatuscomp %]</td>
+        </tr>
+      [% END %]
+        <tr class="titulodonforojo">
+          <tr class="titulodonforojo">
+          <td align="center">Categoria</td>
+          <td align="center">Competencia</td>
+        </tr>
+      [% FOREACH listado %]
+        <tr>
+          <td width="300px" align="justify"><input type="hidden" name="id" value="[% id %]" id="id"> <b>[% categoria %]</b><input type="hidden" name="id_comp" value="[% id_comp %]" id="id_comp"></td>
+          
+          [%  IF accion == 'crear' %]
+          <td width="5px">
+            <SELECT name="strango" style="width:490px" onchange="javascript:funcionBuscarCompObrero(this,'[% id %]');">
+              <option>-Seleccione-</option>
+              [% FOREACH strango %]
+               <option [% selected %] value="[% value %]">[% descrip %]</option>
+              [% END %]
+            </SELECT>
+          </td>
+          <tr>
+            <td width="350px" align="right"><b>Descripci&oacute;n:</b></td>
+            <td width="30px">
+              <textarea cols="70" rows="2" readonly name="[% nombre_desc %]"  id="[% id_desc %]"></textarea>
+            </td>
+          </tr>
+            [% ELSIF accion == 'guardar' %]
+          <td width="5px">
+            <SELECT name="strango" style="width:490px" onchange="javascript:funcionBuscarCompObrero(this,'[% id %]');">
+              <option>-Seleccione-</option>
+              [% FOREACH strango %]
+              <option [% selected %] value="[% value %]">[% descrip %]</option>
+              [% END %]
+            </SELECT>
+          </td>
+          <tr>
+            <td width="350px" align="right"><b>Descripci&oacute;n:</b></td>
+            <td width="30px">
+              <textarea cols="70" rows="2" readonly name="[% nombre_desc %]"  id="[% id_desc %]">[% descrip_comp %]</textarea>
+            </td>
+          </tr>
+            [% ELSIF accion == 'ver' %]
+              <td width="250px">[% strango %]</td>
+            [% END %]
+        </tr>
+      [% END %]
+      </table>
+    [% END %]
+  </table>
+</fieldset>
+[% IF listado%]
+<fieldset>
+<legend>Resultado de la Evaluación</legend>
+<table align="center" cellspacing="0" cellpadding="5">
+      <table align="center" border="1">
+        <tr>
+          <td nowrap><b>Total Evaluación Competencia:</b></td>
+            <td width="5px" nowrap>[% IF npesorangocomp %][% npesorangocomp %][% ELSE %] 0 [% END %]</td>
+        </tr>
+        <tr>
+          <td nowrap><b>Total Resultado:</b></td>
+            <td width="5px" nowrap>[% IF tresultado %][% tresultado %][% ELSE %] 0 [% END %]</td>
+        </tr>
+        <tr>
+          <td nowrap><b>Rango de Actuación:</b></td>
+            <td width="300px" nowrap>[% IF rangoact %][% rangoact %][% ELSE %] 0 [% END %]</td>
+        </tr>
+      </table>
+  </table>
+</fieldset>
+[% END %]
+<table align="center" colspan="3">
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]</td>
+    [% IF listado%]
+    <td align="center">[% formbuilder.submit %]</td>
+    [% END %]
+  </tr>
+</table>
+[%formbuilder.end%]
+<br/>
+</body>
+</html>

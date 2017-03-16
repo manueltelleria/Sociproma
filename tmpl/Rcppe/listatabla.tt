@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+<script>
+function validate_listatabla (form) {
+  var alertstr = '';
+  var invalid  = 0;
+  var invalid_fields = new Array();
+
+// sdescripcion: standard text, hidden, password, or textarea box
+  var sdescripcion = form.elements['sdescripcion'].value;
+  if (sdescripcion == null || sdescripcion === "") {
+    alertstr += '- Indique un valor válido para el campo "Descripcion"\n';
+    invalid++;
+    invalid_fields.push('sdescripcion');
+  }
+
+  if ( document.getElementById('tporganismo')){
+// tporganismo: select list, always assume it's multiple to get all values
+    var tporganismo = null;
+    var selected_tporganismo = 0;
+    for (var loop = 0; loop < form.elements['tporganismo'].options.length; loop++) {
+      if (form.elements['tporganismo'].options[loop].selected) {
+        tporganismo = form.elements['tporganismo'].options[loop].value;
+        selected_tporganismo++;
+        if (tporganismo == null || tporganismo === "") {
+          alertstr += '- Seleccione una opción para el campo "Tipo Organismo"\n';
+          invalid++;
+          invalid_fields.push('tporganismo');
+        }
+      } // if
+    } // for tporganismo
+    if (! selected_tporganismo) {
+      alertstr += '- Seleccione una opción para el campo "Tipo Organismo"\n';
+      invalid++;
+    }
+  }
+
+  if ( document.getElementById('tpempresa')){
+// tporganismo: select list, always assume it's multiple to get all values
+    var tpempresa = null;
+    var selected_tpempresa = 0;
+    for (var loop = 0; loop < form.elements['tpempresa'].options.length; loop++) {
+      if (form.elements['tpempresa'].options[loop].selected) {
+        tpempresa = form.elements['tpempresa'].options[loop].value;
+        selected_tpempresa++;
+        if (tpempresa == null || tpempresa === "") {
+          alertstr += '- Seleccione una opción para el campo "Empresa o Institución"\n';
+          invalid++;
+          invalid_fields.push('tpempresa');
+        }
+      } // if
+    } // for tpempresa
+    if (! selected_tpempresa) {
+      alertstr += '- Seleccione una opción para el campo "Empresa o Institución"\n';
+      invalid++;
+    }
+  }
+
+  if (invalid > 0 || alertstr != '') {
+    if (! invalid) invalid = 'The following';   // catch for programmer error
+    alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'
+    +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
+    return false;
+  }
+  return true;  // all checked ok
+}
+
+function actdeshabilita ( bcheck,nid ){
+  var form = document.getElementById('listatabla');
+  var tabla = form.nombretabla.value;
+
+  var url = '[% ruta_elimina %]';
+  var funcion;
+
+  if (nid) {
+    var pars = "nombretabla="+tabla+"&nid="+nid+"&checked="+bcheck.checked;
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: mostraract } );
+  }
+
+}
+
+function mostraract(originalRequest) {
+  var respuesta = originalRequest.responseText;
+  var forma     = document.listatabla;
+  var mensaje   = '';
+
+  if ( respuesta != 'undef' ){
+    var datos = respuesta.split("|");
+    if ( respuesta == "error" ){
+      mensaje = "Ocurrio un error al momento de actualizar la información";
+    }
+    else{
+      mensaje = "El registro se actualizó de manera exitosa";
+    }
+    document.getElementById('mensaje').innerHTML = '<span class="titulodonfomarillo">'+mensaje+'</span>';
+  }
+}
+
+
+
+</script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<table border="0" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td><div style="background: yellow" id="mensaje"></div></td>
+  </tr>
+</table>
+<fieldset>
+<legend>REGISTRO TABLA TIPO [%nombre_tabla%]</legend>
+<table border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td align="center" class="titulodonforojo" colspan="2"><b>[% desctabla %]</b></td>
+  </tr>
+  [% IF bmostrarOrg %]
+    <tr>
+      <td class="fondoetiqueta"><b>[% formbuilder.field.tporganismo.label %]:</b></td>
+      <td class="fondoetiqueta2">[% formbuilder.field.tporganismo.field %]</td>
+    </tr>
+  [% END %]
+  [% IF bmostrarEmpr %]
+    <tr>
+      <td class="fondoetiqueta"><b>[% formbuilder.field.tpempresa.label %]:</b></td>
+      <td class="fondoetiqueta2">[% formbuilder.field.tpempresa.field %]</td>
+    </tr>
+  [% END %]
+  <tr>
+    <td class="fondoetiqueta"><b>[% formbuilder.field.sdescripcion.label %]:</b></td>
+    <td class="fondoetiqueta2">[% formbuilder.field.sdescripcion.field %] [% formbuilder.field.nid.field %]</td>
+  </tr>
+</table>
+<table align="center" colspan="2">
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]</td>
+    <td align="center">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+</fieldset>
+<br>
+<fieldset>
+<table align="center" cellspacing="0" cellpadding="5">
+[% IF listado %]
+<legend>VALORES REGISTRADOS</legend>
+  <table align="center" border="0">
+    <tr class="titulodonforojo">
+      <td align="center">N° registro</td>
+      <td align="center">Descripcion</td>
+      [% IF bmostrarOrg == 1 %]
+        <td align="center">Organismo</td>
+      [% END %]
+      [% IF bmostrarEmpr == 1 %]
+        <td align="center">Empresa</td>
+      [% END %]
+      <td align="center">&nbsp;</td>
+      <td align="center">Habilitado</td>
+    </tr>
+    [% FOREACH listado %]
+      <tr bgcolor="[% clase %]">
+        <td><b>[% id %]</b></td>
+        <td>[% descripcion %]</td>
+        [% IF bmostrarOrg == 1 %]
+          <td>[% descorganismo %]</td>
+        [% END %]
+        [% IF bmostrarEmpr == 1 %]
+          <td>[% descempresa %]</td>
+        [% END %]
+        <td align="center"><a href="#" onclick="runMode('modificar', '[% id %]')"><img width="20" height="20" src="[% ruta_static %]/imagenes/bad.png" border="0"></a></td>
+        <td align="center"><input id="bchkhabilita" name="bchkhabilita" type="checkbox" onclick="actdeshabilita(this,[% id %])" [% schecked %]></td>
+      </tr>
+    [% END %]
+  </table>
+  <br/>
+  [% IF listado and last_page > 1 %]
+  <br>
+  <table align="center" width="30%">
+    <tr>
+      <td width="45%">
+        <a style="text-decoration:none" href="javascript:paginar([% previous_page %])"><< Anterior</a>
+      </td>
+      <td width="10%" align="center">
+        [% current_page %] / [% last_page %]
+      </td>
+      <td width="45%" align="right">
+        <a style="text-decoration:none" href="javascript:paginar([% next_page %])">Siguiente >></a>
+      </td>
+    </tr>
+  </table>
+[% END %]
+</fieldset>
+[% END %]
+[% formbuilder.field.nombretabla.field %]
+[% formbuilder.field.deshabilitados.field %]
+[% formbuilder.field.page.field %]
+[%formbuilder.end%]
+</body>
+</html>

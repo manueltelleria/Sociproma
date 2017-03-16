@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+[% IF noMostrarTT != 1 %]
+<fieldset>
+<legend>Datos Evaluado</legend>
+<table border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td border="1"><b>Nro. C&eacute;dula:</b></td>
+    <td border="1">[% cedula %]
+    <td border="1"><b>Nombres y Apellidos:</b></td>
+    <td border="1">[% nombreapellido %]
+    <td border="1"><b>Cargo:</b></td>
+    <td border="1">[% cargo %]</td>
+  </tr>
+</table>
+</fieldset>
+<br>
+<fieldset>
+<legend>Objetivos por Evaluado</legend>
+<table align="center" cellspacing="0" cellpadding="5">
+  [% IF listado %]
+      <table align="center" border="1">
+        [% IF bsolover == 1 %]
+          [% IF descestatusodi %]
+            <tr>
+              <td colspan="3" align="center" class="titulodonfomarillo">[% descestatusodi %]</td>
+            </tr>
+          [% END %]
+        [% END %]
+        <tr class="titulodonforojo">
+          [% IF bsolover != 1%]
+            <td align="center"><a href="#" onclick="runMode( 'eliminar' );">Eliminar</a></td>
+          [% END %]
+          <td align="center">Objetivo</td>
+          <td align="center">Peso</td>
+          [% IF bevaluar == 1 %]
+            <td align="center">Rango</td>
+          [% END %]
+        </tr>
+      [% FOREACH listado %]
+        <tr>
+          [% IF bsolover != 1 %]
+            <td align="center"><input type="checkbox" name="chkelimina" id="chkelimina" value="[% id %]"></td>
+          [% END %]
+          <td width="500px"><input type="hidden" name="id" value="[% id %]" id="id">
+          [% IF bsolover != 1 %]
+            <a href="[% shrefUpd %]"> 
+          [% END %]  
+          [% descripcion %]
+          [% IF bsolover != 1 %]
+          </a>
+          [% END %]  
+          </td>
+          [% IF peso == '' %]
+            <td width="5px">[%formbuilder.field.npeso.field %]</td>
+          [% ELSE %]
+          <td width="5px">[% peso %]</td>
+          [% END %]
+          [% IF bevaluar == 1 %]
+            <td width="30%" nowrap>
+              <SELECT name="strango"> 
+                [% FOREACH strango %]
+                  <option [% selected %] value="[% value %]">[% descrip %]</option>
+                [% END %]
+              </SELECT>
+            </td>
+         [% END %]
+        </tr>
+      [% END %]
+      </table>
+    [% END %]
+  </table>
+</fieldset>
+[% IF bdevuelto %]
+<fieldset>
+<legend>Observaci&oacute;n motivo de la devoluci&oacute;n</legend>
+<table>
+<tr>
+  <td>[% sdescobservacion %]</td>
+</tr>
+</table>
+</fieldset>
+[% END %]
+
+[% IF resultado &&  bdevuelto != 1 %]
+  <fieldset>
+  <legend>Resultado de la Evaluación</legend>
+  <table align="center" cellspacing="0" cellpadding="5">
+        <table align="center" border="1">
+          <tr>
+            <td nowrap><b>Total Evaluación ODI:</b></td>
+              <td width="5px" nowrap>[% IF npesorangoodi %][% npesorangoodi %][% ELSE %] 0 [% END %]</td>
+          </tr>
+          <tr>
+            <td nowrap><b>Total Evaluación Competencia:</b></td>
+              <td width="5px" nowrap>[% IF npesorangocomp %][% npesorangocomp %][% ELSE %] 0 [% END %]</td>
+          </tr>
+          <tr>
+            <td nowrap><b>Total Resultado:</b></td>
+              <td width="5px" nowrap>[% IF tresultado %][% tresultado %][% ELSE %] 0 [% END %]</td>
+          </tr>
+          <tr>
+            <td nowrap><b>Rango de Actuación:</b></td>
+              <td width="300px" nowrap>[% IF rangoact %][% rangoact %][% ELSE %] 0 [% END %]</td>
+          </tr>
+        </table>
+    </table>
+  </fieldset> 
+[% END %]
+<table align="center" colspan="4">
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]</td>
+    <!-- <td align="center">[% formbuilder.field.btncompetencia.field %]</td> -->
+    [% IF bevaluar == 1 %]
+      <td align="center">[% formbuilder.field.btnaceptar.field %]</td>
+    [% ELSE %]
+      [% IF bsolover != 1 && bMostrarCrear == 1 %]
+        <td align="center">[% formbuilder.field.btnnuevo.field %]</td>
+      [% END %]
+      [% IF bdevuelto == 1 %]
+        <td align="center">[% formbuilder.field.btnenviar.field %]</td>
+      [% END %]
+    [% END %]
+    [% IF bimprimir == 1 && bverComp != 1 %]
+      <td align="center">[% formbuilder.field.btnimprimir.field %]</td>
+    [% END %]
+    [% IF bverComp == 1 && bevaluar == 1 %]
+      <td align="center">[% formbuilder.field.btncompetencia.field %]</td> 
+    [% END %]
+  </tr>
+</table>
+[% END %]
+[% formbuilder.field.ncedula.field %]
+[% formbuilder.field.ntotalpeso.field %]
+[% formbuilder.field.origen.field %]
+[% formbuilder.end %]
+<br/>
+</body>
+</html>

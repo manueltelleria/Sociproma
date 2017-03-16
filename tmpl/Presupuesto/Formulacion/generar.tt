@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las pÃ¡ginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+[% formbuilder.jshead %]
+
+<script type="text/javascript">
+  
+function runMode( accion, id ){
+
+  if ( accion == "generar" ){
+    document.generar.action = "/presupuesto/formulacion/generaregresos/generarEgresos";
+    document.generar.flag.value = 0;
+    document.generar.submit();
+  }
+
+}
+
+function paginar( page ){
+  document.generar.page.value = page;
+  document.generar.submit();
+}
+
+
+</script>
+</head>
+<body  onload="cargarMenu()">
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Generar Egresos RRHH</legend>
+<!-- Login form -->
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+<table align="center" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap>[% formbuilder.field.id_tpnomina.label %]</td>
+    <td>[% formbuilder.field.id_tpnomina.field %] (*)</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap>[% formbuilder.field.id_tpreporte.label %]</td>
+    <td>[% formbuilder.field.id_tpreporte.field %]</td>
+  </tr>
+  <tr>
+   <td colspan="2" align="left" ><font color="#0F305A" size="0" >Nota: (*) Estos campos son obligatorios.</font></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">[% formbuilder.field.btnGenerar.field %]</td>
+  </tr>
+</table>
+<br/>
+[% IF tabla and last_page > 1 %]
+<br>
+<table align="center" width="30%">
+  <tr>
+    <td width="45%">
+      <a style="text-decoration:none" href="javascript:paginar([% previous_page %])"><< Anterior</a>
+    </td>
+    <td width="10%" align="center">
+      [% current_page %] / [% last_page %]
+    </td>
+    <td width="45%" align="right">
+      <a style="text-decoration:none" href="javascript:paginar([% next_page %])">Siguiente >></a>
+    </td>
+  </tr>
+</table>
+[% END %]
+[% formbuilder.field.id_concepto.field %]
+[% formbuilder.field.flag.field %]
+[% formbuilder.field.page.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

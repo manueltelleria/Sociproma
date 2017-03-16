@@ -1,0 +1,158 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar-setup.js"></script>
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+[%formbuilder.jshead%]
+
+<script type="text/javascript">
+
+var arregloCampos = new Array(
+  new Array('id_tpfinciamto','id_tpsolicitud')
+);
+
+//Función funcionCargarListas: se encarga de cargar el contenido de las listas dependientes de municipios o parroquias de acuerdo a la selección realizada (Entidad Federal seleccionada para el caso de un municipio, y municipio seleccionado para el caso de parroquias).
+function funcionCargarListas(nombreCampoSeleccionado){
+  var forma = document.crearautorizacion;
+  var listaSeleccionada = eval('forma.'+nombreCampoSeleccionado);
+  var url = '[%ruta_listas%]';
+  var campoLlenar = buscarValorAsociadoEnArreglo(arregloCampos, '0', nombreCampoSeleccionado, 1);
+  var funcion = eval('llenar_' + campoLlenar);
+  var valorSeleccionado = listaSeleccionada.options[listaSeleccionada.selectedIndex].value;
+  if (valorSeleccionado) {
+    var pars = nombreCampoSeleccionado+"="+valorSeleccionado;
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: funcion});
+  }
+  else {
+    limpiarListas(campoLlenar);
+  }
+}
+
+//Función llenarListaDependiente: método encargado de traducir la respuesta del servidor con la lista de valores que deben ser incluidas y llenar las listas dependientes con la información.
+function llenarListaDependiente(originalRequest, nombreListaLlenar) {
+  var respuesta = originalRequest.responseText;
+  var forma = document.crearautorizacion;
+  var listaLlenar = eval('forma.'+nombreListaLlenar);
+  limpiarListas(nombreListaLlenar);
+
+  //agregarOpcionLista(listaLlenar,new Option("- Seleccione -",''));
+  var primerarreglo = respuesta.split("|");
+  for(i=0;i<primerarreglo.length;i++){
+    var elemento  = primerarreglo[i].split(":");
+    agregarOpcionLista(listaLlenar,new Option(elemento[1],elemento[0]));
+  }
+}
+
+//Función limpiarListas: Método encargado de limpiar el contenido de una lista desplegable.
+function limpiarListas(nombreLista) {
+  var forma = document.crearautorizacion;
+  vaciarLista(eval('forma.'+nombreLista));
+}
+
+//Función llenar_id_tpmunicipio: Método encargado de hacer el llamado al método llenarListaDependiente, indicando que la lista a trabajar es la de los municipios.
+function llenar_id_tpsolicitud(originalRequest) {
+  llenarListaDependiente(originalRequest, 'id_tpsolicitud');
+}
+
+</script>
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+[% IF noexiste %]
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <tr>
+      <td width="905px" colspan="4" align="center" class="titulodonfomarillo">[% noexiste %]</td>
+    </tr>
+</table>
+[% END %]
+[% IF rrhh %]
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <tr>
+      <td align="center" colspan="7" bgcolor="#DDDDDD"><b><big>Autorizar Solicitudes</big></b></td>
+    </tr>
+      <tr>
+        <td align="center" colspan="7">&nbsp;</td>
+     </tr>
+  <tr>
+    <td align="center" colspan="7" bgcolor="#DDDDDD"><b><big>Datos del Trabajador</big></b></td>
+  </tr>
+  <tr class="titulodonforojo">
+    <td width="100px"><b><small>Nro. C&eacute;dula</small></b></td>
+    <td width="250px"><b><small>Nombres y Apellidos</small></b></td>
+    <td width="300px"><b><small>Ubicaci&oacute;n</small></b></td>
+    <td width="150px"><b><small>Extensi&oacute;n</small></b></td>
+  </tr>
+  [% FOREACH rrhh %]
+  <tr>
+    <td nowrap><small>[% scedula %]</small></td>
+    <td nowrap><small>[% snombre %]&nbsp;[% sapellido %]</small></td>
+    <td nowrap><small>[% subicacion %]</small></td>
+    <td nowrap><small align="right">[% ntelfoficina %]</small></td>
+  </tr>
+  [% END %]
+</table>
+[% END %]
+<br>
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <table width="800px" colspan="2" border="1" align="center" cellspacing="0" cellpadding="5">
+      <tr>
+        <td align="center" colspan="2" bgcolor="#DDDDDD"><b><big>Autorizar Solicitud de Crédito</big></b></td>
+     </tr>
+      <tr>
+        <td width="800px" style="vertical-align: top;" ><b>[% formbuilder.field.id_tpfinciamto.label%]</b>
+        </td>
+        <td width="800px" style="vertical-align: top;" >[% formbuilder.field.id_tpfinciamto.field%]<b>*</b>
+        </td>
+      </tr>
+      <tr>
+        <td width="800px" style="vertical-align: top;" ><b>[% formbuilder.field.id_tpsolicitud.label%]</b>
+        </td>
+        <td width="800px" style="vertical-align: top;" >[% formbuilder.field.id_tpsolicitud.field%]<b>*</b>
+        </td>
+      </tr>
+      <tr>
+        <td width="800px" style="vertical-align: top;" ><b>[% formbuilder.field.smotivo.label%]</b>
+        </td>
+        <td width="800px" style="vertical-align: top;" >[% formbuilder.field.smotivo.field%]<b>*</b><br><div align="left">*Coloque un motivo de la autorizaci&oacute;n de la Solicitud del Cr&eacute;dito</div></td>
+        </td>
+      </tr>
+    </table>
+</table>
+<table width="800px" border="0" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td align="left">*Campos Obligatorios</td>
+  </tr>
+</table>
+<br>
+<table align="center" colspan="3">
+  <tr>
+    <td align="center">[% formbuilder.submit %]</td>
+    <td align="center">[% formbuilder.field.btnvolver.field %]</td>
+  </tr>
+</table>
+[% formbuilder.end %]
+<br/>
+</body>
+</html>

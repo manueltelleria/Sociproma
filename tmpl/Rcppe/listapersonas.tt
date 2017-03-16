@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+<script type="text/javascript"> 
+function upd(valor, ruta){
+  document.listapersonas.id_persona.value = valor;
+  document.listapersonas.action = ruta;
+  document.listapersonas.submit();
+}
+
+function runMode( accion, identidad ) {
+  var form = document.getElementById('listapersonas');
+
+  if (accion == "estatus"){
+    form.id_persona.value = identidad
+    form.action = "/rcppe/regtoestatus/cambiarEstatus";
+    form.submit();
+  }
+  if (accion == "alerta"){
+    form.id_persona.value = identidad
+    form.action = "/rcppe/regtoalertas/agregarAlerta";
+    form.submit();
+  }
+  if (accion == "buscar"){
+    [% IF sAccion == 'Alerta' %]
+      form.action = "/rcppe/regtoalertas/index";
+    [% ELSE %]
+      form.action = "/rcppe/regtopersonas/listaPersonasCond";
+    [% END %]
+    form.submit();
+  }
+  if (accion == "cambiar"){
+    form.nidentidad.value = identidad;
+    form.action = "/rcppe/regtopersonas/agregarPersona";
+    form.submit();
+  }
+}
+
+</script>
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<table border="0" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td><div style="background: yellow" id="mensaje"></div></td>
+  </tr>
+</table>
+<fieldset>
+<legend>PERSONAS P&Uacute;BLICAMENTE EXPUESTAS</legend>
+<table border="0" align="center" cellspacing="3" cellpadding="5" width="45%">
+  [% IF bbuscar == 1 %]
+    <tr>
+      <td class="fondoetiqueta2" colspan="3" align="left">CI, Nro. Pasaporte, DNI:&nbsp;[% formbuilder.field.condicion.field %]&nbsp;[% formbuilder.field.btnbuscar.field %]</td>
+    </tr>
+  [% END %]
+  <tr>
+    <td class="titulodonforojo" align="center"><b>Nombre</b></td>
+    <td class="titulodonforojo" align="center"><b>Identificador</b></td>
+    <td class="titulodonforojo" align="center"><b>Pais</b></td>
+    <td class="titulodonforojo" align="center"><b>Eliminar</b></td>
+  </tr>
+  [% FOREACH listado %]
+    <tr bgcolor="[% clase %]">
+    [% IF sAccion == 'Alerta' %]
+      <td><a href="#" onclick="runMode( 'alerta', '[% id %]')">[% nombre %]</a></td>
+    [% ELSE %]
+      <td><a href="#" onclick="runMode( 'cambiar', '[% nidentidad %]')">[% nombre %]</a></td>
+    [% END %]
+      <td align="center">[% identificador %]</td>
+      <td align="center">[% pais %]</td>
+      <td align=center><a style="text-decoration:none" href="javascript:if (confirm('Desea eliminar el registro'))upd([% id %],'/rcppe/regtopersonas/borrarPersona')"><IMG src="/static/imagenes/menu/delete.gif" border="0"></a></td>
+    </tr>
+  [% END %]
+</table>
+</br>
+<br/>
+  [% IF listado and last_page > 1 %]
+    <br>
+    <table align="center" width="30%">
+      <tr>
+        <td width="45%">
+          <a style="text-decoration:none" href="javascript:paginar([% previous_page %])"><< Anterior</a>
+        </td>
+        <td width="10%" align="center">
+          [% current_page %] / [% last_page %]
+        </td>
+        <td width="45%" align="right">
+          <a style="text-decoration:none" href="javascript:paginar([% next_page %])">Siguiente >></a>
+        </td>
+      </tr>
+    </table>
+  [% END %]
+</table>
+</br>
+[% IF bbuscar != 1 %]
+<table border="0" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td align="center" colspan="3">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+[% END %]
+[% formbuilder.field.nidentidad.field %]
+[% formbuilder.field.id_persona.field %]
+[% formbuilder.field.page.field %]
+[%formbuilder.end%]
+</body>
+</html>

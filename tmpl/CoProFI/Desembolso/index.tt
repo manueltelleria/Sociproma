@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<script type="text/javascript">
+
+function indexDesembolso( id ){
+  document.index.action = "[% url_indexDesembolso %]";
+  document.index.id_proyectos.value = id;
+  document.index.submit();
+}
+
+function upd(valor, ruta){
+  document.index.id_proyectos.value = valor;
+  document.index.action = ruta;
+  document.index.submit();
+}
+
+</script>
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+</head>
+<body onload="cargarMenu()">
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Registrar Desembolsos</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+<table>
+<tr>
+<td>
+<table align="left" width="100%" border="0">
+  <tr>
+    <td width="20%" class="fondoetiqueta" align="left">
+      <b>[% formbuilder.field.criterio.label %]</b></td>
+    <td align="left" valign="middle">[% formbuilder.field.criterio.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/menu/help.gif" onmouseover="Tip('<b>Criterio de Busqueda</b><br>Debe especificar un parámetro que concuerden con los campos:<br>Código del Proyecto, Solicitante y Nombre del Proyecto')" onmouseout="UnTip()"/>&nbsp;&nbsp;[% formbuilder.submit %]</td>
+  </tr>
+</table>
+<br>&nbsp;
+</td>
+</tr>
+
+<tr>
+<td>
+    <table align="center" cellpadding="2" width="100%" border="0">
+    <tr>
+    <td align="center" colspan="11" class="titulodonforojo">Listado de Proyectos</td>
+    </tr>
+    <tr>
+    <td width="2%" align="center" class="fondoetiqueta5">Cod.</td>
+    <td width="13%" align="center" class="fondoetiqueta5">Solicitante</td>
+    <td width="17%" align="center" class="fondoetiqueta5">Nombre del Proyecto</td>
+    <td width="9%" align="center" class="fondoetiqueta5">Monto del Proyecto&nbsp;($)</td>
+    <td width="9%" align="center" class="fondoetiqueta5">Monto de Financiamiento&nbsp;($)</td>
+    <td width="9%" align="center" class="fondoetiqueta5">Pa&iacute;s</td>
+    <td width="13%" align="center" class="fondoetiqueta5">Ente Ejecutor</td>
+    <td width="9%" align="center" class="fondoetiqueta5">Sector</td>
+    <td width="9%" align="center" class="fondoetiqueta5">Estatus</td>
+    <td width="8%" align="center" class="fondoetiqueta5">Desembolsos</td>
+    <td width="8%" align="center" class="fondoetiqueta5">Licitaciones</td>
+    </tr>
+    [% IF registros %]
+    [% FOREACH registros %]
+    <tr bgcolor="[% sclase %]">
+        <td width="2%" align="center" >[% id %]</td>
+        <td width="13%" align="justify" >[% ssolicitante %]</td>
+        <td width="17%" align="justify" >[% snombproy %]</td>
+        <td width="9%" align="right" >[% nmtoproyecto %]</td>
+        <td width="9%" align="right" >[% nmtofinanc %]</td>
+        <td width="9%" align="center" >[% id_tppais %]</td>
+        <td width="13%" align="justify" >[% senteejecutor %]</td>
+        <td width="9%" align="justify" >[% id_tpsector %]</td>
+        <td width="9%" align="center" >[% id_tpedoproy %]</td>
+        <td width="8%" align="center" ><a href="javascript: indexDesembolso([% id %],'/coprofi/desembolso/desembolso/indexDesembolso')">DES</a></td>
+        <td width="8%" align="center" ><a href="javascript:document.index.flag.value=2; upd([% id %],'/coprofi/licitacion/licitacion/indexLicitacion')">LIC</a></td>
+    </tr>
+    [% END %]
+    [% ELSE %]
+    <tr>
+    <td align="center" colspan="11" class="titulodonfomarillo">No Existen Proyectos con estatus valido para registrar desembolsos.</td>
+    </tr>
+    [% END %]
+    </table>
+</td>
+</tr>
+</table>
+[% formbuilder.field.flag.field %]
+[% formbuilder.field.id_proyectos.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

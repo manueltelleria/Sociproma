@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las pÃ¡ginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+[% formbuilder.jshead %]
+<script type="text/javascript">
+    function upd(ruta){
+                document.forma.action = ruta;
+                document.forma.submit();
+    }
+</script>
+</head>
+<body  onload="cargarMenu()">
+[% INCLUDE encabezado.tt %]
+
+<!-- Login form -->
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+     <table align="center" border=0 cellspacing="1" cellpadding="2">
+        
+        <tr>
+            <th colspan=4>[% FOREACH field IN tabla %]<img src="[% ruta_estatica %]/imagenes/Banderas/[% field.id_tppais %].png" border="0" width=25>&nbsp; [% END %]</th>
+        </tr>
+        [% IF tabla %]
+        <tr>
+            <th colspan=4>[% FOREACH field IN banderas %]<img src="[% ruta_estatica %]/imagenes/Banderas/[% field.id_tppais %].png" border="0" width=25  onmouseover="Tip('[% field.spais %]')" onmouseout="UnTip()"/>&nbsp; [% END %]</th>
+        </tr>
+        [% END %]
+        <tr class=titulodonforojo>
+            <th colspan=4>Resumen de la Asignaci&oacute;n de recursos <br>(Expresados en Dolares Americanos)</th>
+        </tr>
+        <tr class=fondoetiqueta5>
+            <th width=150>[% criterio %]</th>
+            <th width=150>Aprobado</th>
+            <th width=150>Desembolsado</th>
+            <th width=150>Por Desembolsar</th>
+            
+        </tr>
+        [% FOREACH field IN tabla %]
+        <tr class=[% field.clase %]>
+            <td nowrap><img src="[% ruta_estatica %]/imagenes/Banderas/[% field.id_tppais %].png" border="0" width=25> [% field.region %]</td>
+            <td align=right>[% field.aprobado %]</td>
+            <td align=right>[% field.desembolsado %]</td>
+            <td align=right>[% field.desembolsar %]</td>
+        </tr>
+        [% END %]
+       
+      </table>  
+<table width=100%>
+    <tr>
+        <td align=center>
+            <img src="http://chart.apis.google.com/chart?chs=900x300&chco=015289&cht=p3&[% grafico %]" border=0   />
+        </td>
+    </tr>  
+    <tr class=''>
+        <td align=center>
+            <input type=button  onclick="javascript:upd('/coprofi/reporte/guacho')" value='<< Regresar'/>
+            <input type=submit  onclick="javascript:document.forma.flag.value = 'pdf';" value='Generar PDF'/>
+           
+        </td>
+    </tr>
+</table>  
+    [% formbuilder.field.flag.field %]
+    [% formbuilder.field.id_tpregionpais.field %]
+[% formbuilder.end %]
+</body>
+</html>

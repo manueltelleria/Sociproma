@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+<script type="text/javascript"><!-- hide from old browsers
+function runMode( accion, nId ){
+  var form = document.datosgenerales;
+
+  if (accion == "volver"){
+    form.action = '/rcppe/regtoalertas/index';
+  }
+  if (accion == "eliminar"){
+    form.id_alerta.value = nId;
+    form.action = '/rcppe/regtoalertas/eliminarAlerta';
+  }
+  form.submit();
+}
+
+function validate_datosgenerales (form) {
+  var alertstr = '';
+  var invalid  = 0;
+  var invalid_fields = new Array();
+
+// observacion: standard text, hidden, password, or textarea box
+  var observacion = form.elements['observacion'].value;
+  if (observacion == null || observacion == "" || observacion === "") {
+    alertstr += '- Indique algun valor en el campo "Observacion"\n';
+    invalid++;
+    invalid_fields.push('observacion');
+  }
+  if (invalid > 0 || alertstr != '') {
+    if (! invalid) invalid = 'The following';   // catch for programmer error
+    alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'
+    +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
+    return false;
+  }
+  return true;  // all checked ok
+}
+//-->
+</script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+<legend>Datos Basicos</legend>
+<table width="75%" border="0" align="center" cellspacing="3" cellpadding="5">
+  <tr class="titulodonforojo">
+    <td align="center" colspan="2">[% formbuilder.field.nombre.value %]</td>
+  </tr>
+  <tr>
+    <td width="40%" class="fondoetiqueta" align="right"><b>[% formbuilder.field.tppersona.label %]:</b></td>
+    <td align="left">[% formbuilder.field.tppersona.value %]</td>
+  </tr>
+  <tr>
+    <td class="fondoetiqueta" align="right"><b>CI, Nro Pasaporte, DNI:</b></td>
+    <td align="left">[% formbuilder.field.nidentidad.value %]</td>
+  </tr>
+  <tr>
+    <td class="fondoetiqueta" align="right"><b>Pa&iacute;s:</b></td>
+    <td align="left">[% formbuilder.field.tppais.value %]</td>
+  </tr>
+</table>
+</fieldset>
+<fieldset>
+  <legend>Cargos Desempe&ntilde;ados</legend>
+  <table  width="75%" border="0" align="center" cellspacing="3" cellpadding="5">
+    <tr class="titulodonforojo"> 
+      <td align="center" colspan="7">CARGOS DESEMPE&Ntilde;ADOS</td>
+    </tr>
+    <tr>
+      <td class="fondoetiqueta2" align="center"><b>Instituto / Empresa</b></td>
+      <td class="fondoetiqueta2" align="center"><b>Organismo Adjunto</b></td>
+      <td class="fondoetiqueta2" align="center"><b>Cargo</b></td>
+      <td class="fondoetiqueta2" align="center"><b>Estatus</b></td>
+      <td class="fondoetiqueta2" align="center"><b>Designaci&oacute;n</b></td>
+      <td class="fondoetiqueta2" align="center"><b>Fecha Posesi&oacute;n</b></td>
+      <td class="fondoetiqueta2" align="center"><b>Fecha Cese</b></td>
+    </tr>
+    [% FOREACH listacargos %]
+      <tr bgcolor="[% clase %]">
+        <td align="center">[% tpempresa %]</td>
+        <td align="center">[% tporgadjunto %]</td>
+        <td align="center">[% tpcargo %]</td>
+        <td align="center">[% tpestatus %]</td>
+        <td align="center">[% descdesignacion %]</td>
+        <td align="center">[% dposesion %]</td>
+        <td align="center">[% dcese %]</td>
+      </tr>
+    [% END %]
+  </table>
+</fieldset>
+<fieldset>
+<legend>Alertas</legend>
+  <table  width="75%" border="0" align="center" cellspacing="3" cellpadding="5">
+    <tr class="titulodonforojo"> 
+      <td align="center" colspan="3">ALERTAS</td>
+    </tr>
+    <tr>
+      <td class="fondoetiqueta2" align="center"><b>Fecha</b></td>
+      <td class="fondoetiqueta2" align="center"><b>Observaci&oacute;n</b></td>
+      <td class="fondoetiqueta2" align="center"><b>Eliminar</b></td>
+    </tr>
+    [% FOREACH listaalertas %]
+      <tr bgcolor="[% clase %]">
+        <td align="center">[% dregistro %]</td>
+        <td align="left">[% observacion %]</td>
+        <td align="center"><a href="#" onclick=" runMode( 'eliminar', '[% id_alerta %]' );"><img border="0" id="delete" name="delete" src="[%ruta_estatica%]/imagenes/del.png"></a></td>
+      </tr>
+    [% END %]
+    <tr>
+      <td class="fondoetiqueta" align="center">Observaci&oacute;n:</td>
+      <td align="center">[% formbuilder.field.observacion.field %]</td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <table>
+          <tr>
+            <td class="fondoetiqueta" align="center">[% formbuilder.field.btnvolver.field %]</td>
+            <td class="fondoetiqueta" align="center">[% formbuilder.submit %]</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+</fieldset>
+</br>
+[% formbuilder.field.id_persona.field %]
+[% formbuilder.field.id_alerta.field %]
+[% formbuilder.end %]
+</body>
+</html>

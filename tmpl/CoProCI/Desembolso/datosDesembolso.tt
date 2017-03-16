@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar-setup.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<script type="text/javascript">
+
+function validar( form ){
+  if (validate_datosDesembolso(form)){
+
+    var alertstr='';
+    var invalid=0;
+
+    //validar el monto maximo para el desembolso
+
+    var nmtototaldolar  = form.elements['nmtototaldolar'].value;
+    var nmtototaldisp = "[% datos.nmtototaldisp %]";
+
+    var monto = nmtototaldolar.replace(/\./g,'');
+    monto = monto.replace(',','.');
+    monto = parseFloat(monto);
+
+    if ( monto > nmtototaldisp ) {
+      alertstr += "- El monto máximo disponible para el desembolso es de "+ formatearMoneda(nmtototaldisp) +" $\n";
+      invalid++;
+    }
+
+    //validar que las fechas de solicitud y pago del desembolso sean mayores a la de suscrpcion del contrato
+
+    var dcontrato   = "[% datos.dcontrato %]";
+    var dpago       = form.elements['dpago'].value.split('/');
+    var dsolicitud  = form.elements['dsolicitud'].value.split('/');
+    dcontrato = dcontrato.replace(/-/g,'');
+    var dref = dsolicitud[2]+dsolicitud[1]+dsolicitud[0];
+    var dref2 = dpago[2]+dpago[1]+dpago[0];
+
+    if ( dref < dcontrato ) {
+      alertstr += "- La fecha de solicitud del desembolso debe ser mayor o igual que la de suscripción del contrato \n";
+      invalid++;
+    }
+
+    if ( dref2 < dcontrato ) {
+      alertstr += "- La fecha de pago del desembolso debe ser mayor o igual que la de suscripción del contrato \n";
+      invalid++;
+    }
+
+    if (invalid > 0 || alertstr != '') {
+      alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'
+              +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
+      return false;
+    }
+
+    return true;
+
+  }else{ return false; }
+}
+
+</script>
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+</head>
+<body onload="cargarMenu()">
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Registrar Desembolsos</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+<table align="center" cellpadding="2" width="60%" border="0">
+<tr>
+  <td align="center" colspan="2" class="titulodonforojo">Datos del Desembolso</td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.id_proyectos.label %]</td>
+  <td width="60%" align="left"><b>[% datos.id_proyectos %]</b></td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.id.label %]</td>
+  <td width="60%" align="left"><b>(Autogenerado)</b></td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.sbeneficiario.label %]</td>
+  <td width="60%" align="left">[% formbuilder.field.sbeneficiario.field %]</td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.scontratista.label %]</td>
+  <td width="60%" align="left">[% formbuilder.field.scontratista.field %]</td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.sconcepto.label %]</td>
+  <td width="60%" align="left">[% formbuilder.field.sconcepto.field %]</td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.dsolicitud.label %]</td>
+  <td width="60%" align="left">[% formbuilder.field.dsolicitud.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="t_dsolicitud" style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onMouseOut="this.style.background=''"/>
+           <script type="text/javascript">
+           Calendar.setup({
+                    inputField     :    "dsolicitud",     // id of the input field
+                    ifFormat       :    "%d/%m/%Y",      // format of the input field
+                    button         :    "t_dsolicitud",  // trigger for the calendar (button ID)
+                    align          :    "Tl",           // alignment (defaults to "Bl")
+                    singleClick    :    true
+                        });
+           </script></td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.dpago.label %]</td>
+  <td width="60%" align="left">[% formbuilder.field.dpago.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="t_dpago" style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onMouseOut="this.style.background=''"/>
+           <script type="text/javascript">
+           Calendar.setup({
+                    inputField     :    "dpago",     // id of the input field
+                    ifFormat       :    "%d/%m/%Y",      // format of the input field
+                    button         :    "t_dpago",  // trigger for the calendar (button ID)
+                    align          :    "Tl",           // alignment (defaults to "Bl")
+                    singleClick    :    true
+                        });
+           </script></td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.id_tpmoneda.label %]</td>
+  <td width="60%" align="left">[% formbuilder.field.id_tpmoneda.field %]</td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.ntasacambio.label %]</td>
+  <td width="60%" align="left">[% formbuilder.field.ntasacambio.field %]</td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.nmtoejec.label %]</td>
+  <td width="60%" align="left">[% formbuilder.field.nmtoejec.field %]</td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.nmtocomision.label %]</td>
+  <td width="60%" align="left">[% formbuilder.field.nmtocomision.field %]</td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.nmtototalmd.label %]</td>
+  <td width="60%" align="left">[% formbuilder.field.nmtototalmd.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/menu/help.gif" onmouseover="Tip('<b>Monto del Desembolso</b><br>Es la suma entre del monto de ejecución y monto de la comisión <br> expresado en la moneda del desembolso seleccionado')" onmouseout="UnTip()"/></td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.nmtototaldolar.label %]&nbsp;($)</td>
+  <td width="60%" align="left">[% formbuilder.field.nmtototaldolar.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/menu/help.gif" onmouseover="Tip('<b>Monto del Desembolso ($)</b><br>Es la suma entre del monto de ejecución y monto de la comisión <br> por la tasa de cambio al dolar')" onmouseout="UnTip()"/></td>
+</tr>
+<tr>
+  <td width="40%" align="left" class="fondoetiqueta5">[% formbuilder.field.sobservaciones.label %]</td>
+  <td width="60%" align="left">[% formbuilder.field.sobservaciones.field %]</td>
+</tr>
+  <tr>
+    <td colspan="2" align="left" ><font color="#0F305A" size="0" >Nota: Todos los campos son obligatorios.</font></td>
+  </tr>
+</table>
+&nbsp;
+<table align="center" width="60%">
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]&nbsp;[% formbuilder.submit %]</td>
+  </tr>
+</table>
+
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

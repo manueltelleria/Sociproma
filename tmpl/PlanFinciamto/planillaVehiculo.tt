@@ -1,0 +1,331 @@
+[% INCLUDE doctype.tt %]
+<html>
+<div align="left"><img src="[% ruta_estatica %]/imagenes/bandes.jpg" width="116" height="42" />
+</div>
+<body>
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+[% IF planilla %]
+  [% FOREACH planilla %]
+  <table width="670px" border="0" align="center" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="390px" style="vertical-align: top;"><b>1.
+      FECHA:</b>&nbsp;[%dfechaEnvio%]</td>
+      <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+      <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+      <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+      <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+      <td width="590px" colspan="3" style="vertical-align: top;"><b>N&deg; DE SOLICITUD:</b></small>&nbsp;<b>GEGTH-VEH-</b>[%id%]</td>
+    </tr>
+  </table>
+  [% END %]
+<div  align="center"><big><b>SOLICITUD DEL PROGRAMA DE VEHICULO</b></big>
+<br>
+<br>
+<table width="670px" align="center" border="1" cellpadding="3" cellspacing="0">
+<tbody>
+  <tr>
+    <td  width="670px" colspan="9" align="center" bgcolor="#DDDDDD" style="vertical-align: top;"><big><b>DATOS DEL SOLICITANTE</b></big><br></td>
+  </tr>
+  <tr>
+  [% FOREACH rrhh %]
+    <td width="360px" colspan="5" align="left" style="vertical-align: top;" size="2"><b>2.
+    Apellidos y Nombres:</b><br>[%sapellido%]&nbsp;[%snombre%]</td>
+
+    <td width="150px" colspan="2" align="left" rowspan="1" valign="top" size="2"><b>3.
+   C&eacute;dula de Identidad:</b><br>[%cedulaf%]
+    </td>
+  [% END %]
+  [% FOREACH planilla %]
+    <td width="130px" colspan="1" align="left" rowspan="1" valign="top" size="2"><b>4.
+    Correo Personal:</b><br>[%scorreo %]
+    </td>
+  [% END %]
+  [% FOREACH rrhh %]
+    <td width="130px" colspan="1" align="left" rowspan="1" valign="top" size="2"><b>5.
+    Estado Civil:</b><br>[% IF sedocivil == 'C' %]CASADO
+        [% ELSIF sedocivil == 'D' %]DIVORCIADO
+        [% ELSIF sedocivil == 'K' %]CONCUBINO
+        [% ELSIF sedocivil == 'S' %]SOLTERO
+        [% ELSIF sedocivil == 'V' %]VIUDO
+        [% ELSE %]---[% END %]
+    </td>
+  [% END %]
+  </tr>
+</table>
+<table width="670px" align="center" border="1" cellpadding="3" cellspacing="0">
+  <tr>
+  [% FOREACH rrhh %]
+    <td width="265px" colspan="4" align="left" style="vertical-align: top;" size="2"><b>6.
+    Cargo:</b><br>[%socupacion%]</td>
+    <td width="135px" colspan="1" align="left" rowspan="1" valign="top" size="2"><b>7.
+    Sueldo B&aacute;sico Mensual:</b><br>[%nsueldomensual%]
+    </td>
+    <td width="12s0px" colspan="1" align="left" rowspan="1" valign="top" size="2"><b>8.
+   Fecha de Ingreso:</b><br>[%dfechaing%]
+    </td>
+   [% FOREACH planilla %]
+    <td width="150px" colspan="3" align="left" rowspan="1" valign="top" size="2"><b>9.
+   Profesi&oacute;n:</b><br>[%sprofesion%]
+    </td>
+   [% END %]
+  </tr>
+  <tr>
+    <td width="265px" colspan="4" align="left" style="vertical-align: top;" size="2"><b>10.
+    Unidad de Adscripci&oacute;n:</b><br>[% subicacion %]</td>
+    <td width="135px" colspan="1" align="left" style="vertical-align: top;" size="2"><b>11.
+    Extensi&oacute;n:</b><br>[%ntelfoficina%]</td>
+    [% FOREACH planilla %]
+    <td width="120px" colspan="1" align="left" rowspan="1" valign="top" size="2"><b>12.
+   Tel&eacute;fono (Nro. Celular):</b><br>[%stelefcelsolic%]<br>
+    </td>
+    [% END %]
+    <td width="150px" colspan="3" align="left" rowspan="1" valign="top" size="2"><b>13.
+    Condici&oacute;n del Trabajador:</b><br>&nbsp;[% IF scondicion == 'EMPLEADOS' %]EMPLEADO
+        [% ELSE %]OBRERO[% END %]
+    </td>
+  [% END %]
+  </tr>
+</table>
+[% FOREACH planilla %]
+<table width="670px" border="1" align="center" cellspacing="0" cellpadding="3">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><big><b>DATOS DE LA VIVIENDA DONDE RESIDE ACTUALMENTE</b></big><br></td>
+  </tr>
+</table>
+<table width="670px" align="center" border="1" cellpadding="3" cellspacing="0">
+<tbody>
+  <tr>
+    <td width="670px" colspan="9" align="left" valign="top" size="2"><b>14.
+        Direcci&oacute;n del Inmueble:</b><br>[%sdireccionsolic%]
+    </td>
+  </tr>
+  <tr>
+    <td width="266px" colspan="3" align="left" style="vertical-align: top;" size="2"><b>15.
+    Estado:</b><br>[%id_tpentfederalsolic%]
+    </td>
+    <td width="266px" colspan="3" align="left" rowspan="1" valign="top" size="2"><b>16.
+   Ciudad:</b><br>[%id_tpciudadsolic%]
+    </td>
+    <td width="266px" colspan="3" align="left" rowspan="1" valign="top" size="2"><b>17.
+    Tel&eacute;fono Habitaci&oacute;n:</b><br>[%stelefhabsolic%]
+    </td>
+  </tr>
+</table>
+<table width="670px" align="center" border="1" cellpadding="3" cellspacing="0">
+<tbody>
+  <tr>
+    <td width="185px" colspan="2" align="left" valign="top" size="2"><b>18.
+    Tipo de Vivienda:</b><br>
+      [% IF stpvivienda %][%stpvivienda%][%ELSE%][%id_tpvivienda%][%END%]
+    </td>
+    <td width="185px" colspan="2" align="left" rowspan="1" valign="top" size="2"><b>19.
+   Tenencia:</b><br>
+      [% IF stptenencia %][%stptenencia%][%ELSE%][%id_tptenencia%][%END%]
+    </td>
+    <td width="150px" colspan="2" align="left" rowspan="1" valign="top" size="2"><b>20.
+    Couta Mensual en Bs.F:</b><br>[%ncuotamen%]
+    </td>
+    <td width="150px" colspan="3" align="left" rowspan="1" valign="top" size="2"><b>21.
+    Carga Familiar:</b><br>[%ncargafliar%]
+    </td>
+  </tr>
+
+  <tr>
+    <td width="500px" colspan="6" align="left" valign="top" size="2"><b>22.
+    Nombre del Propietario, Arrendadora y/o entidad Financiera:</b><br>
+      [%snombrepropieact%]</td>
+
+    <td width="300px" colspan="3" align="left" rowspan="1" valign="top" size="2"><b>23.
+    Tel&eacute;fonos:</b><br>
+      [%stelefpropieact%]</td>
+  </tr>
+</table>
+<table width="670px" border="1" align="center" cellspacing="0" cellpadding="3">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><big><b>DATOS DE LA SOLICITUD</b></big><br></td>
+  </tr>
+</table>
+<table width="670px" align="center" border="1" cellpadding="3" cellspacing="0">
+  <tr>
+    <td width="200px"  align="left" valign="top" size="2"><b>
+        24.Programa de Veh&iacute;culo:</b><br>
+      [%id_tpsolicitud%]</td>
+    <td width="200px"  align="left" valign="top" size="2"><b>
+        25.Clase:</b></small><br>
+      [%id_tpclase%]</td>
+    <td width="200px"  align="left" valign="top" size="2"><b>
+        26.Tipo:</b><br>
+      [%id_tptipoveh%]</td>
+    <td width="200px" colspan="2" rowspan="1" align="left" valign="top" size="2"><b>
+        27.Transmisi&oacute;n:</b><br>
+      [%id_tptransmision %]</td>
+    </td>
+  </tr>
+  <tr>
+    <td width="200px" align="left" valign="top" size="2"><b>
+        28.Marca:</b></small><br>
+      [%smarca%]</td>
+    <td width="200px" align="left" valign="top" size="2"><b>
+        29.Modelo:</b></small><br>
+      [%smodelo%]</td>
+    <td width="200px" align="left" valign="top" size="2"><b>
+        30.Color:</b></small><br>
+      [%scolor%]</td>
+    <td width="100px" align="left" valign="top" size="2"><b>
+        31.A&ntilde;o:</b></small><br>
+      [%nano%]</td>
+    </td>
+    <td width="100px" align="left" valign="top" size="2"><b>
+        32.Placa:</b></small><br>
+      [%splaca%]</td>
+    </td>
+  </tr>
+</table>
+<table width="670px" border="1" align="center" cellspacing="0" cellpadding="3">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><big><b>DATOS DEL VENDEDOR</b></big><br></td>
+  </tr>
+</table>
+<table width="670px" align="center" border="1" cellpadding="3" cellspacing="0">
+<tbody>
+
+  <tr>
+    <td width="500px" colspan="6" align="left" rowspan="1" valign="top" size="2"><b>33.
+   Raz&oacute;n Social del Concesionario y/o Apellidos y Nombres del Vendedor:</b><br>[%sdenominacion%]
+    </td>
+    <td width="300px" colspan="3" align="left" valign="top" size="2"><b>34.
+    R.I.F.: </b><br>[% IF sdenominacion %][%id_tprifvendedor%]-[%srifvendedor%][%END%]<br><b>C&eacute;dula de Identidad:</b><br>[%UNLESS ncedvendedorf == '0' %][%id_tpnacionalidad%]-[%ncedvendedorf%][%END%]
+    </td>
+  </tr>
+  <tr>
+    <td width="600px" colspan="6" align="left" valign="top" size="2"><b>35.
+    Direcci&oacute;n Fiscal:</b><br>[%sdireccion%]</td>
+    <td width="200px" colspan="3" align="left" rowspan="1" valign="top"><b>36.
+    T&eacute;lefonos:</b><br>[%stelefvendedor%]
+    </td>
+  </tr>
+  <tr>
+    <td width="400px" colspan="6" align="left" valign="top" size="2"><b>37.
+   Precio de Venta del V&eacute;hiculo en Bs.F:</b><br>[% IF sdenominacion %][%npreciovta%][%END%]
+    </td>
+    <td width="400px" colspan="3" align="left" valign="top" size="2"><b>38.
+    Monto del Pr&eacute;stamo solicitado en Bs.F:</b><br>[% IF sdenominacion %][%nmtoprestamo%][%END%]
+    </td>
+  </tr>
+
+</table>
+<table width="670px" border="1" align="center" cellspacing="0" cellpadding="3">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><big><b>EN CASO DE REFINANCIAMIENTO DE DEUDA</b></big><br></td>
+  </tr>
+</table>
+<table width="670px" align="center" border="1" cellpadding="3" cellspacing="0">
+<tbody>
+  <tr>
+    <td width="500px" colspan="6" align="left" rowspan="1" valign="top" size="2"><b>39.
+   Raz&oacute;n Social de quien tiene la Reserva de Dominio:</b><br>[%srazonsocial%]
+    </td>
+    <td width="300px" colspan="3" align="left" valign="top" size="2"><b>40.RIF: </b>[%IF srif%][%id_tprif%]-[%srif%][%END%]<br><b>41.NIT:</b>&nbsp;[% nnit%]
+    </td>
+  </tr>
+  <tr>
+    <td width="600px" colspan="6" align="left" valign="top" size="2"><b>42.Direcci&oacute;n Fiscal:</b><br>[%sdireccionfiscal%]</td>
+    <td width="200px" colspan="3" align="left" rowspan="1" valign="top" size="2"><b>43.Tel&eacute;fonos:</b><br>[%stelefono%]
+    </td>
+  </tr>
+  <tr>
+    <td width="266px" colspan="3" align="left" rowspan="1" valign="top" size="2"><b>44.
+   Precio de Venta del Veh&iacute;culo en Bs.:</b><br>[%npreciovtaref%]
+    </td>
+    <td width="266px" colspan="3" align="left" rowspan="1" valign="top" size="2"><b>45.
+   Saldo Actual en Bs.:</b><br>[%nsaldoref%]
+    </td>
+    <td width="266px" colspan="3" align="left" rowspan="1" valign="top" size="2"><b>46.
+    Monto del Pr&eacute;stamo en Bs.F:</b><br>[%nmtoprestamoref%]
+    </td>
+  </tr>
+</table>
+[% END %]
+      <table width="670px" border="1" align="center" cellspacing="0" cellpadding="3">
+        <tr>
+          <td colspan="9" align="center" bgcolor="#DDDDDD"><big><b>DATOS ADICIONALES</b></big></td>
+        </tr>
+        <tr>
+          <td colspan="9" align="center" bgcolor="#DDDDDD"><big><b>REFERENCIAS PERSONALES (Por favor colocar referencias de dos familiares)</b></big></td>
+        </tr>
+      </table>
+            <table width="670px" align="center" border="1" cellpadding="3" cellspacing="0">
+                  <tr class="titulodonforojo">
+                  <td width="100px" align="center" size="2"><b>Apellidos</b></td>
+                  <td width="100px" align="center" size="2"><b>Nombres</b></td>
+                  <td width="50px" align="center" size="2"><b>C&eacute;dula</b></td>
+                  <td width="60px" align="center" size="2"><b>Parentesco</b></td>
+                  <td width="420px" align="center" size="2"><b>Direcci&oacute;n</b></td>
+                  <td width="90px" align="center" size="2"><b>Tel&eacute;fono</b></td>
+                </tr>
+              [% FOREACH referenciaspersonales %]
+                  <tr>
+                    <td width="100px" align="left">[% sapellidoref %]</td>
+                    <td width="100px" align="left">[% snombreref %]</td>
+                    <td width="50px" align="left">[% id_tpnacionalidad %]-[% ncedulareferf %]</td>
+                    <td width="60px" align="left">[% id_tpparentesco %]</td>
+                    <td width="420px" align="left">[% sdireccion %]</td>
+                    <td width="90px" align="left">[% stelcompleto %]</td>
+                  </tr>
+              [% END %]
+            </table>
+      <table width="670px" border="1" align="center" cellspacing="0" cellpadding="3">
+        <tr>
+          <td align="center" bgcolor="#DDDDDD"><b>REQUISITOS ASOCIADOS AL TIPO DE SOLICITUD</b></td>
+        </tr>
+        <tr>
+          <td rowspan="2" align="justify">[%FOREACH listachequeo%][%descripLista%][% END %].<br><br></td>
+        <tr>
+          <td align="center"><b>Doy fe de la veracidad de los datos suministrados y autorizo  a la Gerencia Ejecutiva de Gesti&oacute;n del Talento Humano de Bandes, para realizar el proceso de verificaci&oacute;n de los mismos, a los efectos de optar al Programa de Veh&iacute;culo.</b></td>
+        </tr>
+      </table>
+      <table width="670px" border="1" align="center" cellspacing="0" cellpadding="5">
+        <tr>
+          <td colspan="2" align="center" bgcolor="#DDDDDD"><b>FIRMAS RESPONSABLES</b></td>
+        </tr>
+      </table>
+      <table width="670px" border="0" align="center" cellspacing="0" cellpadding="5">
+        <tr>
+          <td width="390px" style="vertical-align: top;"><b>
+          Solicitante:</b></td>
+          <td width="100px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="100px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="100px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="100px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="890px" colspan="3" style="vertical-align: top;"><b>Por la Coordinaci&oacute;n de Bienestar Social</b><br></td>
+        </tr>
+        <tr>
+          <td width="390px" style="vertical-align: top;"><b>Fecha de Solicitud:&nbsp;[% FOREACH planilla %][% dfechaEnvio %][% END %]</b></td>
+          <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td align="center" width="390px" colspan="3" style="vertical-align: top;"><b>Fecha de Recibido:&nbsp;[% FOREACH planilla %][% dfechaValida %][% END %]</b><br></td>
+        </tr>
+        <tr>
+          <td width="390px" style="vertical-align: top;"><b>Firma:</b></td>
+          <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td align="center" width="390px" colspan="3" style="vertical-align: top;"><b>Firma y Sello</b></td>
+        </tr>
+        <tr>
+          <td width="390px" style="vertical-align: top;">&nbsp;</td>
+          <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td width="390px" colspan="3" style="vertical-align: top;">&nbsp;</td>
+          <td align="right" width="390px" colspan="3" style="vertical-align: top;"><b>[%inicialnombre%]</b></td>
+        </tr>
+      </table>
+[% END %]
+</body>
+</html>

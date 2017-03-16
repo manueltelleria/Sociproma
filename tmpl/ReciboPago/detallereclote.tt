@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[%INCLUDE jsgenerales.tt %]
+
+[%formbuilder.jshead%]
+<script type="text/javascript">
+
+function verReporte() {
+  if (document.detalleReciboLote.stperiodo.value != "") {
+      document.detalleReciboLote.submit();
+  }
+}
+</script>
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu()">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+  <legend>Recibo de Pago - Periodos Disponibles</legend>
+  <table align="center" colspan="2">
+    <tr colspan="1">
+      <td><b>Periodos:&nbsp;</b>[%formbuilder.field.stperiodo.field %]</td>
+    </tr>
+    <tr>
+      <td align="center">[% formbuilder.field.volver.field %]&nbsp;[% formbuilder.submit %]</td>
+    </tr>
+  </table>
+</fieldset>
+[%formbuilder.end%]
+<br/>
+</body>
+</html>

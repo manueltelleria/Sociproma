@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+</head>
+<body onload="cargarMenu()">
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Registrar Licitaciones</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+<table align="center" cellpadding="2" width="60%" border="0">
+<tr>
+  <td align="center" colspan="2" class="titulodonforojo">Datos de la Licitaci&oacute;n</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.id_proyectos.label %]</td>
+  <td width="65%" height="20px" align="left"><b>[% datos.id_proyectos %]</b></td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.id.label %]</td>
+  <td width="65%" height="20px" align="left"><b>[% datos.id %]</b></td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.id_tpadquisicion.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.id_tpadquisicion %]</td>
+</tr>
+<tr>
+  <td width="35%" height="60px" align="left" class="fondoetiqueta5">[% formbuilder.field.sobjeto.label %]</td>
+  <td width="65%" height="60px" align="left">[% datos.sobjeto %]</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.dinicio.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.dinicio %]</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.dcontrato.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.dcontrato %]</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.dvenc.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.dvenc %]</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.nmtooferta.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.nmtooferta %]&nbsp;$</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.nmtocontrato.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.nmtocontrato %]&nbsp;$</td>
+</tr>
+<tr>
+  <td width="35%" height="20px" align="left" class="fondoetiqueta5">[% formbuilder.field.splazoejec.label %]</td>
+  <td width="65%" height="20px" align="left">[% datos.splazoejec %]</td>
+</tr>
+<tr>
+  <td width="35%" height="60px" align="left" class="fondoetiqueta5">[% formbuilder.field.sobservaciones.label %]</td>
+  <td width="65%" height="60px" align="justify">[% datos.sobservaciones %]</td>
+</tr>
+</table>
+&nbsp;
+<table align="center" width="60%">
+  <tr>
+    <td align="center">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

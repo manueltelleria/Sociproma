@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar-setup.js"></script>
+<!-- archivos de javascript generales (cargar en todas las pÃ¡ginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+[% formbuilder.jshead %]
+<script type="text/javascript">
+    function upd(valor, ruta){
+        document.forma.id_proyectos.value = valor;
+        document.forma.action = ruta;
+        document.forma.submit();
+    }
+    function limpiar(){
+        document.forma.qry_id_tpedoproy.value = ''
+        document.forma.qry_id_tpmacroedoproy.value = ''
+        document.forma.qry_id_tpregionpais.value = ''
+        document.forma.qry_id_tppais.value = ''
+        document.forma.qry_id_tpregionpais.value = ''
+        document.forma.qry_id_tpinstrumento.value = ''
+        document.forma.qry_id_tpmodalidad.value = ''
+        document.forma.qry_id_tpoperacion.value = ''
+        document.forma.qry_id_tpamortizacion.value = ''
+        document.forma.qry_id_tpsector.value = ''
+        document.forma.qry_tcreacion_desde.value = ''
+        document.forma.qry_tcreacion_hasta.value = ''
+        document.forma.qry_nmntoFinto_desde.value = ''
+        document.forma.qry_nmntoFinto_hasta.value = ''
+        document.forma.qry_snombproy.value = ''
+        document.forma.qry_ssolicitante.value = '' 
+    }
+</script>
+  
+
+</head>
+<body  onload="cargarMenu()">
+[% INCLUDE encabezado.tt %]
+
+<!-- Login form -->
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+
+    <fieldset>
+    <legend>Reportes Proyectos</legend>
+        <table align="left" width="60%" border="0" width=800>
+        <tr class=titulodonforojo>
+            <th colspan=2 >Parametros de Busqueda</th>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>[% formbuilder.field.qry_id_proyectos.label %]</td>
+            <td >[% formbuilder.field.qry_id_proyectos.field %]</td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>[% formbuilder.field.qry_snombproy.label %]</td>
+            <td>[% formbuilder.field.qry_snombproy.field %]</td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>[% formbuilder.field.qry_ssolicitante.label %]</td>
+            <td>[% formbuilder.field.qry_ssolicitante.field %]</td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left">Monto de Financiamiento</td>
+            <td>
+                <table>
+                        <tr>
+                            <td>[% formbuilder.field.qry_nmntoFinto_desde.label %]</td>
+                            <td>[% formbuilder.field.qry_nmntoFinto_desde.field %]($)</td>
+                        </tr>
+                        <tr>
+                            <td>[% formbuilder.field.qry_nmntoFinto_hasta.label %]</td>
+                            <td>[% formbuilder.field.qry_nmntoFinto_hasta.field %]($)</td>
+                        </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left">Fecha de Creaci&oacute;n</td>
+            <td>
+                <table>
+                        <tr>
+                            <td>[% formbuilder.field.qry_tcreacion_desde.label %]</td>
+                            <td>[% formbuilder.field.qry_tcreacion_desde.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="a_dfecha" style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onMouseOut="this.style.background=''"/>
+                            <script type="text/javascript">
+                            Calendar.setup({
+                                    inputField     :    "tcreacion_desde",     // id of the input field
+                                    ifFormat       :    "%d/%m/%Y",      // format of the input field
+                                    button         :    "a_dfecha",  // trigger for the calendar (button ID)
+                                    align          :    "Tl",           // alignment (defaults to "Bl")
+                                    singleClick    :    true
+                            });
+                            </script></td>
+                        </tr>
+                        <tr>
+                            <td>[% formbuilder.field.qry_tcreacion_hasta.label %]</td>
+                            <td>[% formbuilder.field.qry_tcreacion_hasta.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="b_dfecha" style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onMouseOut="this.style.background=''"/>
+                            <script type="text/javascript">
+                            Calendar.setup({
+                                    inputField     :    "tcreacion_hasta",     // id of the input field
+                                    ifFormat       :    "%d/%m/%Y",      // format of the input field
+                                    button         :    "b_dfecha",  // trigger for the calendar (button ID)
+                                    align          :    "Tl",           // alignment (defaults to "Bl")
+                                    singleClick    :    true
+                            });
+                            </script></td>
+                        </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>[% formbuilder.field.qry_id_tpedoproy.label %]</td>
+            <td>[% formbuilder.field.qry_id_tpedoproy.field %]</td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>[% formbuilder.field.qry_id_tpmacroedoproy.label %]</td>
+            <td>[% formbuilder.field.qry_id_tpmacroedoproy.field %]</td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>[% formbuilder.field.qry_id_tpinstrumento.label %]</td>
+            <td>[% formbuilder.field.qry_id_tpinstrumento.field %]</td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>[% formbuilder.field.qry_id_tpmodalidad.label %]</td>
+            <td>[% formbuilder.field.qry_id_tpmodalidad.field %]</td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>[% formbuilder.field.qry_id_tpoperacion.label %]</td>
+            <td>[% formbuilder.field.qry_id_tpoperacion.field %]</td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>[% formbuilder.field.qry_id_tpamortizacion.label %]</td>
+            <td>[% formbuilder.field.qry_id_tpamortizacion.field %]</td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>[% formbuilder.field.qry_id_tpsector.label %]</td>
+            <td>[% formbuilder.field.qry_id_tpsector.field %]</td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>[% formbuilder.field.qry_id_tpregionpais.label %]</td>
+            <td>[% formbuilder.field.qry_id_tpregionpais.field %]</td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>[% formbuilder.field.qry_id_tppais.label %]</td>
+            <td>[% formbuilder.field.qry_id_tppais.field %]</td>
+        </tr>
+        <tr>
+            <td class="fondoetiqueta" align="left" nowrap>Salida</td>
+            <td>[% formbuilder.field.flag.field %]</td>
+        </tr>
+        <tr>
+            <td class="" align="left" colspan=2 align=center><hr></td>
+        </tr>
+        <tr>
+            <td class="" align="left" colspan=2 align=center>[% formbuilder.submit %]  <input type=button  onclick="javascript:limpiar()" value='Limpiar'/> </td>
+        </tr>
+        </table>
+    </fieldset>
+
+ [% IF tabla %]
+
+
+    <table cellpadding=2 cellspacing=2 class=box1>
+        <tr class=titulodonforojo>
+            <th colspan=6>
+                Gr&aacute;ficos
+            </th>
+        </tr>
+        <tr>
+            [% FOREACH grafico %]
+                <td width=200 nowrap class=fondoetiqueta>
+                    <b>[% nombre %]</b></td><td width=50 nowrap class=fondoetiqueta2>
+                    <a href='#' onclick ="javascript:window.open('http://chart.apis.google.com/chart?chs=1000x300&chco=015289&cht=p3&[% enlace %]','[% nombre %]','toolbar=0,menubar=1,scrollbars=0,status=0,resizable=0,width =1020,height=340')" >Monto</a><br>
+                    <a href='#' onclick ="javascript:window.open('http://chart.apis.google.com/chart?chs=1000x300&chco=015289&cht=p3&[% enlace2 %]','[% nombre %]','toolbar=0,menubar=1,scrollbars=0,status=0,resizable=0,width =1020,height=340')" >Proyecto</a>
+                </td>
+                [% IF bk > 0 %]
+                    </tr>
+                [% END %]
+            [% END %]
+        </tr>
+    </table>
+
+
+    <table align="" border=0 cellspacing="1" cellpadding="2">
+        <tr class=titulodonforojo>
+            <th colspan=28>Proyectos</th>
+        </tr>
+        <tr class=fondoetiqueta5>
+            <th width=60>N°</th>
+            <th width=200>Solicitante</th>
+            <th width=200>Nombre del Proyecto</th>
+            <th width=70>Monto del Proyecto ($)</th> 
+            <th width=70>Monto Financiamiento ($)</th> 
+            <th width=70>Pa&iacute;s/<br>Regi&oacute;n</th>
+            <th width=70>Status</th>
+            <th width=70>Pto.Cta/Pdcia</th>
+            <th width=100>Pto.Cta/Bandes</th>
+            <th width=70>Fecha Aprobado</th>
+            <th width=100>Instrumento</th>
+            <th width=100>Contrato</th>
+            <th width=100>Fecha Contrato</th>
+            <th width=100>Modalidad</th>
+            <th width=100>Operacion</th>
+            <th width=100>Tasa de Inter&eacute;s</th>
+            <th width=100>Tasa Mora</th>
+            <th width=100>Plazo amortizaci&oacute;n</th>
+            <th width=100>Forma amortizaci&oacute;n</th>
+            <th width=100>Periodo Gracia</th>
+            <th width=100>Pct. Fin. BANDES</th>
+            <th width=100>Pct. Pais Destino</th>
+            <th width=100>Pct. Pais Otro</th>
+            <th width=100>Beneficiarios</th>
+            <th width=100>Sector de Cooperaci&oacute;n</th>
+            <th width=100>Monto Desembolsado ($)</th>
+            <th width=100>Monto por Desembolsar ($)</th>
+            <th width=100>Año de Aprobaci&oacute;n</th>
+        </tr>
+        [% FOREACH field IN tabla %]
+        <tr class=[% field.clase %]>
+            <td align=center><a style="text-decoration:none" href="javascript:upd([% field.id %],'/coprofi/proyecto/proyecto/fichaProyecto')">[% field.id %]</a></td>
+            <td>[% field.ssolicitante %]</td>
+            <td>[% field.snombproy %]</td>
+            <td align=right nowrap>[% field.nmtoproyecto %]</td>
+            <td align=right nowrap>[% field.nmtofinanc %]</td>
+            <td align=center><img src="[% ruta_estatica %]/imagenes/Banderas/[% field.id_tppais %].png" border="0" width=25><br> [% field.pais %]/<br>[% field.region %]</td>
+            <td align=center>[% field.stpedoproy %]</td>
+            <td>[% field.snroptopdcia %]</td>
+            <td>[% field.sptofinanc %]</td>
+            <td align=center>[% field.dptofinanc %]</td>
+            <td align=center>[% field.id_tpinstrumento %]</td>
+            <td align=center>[% field.snrocontrato %]</td>
+            <td align=center>[% field.dcontrato%]</td>
+            <td align=center>[% field.id_tpmodalidad %]</td>
+            <td align=center>[% field.id_tpoperacion %]</td>
+            <td align=center nowrap>[% field.ntasafinanc %]%</td>
+            <td align=center nowrap>[% field.ntasamora %]%</td>
+            <td align=center>[% field.splazoamort %]</td>
+            <td align=center>[% field.id_tpamortizacion %]</td>
+            <td>[% field.speriodogracia %]</td>
+            <td align=center nowrap>[% field.pctBandes %]</td>
+            <td align=center nowrap>[% field.pctpaisdest %]</td>
+            <td align=center nowrap>[% field.pctpaisotro %]</td>
+            <td align=center>[% field.nnrobenef %]</td>
+            <td align=center>[% field.id_tpsector %]</td>
+            <td align=right nowrap>[% field.mtoDesembolsado %]</td>
+            <td align=right nowrap>[% field.mtoDesembolsar %]</td>
+            <td align=center>[% field.anhoAprobado %]</td>
+        </tr>
+        [% END %]
+        <tr class=''>
+            <td colspan=28><br><hr></td>
+        </tr>
+    </table>
+
+[% END %]
+    [% formbuilder.field.id_proyectos.field %]
+    [% formbuilder.end %]
+</body>
+</html>

@@ -1,0 +1,7 @@
+<ul id="tabnav">
+[% FOREACH menuNavegacion %]
+  <li>
+    <a class="[% activo %]" href="[% url %]">[% opcion %]</a>
+  </li>
+[% END %]
+</ul>

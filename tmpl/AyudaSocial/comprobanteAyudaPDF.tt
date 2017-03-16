@@ -1,0 +1,130 @@
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="52px" width="96px" ><img src="[% ruta_estatica %]/imagenes/bandes.jpg" width="96px" height="52px" /></td>
+    <td height="52px" width="430px" align="center" valign="middle"><font size="6"><b>COMPROBANTE RECEPCI&Oacute;N DE DOCUMENTOS</b></font></td>
+    <td height="52px" width="144px" align="center">
+      <table border="1" cellpadding="2" cellspacing="0" align="center" width="144px">
+        <tr>
+          <td width="144px" height="7px" colspan="3" align="left" bgcolor="#A3A8A3"><font size="4"><b>1. Solicitud N&#176;</b></font></td>
+        </tr>
+        <tr>
+          <td width="144px" height="7px" colspan="3" align="center"><font size="3"><b>[% nayuda %]</b></font></td>
+        </tr>
+        <tr>
+          <td width="144px" height="7px" colspan="3" align="left" bgcolor="#A3A8A3"><font size="4"><b>2. Fecha de Recepci&oacute;n</b></font></td>
+        </tr>
+        <tr>
+          <td width="48px" height="7px" align="center" valign="middle"><font size="4">[% dfecha_dia %]</font></td>
+          <td width="48px" height="7px" align="center" valign="middle"><font size="4">[% dfecha_mes %]</font></td>
+          <td width="48px" height="7px" align="center" valign="middle"><font size="4">[% dfecha_anio %]</font></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px" colspan="6" align="center" bgcolor="#A3A8A3"><font size="4"><b>DATOS B&Aacute;SICOS DEL SOLICITANTE</b></font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="500px" bgcolor="#A3A8A3"><font size="4"><b>3. Nombres y Apellidos / Raz&oacute;n Social</b></font></td>
+    <td height="7px" width="170px" bgcolor="#A3A8A3"><font size="4"><b>4. C.I. / RIF</b></font></td>
+  </tr>
+  <tr>
+    <td height="20px" width="386px" valign="middle">
+      <font size="4">[% solicitante.snombre %]</font>
+    </td>
+    <td height="20px" width="150px" valign="middle">
+      <font size="4">[% solicitante.id %]</font>
+    </td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px" align="center" bgcolor="#A3A8A3"><font size="4"><b>DESCRIPCI&Oacute;N DE LA SOLICITUD</b></font></td>
+  </tr>
+  <tr>
+    <td height="7px" width="670px" bgcolor="#A3A8A3"><font size="4"><b>5. Tipo de Ayuda</b></font></td>
+  </tr>
+  <tr>
+    <td height="40px" width="670px">
+    <font size="4">
+      <table width="670px" cellspacing="0" border="0" cellpadding="2" align="center">
+        <tr>
+          <td width="253px">
+            [% IF destinos.20 %]
+              <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Intervenciones Quir&uacute;rgicas en Centros de Salud P&uacute;blica
+              [% ELSE %]
+              <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Intervenciones Quir&uacute;rgicas en Centros de Salud P&uacute;blica
+            [% END %]
+          </td>
+          <td width="143px">
+            [% IF destinos.19 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Ex&aacute;menes y Estudios M&eacute;dicos
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Ex&aacute;menes y Estudios M&eacute;dicos
+            [% END %]
+          </td>
+          <td width="274px">
+            [% IF destinos.21 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Dotaci&oacute;n (Insumos, Mobiliario, Materiales y Equipos) a Centros de Salud P&uacute;blica
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Dotaci&oacute;n (Insumos, Mobiliario, Materiales y Equipos) a Centros de Salud P&uacute;blica
+            [% END %]
+          </td>
+        </tr>
+        <tr>
+          <td width="223px">
+            [% IF destinos.11 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Pr&oacute;tesis
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Pr&oacute;tesis
+            [% END %]
+          </td>
+          <td width="447px" colspan="2">
+            [% IF destinos.22 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Refacci&oacute;n y/o Ampliaci&oacute;n de Infraestructura en Centros de Salud P&uacute;blica
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Refacci&oacute;n y/o Ampliaci&oacute;n de Infraestructura en Centros de Salud P&uacute;blica
+            [% END %]
+          </td>
+        </tr>
+      </table>
+    </font>
+    </td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="60px" width="526px" colspan="2" valign="top">
+      <font size="4">
+        [% IF destinos.8 %]
+          <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;<b>Otro, Especifique:</b>&nbsp;[% sotrodestino %]
+        [% ELSE %]
+          <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;<b>Otro, Especifique:</b>
+        [% END %]
+      </font>
+    </td>
+    <td height="60px" width="144px" align="center" valign="bottom"><font size="1"><b>Sello</b></font></td>
+  </tr>
+</table>
+<table border="0" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px"><font size="1"><b>FORM.B_ASO_02_10</b></font></td>
+  </tr>
+</table>
+<br>
+<table border="0" cellpadding="2" cellspacing="0" align="center" width="380px">
+  <tr>
+    <td height="10px" width="380px" align="center" bgcolor="#A3A8A3">
+      <font size="5"><b>NOTA IMPORTANTE</b></font>
+    </td>
+  </tr>
+  <tr>
+    <td height="20px" width="380px" align="center">
+      <font size="5"><b>LA RECEPCI&Oacute;N DE LOS DOCUMENTOS NO IMPLICA SU APROBACI&Oacute;N POR PARTE DE BANDES</font>
+    </td>
+  </tr>
+</table>

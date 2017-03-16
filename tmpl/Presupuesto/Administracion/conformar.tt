@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar-setup.js"></script>
+
+[% formbuilder.jshead %]
+
+
+<script type="text/javascript">
+
+    function upd(valor, ruta){
+        
+        document.datalle.action = ruta;
+        document.datalle.hoja.value = valor;
+        document.datalle.submit();
+    }
+    
+    function marcar() {
+        document.datalle.hoja.value = 0;
+        document.datalle.marca.value = 1;
+    }
+</script>
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Conformaci&oacute;n de Base de C&aacute;lculo</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+<table align="center" width="65%">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">Conformaci&oacute;n de Base de C&aacute;lculo</td>
+  </tr>
+
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>Unidad Administrativa<b></td>
+    <td align="left"><b>[% unidad_administrativa %]</b></td>
+  </tr>
+
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>Unidad Ejecutora<b></td>
+    <td align="left"><b>[% unidad_responsable %]</b></td>
+  </tr>
+
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>Proyecto/Acci&oacute;n centralizada<b></td>
+    <td align="left"><b>[% proyecto %]</b></td>
+  </tr>
+
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>Acci&oacute;n Especifica<b></td>
+    <td align="left"><b>[% accion_especifica %]</b></td>
+  </tr>
+
+
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_actividades.label %]<b></td>
+    <td align="left"><b>[% formbuilder.field.id_actividades.value %][% formbuilder.field.id_actividades.field %]- [% formbuilder.field.sdescripcion.value %]</b></td>
+  </tr>
+
+
+
+<!--  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.sdescripcion.label %]<b></td>
+    <td align="left">[% formbuilder.field.sdescripcion.field %]</td>
+  </tr>-->
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.bconforme.label %]<b></td>
+    <td align="left">[% formbuilder.field.bconforme.field %]</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.sobservacion.label %]<b></td>
+    <td align="left">[% formbuilder.field.sobservacion.field %]</td>
+  </tr>
+  <tr>
+    <td colspan="2" align=""><a style="text-decoration:none" href="javascript: if (validate_datalle(document.datalle)){upd(1,'/presupuesto/administracion/conformaractividad/detallarActividad')}"><IMG src="/static/imagenes/excel.jpg" border="0"> Generar hoja de c&aacute;lculo</a></td>
+  </tr>
+
+  <tr>
+    <td colspan="2" align="center"><input type=button  onclick="javascript: if (validate_datalle(document.datalle)){document.datalle.flag.value=1; upd(0,'/presupuesto/administracion/conformaractividad/detallarActividad')}" value='Conformar'/>
+    <input type=button  onclick="javascript: document.datalle.flag.value=1; upd(0,'/presupuesto/administracion/conformaractividad/buscarActividades')" value='<< Regresar'/>
+    </td>
+  </tr>
+    <tr class=''>
+      <td colspan=2 >(*) Estos campos son obligatorios</td>
+    </tr>
+    <tr>
+    <td align="left" class="" nowrap colspan=2 >
+            <table align="center" border=0 cellspacing="1" cellpadding="2" width="65%">
+        <tr class=titulodonforojo>
+            <th width=40 colspan=12 align=center> Base de c&aacute;lculo</th>
+        </tr>
+  <tr class=fondoetiqueta5 align=center>
+            <th width=40>N°</th>
+            <th width=200>Concepto</th>
+            <th width=40>Precio (BsF)</th>
+            <th width=40>Cantidad</th>
+            <th width=40>Costo (BsF)</th>
+            <th width=40>Partida</th>
+            <th width=40>Denominaci&oacute;n</th>
+            <th width=20>Periodo estimado de Ejecuci&oacute;n</th>
+        </tr>
+        [% FOREACH field IN tabla %]
+        <tr class=[% field.clase %]>
+            <td>[% IF field.num %][% field.num %][% END %]</td>
+            <td>[% field.id_productoservicios %]</td>
+            <td align=right><font color=red ><b>[% field.actualizado %]</b></font> [% field.precio %]</td>
+            <td align=right>[% field.ncantidad %]</td>
+            <td align=right>[% field.subtotal %]</td>
+            <td><a onmouseover="javascript: var str= '[% field.partida %]'; Tip('<b>PARTIDA: </b>' + str.substring(0,3) + '<br><b>GENERICA: </b>' + str.substring(3,5) +'<br><b>ESPECIFICA: </b>' + str.substring(5,7) +'<br><b>SUB-ESPECIFICA: </b>' + str.substring(7,9) )" onmouseout="UnTip()"    />[% field.partida %]<a></td>
+            <td>[% field.denominacion %]</td>
+            <td align=center>
+                [% IF field.num %]
+                    [% IF field.imesinicio == field.imesfin %]
+                        [% field.imesinicio %]
+                    [% ELSE %]
+                        [% field.imesinicio %]-[% field.imesfin %]
+                    [% END %]
+                [% END %]
+            </td>
+        </tr>
+        [% END %]
+        <tr >
+            <tD colspan=11><hr></tD>            
+        </tr>
+      </table>
+        <font color=red ><b>(!)</b></font> El Producto ha cambiado su caracteristica. 
+    </td>
+  </tr>
+ 
+</table>
+[% formbuilder.field.id_recursos.field %]
+[% formbuilder.field.marca.field %]
+[% formbuilder.field.hoja.field %]
+[% formbuilder.field.flag.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

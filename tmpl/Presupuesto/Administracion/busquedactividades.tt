@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+[% formbuilder.start %]
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar-setup.js"></script>
+
+<!-- <link href="/css/print.css" rel="stylesheet" type="text/css" media="print"> -->
+
+[% formbuilder.jshead %]
+
+
+<script type="text/javascript">
+
+    function upd(valor, ruta){
+        document.datosbasicos.id_actividades.value = valor;
+        document.datosbasicos.action = ruta;
+        document.datosbasicos.submit();
+    }
+
+
+</script>
+
+<script language="JavaScript">
+
+var arregloCampos = new Array(
+  new Array('id_unidadesadmin','id_proyectos','id_accionespecificas'),
+  new Array('id_proyectos','id_accionespecificas')
+);
+
+//Función funcionCargarListas: se encarga de cargar el contenido de las listas dependientes deL valor del indicador de acuerdo a la selección realizada (Tipo de Antecedente seleccionada para el caso de un indicador).
+function funcionCargarListas(nombreCampoSeleccionado){
+  var forma = document.datosbasicos;
+  var listaSeleccionada = eval('forma.'+nombreCampoSeleccionado);
+  var url = '[% ruta_listas %]';
+  var campoLlenar = buscarValorAsociadoEnArreglo(arregloCampos, '0', nombreCampoSeleccionado, 1);
+  var funcion = eval('llenar_' + campoLlenar);
+  var valorSeleccionado = listaSeleccionada.options[listaSeleccionada.selectedIndex].value;
+  if (valorSeleccionado) {
+    var pars = nombreCampoSeleccionado+"="+valorSeleccionado;
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: funcion});
+  }
+  else {
+    limpiarListas(campoLlenar);
+  }
+}
+
+
+function funcionCargarListas2(nombreCampoSeleccionado){
+  var forma = document.datosbasicos;
+  var listaSeleccionada = eval('forma.'+nombreCampoSeleccionado);
+  var url = '[% ruta_listas2 %]';
+  var campoLlenar = buscarValorAsociadoEnArreglo(arregloCampos, '0', nombreCampoSeleccionado, 1);
+  var funcion = eval('llenar_' + campoLlenar);
+  var valorSeleccionado = listaSeleccionada.options[listaSeleccionada.selectedIndex].value;
+  if (valorSeleccionado) {
+    var pars = nombreCampoSeleccionado+"="+valorSeleccionado;
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: funcion});
+  }
+  else {
+    limpiarListas(campoLlenar);
+  }
+}
+
+//Función llenarListaDependiente: método encargado de traducir la respuesta del servidor con la lista de valores que deben ser incluidas y llenar las listas dependientes con la información.
+function llenarListaDependiente(originalRequest, nombreListaLlenar) {
+  var respuesta = originalRequest.responseText;
+  var forma = document.datosbasicos;
+  var listaLlenar = eval('forma.'+nombreListaLlenar);
+  limpiarListas(nombreListaLlenar);
+
+  if ( respuesta != 'undef' ){
+    var primerarreglo = respuesta.split("|");
+    for(i=0;i<primerarreglo.length;i++){
+      var elemento  = primerarreglo[i].split(":");
+      agregarOpcionLista(listaLlenar,new Option(elemento[1],elemento[0]));
+    }
+  }
+}
+
+// Función limpiarListas: Método encargado de limpiar el contenido de una lista desplegable.
+function limpiarListas(nombreLista) {
+  var forma = document.datosbasicos;
+  vaciarLista(eval('forma.'+nombreLista));
+}
+
+//Función llenar_id_tpindicador: Método encargado de hacer el llamado al método llenarListaDependiente, indicando que la lista a trabajar es la de los indicadores.
+function llenar_id_accionespecificas(originalRequest) {
+    var j = document.datosbasicos.id_accionespecificas.value;
+  llenarListaDependiente(originalRequest, 'id_accionespecificas');
+    document.datosbasicos.id_accionespecificas.value = j;
+}
+
+function llenar_id_proyectos(originalRequest) {
+    var j = document.datosbasicos.id_proyectos.value;
+  llenarListaDependiente(originalRequest, 'id_proyectos');
+    document.datosbasicos.id_proyectos.value = j;
+}
+
+</script>
+</head>
+<body onload="cargarMenu();">
+ 
+[% INCLUDE encabezado.tt %]
+ 
+<fieldset>
+<legend>Conformacion de Base de C&aacute;lculo</legend> 
+
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+
+<table align="center" width="65%">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">Conformaci&oacute;n de Base de C&aacute;lculo</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.id_unidadesadmin.label %]<b></td>
+    <td align="left">[% formbuilder.field.id_unidadesadmin.field %]</td>
+  </tr>
+
+  <tr>
+    <td colspan="2" ><a style="text-decoration:none" href="javascript: if (validate_datosbasicos(document.datosbasicos)){ upd(0,'/presupuesto/administracion/conformaractividad/salidaPdf')}"><img src="[% ruta_estatica %]/imagenes/pdf.jpg" onmouseover="Tip('<b>Genera salida PDF</b>')" border=0 onmouseout="UnTip()"> Generar PDF</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2" align="center"><input type=button  onclick="javascript: if (validate_datosbasicos(document.datosbasicos)){document.datosbasicos.flag.value=1; upd(0,'/presupuesto/administracion/conformaractividad/buscarActividades')}" value='Buscar'/> <!--[% formbuilder.submit %]&nbsp;-->
+    </td>
+  </tr>
+</table>
+
+
+ <table align="center" border=0 cellspacing="1" cellpadding="2" width="65%">
+        <tr class=titulodonforojo>
+            <th width=40 colspan=12> Lista de Actividades ([% Presupuesto %]) : <br>[% Unidad %]  </th>
+        </tr>
+        <tr class=fondoetiqueta5>
+            <th width=20>N°</th>
+            <th width=150>Actividad</th>
+            <th width=150>Unidad Ejecutora</th>
+            <th width=150>Acci&oacute;n Espec&iacute;fica</th>
+            <th width=150>Proyecto/ Acci&oacute;n Centralizada</th>
+            <th width=150>Monto Actividad (+iva)</th>
+            <th width=10 >Conformidad</th>
+        </tr>
+        [% FOREACH field IN tabla2 %]
+        <tr class=[% field.clase %]>
+            <td>[% field.id %]</td>
+            <td>[% field.sdescripcion %]</td>
+            <td>[% field.id_unidadesadmin2 %]</td>
+            <td>[% field.id_accionespecificas %]</td>
+            <td>[% IF field.id %][% field.snombproy %][% ELSE %] TOTAL[% END %]</td>
+            <td align='right' nowrap>[% field.mntoAct %]</td>
+<!--             <td>[% field.id_unidadesadmin %]</td>            -->
+            <td align=center>[% IF field.id %]<a style="text-decoration:none" href="javascript:upd([% field.id %],'/presupuesto/administracion/conformaractividad/detallarActividad')"><img src="[% field.bconforme %]" onmouseover="Tip('<b>[% field.sconforme %]</b>')" border=0 onmouseout="UnTip()"></a>[% END %]</td>
+        </tr>
+        [% END %]
+        <tr >
+            <tD colspan=11><hr>
+            
+
+            </tD>
+
+        </tr>
+      </table>
+[% formbuilder.field.id_actividades.field %]
+[% formbuilder.field.flag.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

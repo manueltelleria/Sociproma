@@ -1,0 +1,97 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+[% IF noexiste %]
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <tr>
+      <td width="905px" colspan="4" align="center" class="titulodonfomarillo">[% noexiste %]</td>
+    </tr>
+</table>
+[% END %]
+[% IF rrhh %]
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <tr>
+      <td align="center" colspan="10" bgcolor="#DDDDDD"><b><big>Hist&oacute;rico</big></b></td>
+    </tr>
+      <tr>
+        <td align="center" colspan="10">&nbsp;</td>
+     </tr>
+  <tr>
+    <td align="center" colspan="7" bgcolor="#DDDDDD"><b><big>Datos del Trabajador</big></b></td>
+  </tr>
+  <tr class="titulodonforojo">
+    <td width="250px" colspan="2"><b><small>Nombres y Apellidos</small></b></td>
+    <td width="100px" colspan="1"><b><small>Nro. C&eacute;dula</small></b></td>
+    <td width="300px" colspan="3"><b><small>Ubicaci&oacute;n</small></b></td>
+    <td width="150px" colspan="1"><b><small>Extensi&oacute;n</small></b></td>
+  </tr>
+  [% FOREACH rrhh %]
+  <tr>
+    <td width="250px" colspan="2" nowrap><small>[% snombre %]&nbsp;[% sapellido %]</small></td>
+    <td width="100px" colspan="1" nowrap><small>[% scedula %]</small></td>
+    <td width="300px" colspan="3" nowrap><small>[% subicacion %]</small></td>
+    <td width="150px" colspan="1" nowrap><small>[% ntelfoficina %]</small></td>
+  </tr>
+  [% END %]
+[% END %]
+<br>
+[% IF lista %]
+    <tr>
+      <td align="center" colspan="7">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="center" colspan="7" bgcolor="#DDDDDD"><b><big>Lista de Cr&eacute;ditos Solicitados</big></b></td>
+    </tr>
+    <tr class="titulodonforojo">
+      <td width="150px" colspan="1" align="center"><small>Tipo de Solicitud</small></td>
+      <td width="50px" colspan="1" align="center"><small>Nro. de Solicitud</small></td>
+      <td width="70px" colspan="1" align="center"><small>Financiamiento</small></td>
+      <td width="250px" colspan="1" align="center"><small>Estatus</small></td>
+      <td width="100px" colspan="1" align="center"><small>Fecha</small></td>
+      <td width="180px" colspan="2" align="center"><small>Usuario</small></td>
+
+    </tr>
+    [% FOREACH lista %]
+      <tr>
+        <td width="150px" colspan="1" align="center"><small>[% id_tpsolicitud %]</small></td>
+        <td width="50px" colspan="1" align="center">[% IF id_tpestatus == 3 OR id_tpestatus == 5 OR id_tpestatus == 6 OR id_tpestatus == 9 OR id_tpestatus == 10%]<small>[% IF nroexpediente %][%nroexpediente%][%ELSE%][% nnrosolicitud %][% END %]</small>[%ELSE%]&nbsp;[% END %]</td>
+        <td width="70px" colspan="1"><small>[% id_tpfinciamto %]</small></td>
+        <td width="250px" colspan="1" align="justify"><small><font color="#DF0101">[% stpestatus %]</font>[%IF sobservacion%]&nbsp;<font color="#DF0101">por:</font>&nbsp;<b>[%sobservacion%]</b>[%END%]</small></td>
+        <td width="100px" colspan="1"><small>[% dfecha %]</small></td>
+        <td width="180px" colspan="2"><small>[% nombreapellido %]</small></td>
+      </tr>
+    [% END %]
+[% END %]
+</table>
+<br>
+<table align="center" colspan="3">
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]</td>
+  </tr>
+</table>
+[% formbuilder.end %]
+<br/>
+</body>
+</html>

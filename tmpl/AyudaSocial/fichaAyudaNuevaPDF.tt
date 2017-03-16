@@ -1,0 +1,307 @@
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="42px" width="86px" ><img src="[% ruta_estatica %]/imagenes/bandes.jpg" width="86px" height="42px" /></td>
+    <td height="42px" width="440px" align="center" valign="middle"><font size="6"><b>SOLICITUD DE AYUDA SOCIAL</b></font></td>
+    <td height="42px" width="144px" align="center">
+      <table border="1" cellpadding="2" cellspacing="0" align="center" width="144px">
+        <tr>
+          <td width="144px" height="7px" colspan="3" align="left" bgcolor="#A3A8A3"><font size="2"><b>1. Solicitud N&#176;</b></font></td>
+        </tr>
+        <tr>
+          <td width="144px" height="7px" colspan="3" align="center">[% nayuda %]</td>
+        </tr>
+        <tr>
+          <td width="144px" height="7px" colspan="3" align="left" bgcolor="#A3A8A3"><font size="2"><b>2. Fecha de Elaboraci&oacute;n</b></font></td>
+        </tr>
+        <tr>
+          <td width="48px" height="7px" align="center" valign="middle">[% dfecha_dia %]</td>
+          <td width="48px" height="7px" align="center" valign="middle">[% dfecha_mes %]</td>
+          <td width="48px" height="7px" align="center" valign="middle">[% dfecha_anio %]</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px" colspan="6" align="center" bgcolor="#A3A8A3"><font size="2"><b>DATOS B&Aacute;SICOS DEL BENEFICIARIO</b></font></td>
+  </tr>
+  <tr>
+    <td height="7px" width="670px" colspan="6" bgcolor="#A3A8A3"><font size="2"><b>BENEFICIARIO PERSONA NATURAL</b></font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="386px" colspan="2" bgcolor="#A3A8A3"><font size="2"><b>3. Nombres y Apellidos</b></font></td>
+    <td height="7px" width="150px" bgcolor="#A3A8A3"><font size="2"><b>4. C&eacute;dula de Identidad</b></font></td>
+    <td height="7px" width="134px" colspan="3" bgcolor="#A3A8A3"><font size="2"><b>5. Fecha de Nacimiento</b></font></td>
+  </tr>
+  <tr>
+    <td height="20px" width="386px" colspan="2" valign="middle"><font size="2">[% IF beneficiario.tppersona == 1 %][% beneficiario.snombre %][% ELSE %]&nbsp;[% END %]</font></td>
+    <td height="20px" width="150px" valign="middle"><font size="2">[% IF beneficiario.tppersona == 1 %][% beneficiario.id %][% ELSE %]&nbsp;[% END %]</font></td>
+    <td height="20px" width="44px" align="center" valign="middle"><font size="2">[% IF beneficiario.tppersona == 1 %][% beneficiario.dfechanac_dia %][% ELSE %]&nbsp;[% END %]</font></td>
+    <td height="20px" width="45px" align="center" valign="middle"><font size="2">[% IF beneficiario.tppersona == 1 %][% beneficiario.dfechanac_mes %][% ELSE %]&nbsp;[% END %]</font></td>
+    <td height="20px" width="45px" align="center" valign="middle"><font size="2">[% IF beneficiario.tppersona == 1 %][% beneficiario.dfechanac_anio %][% ELSE %]&nbsp;[% END %]</font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px" colspan="6" bgcolor="#A3A8A3"><font size="2"><b>6. Direcci&oacute;n</b></font></td>
+  </tr>
+  <tr>
+    <td height="40px" width="670px" colspan="6" align="justify" valign="top"><font size="2">[% IF beneficiario.tppersona == 1 %][% beneficiario.sdireccion %][% ELSE %]&nbsp;[% END %]</font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+ <tr>
+    <td height="7px" width="223px" colspan="2" bgcolor="#A3A8A3"><font size="2"><b>7. Municipio</b></font></td>
+    <td height="7px" width="223px" colspan="2" bgcolor="#A3A8A3"><font size="2"><b>8. Estado</b></font></td>
+    <td height="7px" width="224px" colspan="2" bgcolor="#A3A8A3"><font size="2"><b>9. Tel&eacute;fonos</b></font></td>
+  </tr>
+  <tr>
+    <td height="20px" width="223px" colspan="2" valign="middle"><font size="2">[% IF beneficiario.tppersona == 1 %][% beneficiario.id_tpmunicipio %][% ELSE %]&nbsp;[% END %]</font></td>
+    <td height="20px" width="223px" colspan="2" valign="middle"><font size="2">[% IF beneficiario.tppersona == 1 %][% beneficiario.id_tpentfederal %][% ELSE %]&nbsp;[% END %]</font></td>
+    <td height="20px" width="224px" colspan="2" valign="middle"><font size="2">[% IF beneficiario.tppersona == 1 %][% beneficiario.stelefono %][% ELSE %]&nbsp;[% END %]</font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px" colspan="3" bgcolor="#A3A8A3"><font size="2"><b>BENEFICIARIO PERSONA JUR&Iacute;DICA</b></font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="416px" colspan="2" bgcolor="#A3A8A3"><font size="2"><b>10. Raz&oacute;n Social</b></font></td>
+    <td height="7px" width="254px" bgcolor="#A3A8A3"><font size="2"><b>11. RIF</b></font></td>
+  </tr>
+  <tr>
+    <td height="20px" width="416px" colspan="2" valign="middle"><font size="2">[% IF beneficiario.tppersona == 2 %][% beneficiario.snombre %][% ELSE %]&nbsp;[% END %]</font></td>
+    <td height="20px" width="254px" valign="middle"><font size="2">[% IF beneficiario.tppersona == 2 %][% beneficiario.id %][% ELSE %]&nbsp;[% END %]</font></td>
+  </tr>
+  <tr>
+    <td height="7px" width="416px" colspan="2" bgcolor="#A3A8A3"><font size="2"><b>12. Nombre y Apellido del Representante Legal</b></font></td>
+    <td height="7px" width="254px" bgcolor="#A3A8A3"><font size="2"><b>13. C.I.</b></font></td>
+  </tr>
+  <tr>
+    <td height="20px" width="416px" colspan="2" valign="middle"><font size="2">[% IF beneficiario.tppersona == 2 %][% beneficiario.snombrerepre %][% ELSE %]&nbsp;[% END %]</font></td>
+    <td height="20px" width="254px" valign="middle"><font size="2">[% IF beneficiario.tppersona == 2 %][% beneficiario.scedularepre %][% ELSE %]&nbsp;[% END %]</font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px" colspan="3" bgcolor="#A3A8A3"><font size="2"><b>14. Direcci&oacute;n</b></font></td>
+  </tr>
+  <tr>
+    <td height="40px" width="670px" colspan="3" align="justify" valign="top"><font size="2">[% IF beneficiario.tppersona == 2 %][% beneficiario.sdireccion %][% ELSE %]&nbsp;[% END %]</font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="223px" bgcolor="#A3A8A3"><font size="2"><b>15. Municipio</b></font></td>
+    <td height="7px" width="223px" bgcolor="#A3A8A3"><font size="2"><b>16. Estado</b></font></td>
+    <td height="7px" width="224px" bgcolor="#A3A8A3"><font size="2"><b>17. Tel&eacute;fonos</b></font></td>
+  </tr>
+  <tr>
+    <td height="20px" width="223px" valign="middle"><font size="2">[% IF beneficiario.tppersona == 2 %][% beneficiario.id_tpmunicipio %][% ELSE %]&nbsp;[% END %]</font></td>
+    <td height="20px" width="223px" valign="middle"><font size="2">[% IF beneficiario.tppersona == 2 %][% beneficiario.id_tpentfederal %][% ELSE %]&nbsp;[% END %]</font></td>
+    <td height="20px" width="224px" valign="middle"><font size="2">[% IF beneficiario.tppersona == 2 %][% beneficiario.stelefono %][% ELSE %]&nbsp;[% END %]</font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px" align="center" bgcolor="#A3A8A3"><font size="2"><b>DESCRIPCI&Oacute;N DE LA SOLICITUD</b></font></td>
+  </tr>
+  <tr>
+    <td height="7px" width="670px" bgcolor="#A3A8A3"><font size="2"><b>18. Tipo de Ayuda</b></font></td>
+  </tr>
+  <tr>
+    <td height="40px" width="670px">
+    <font size="2">
+      <table width="670px" cellspacing="0" border="0" cellpadding="2" align="center">
+        <tr>
+          <td width="253px">
+            [% IF destinos.20 %]
+              <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Intervenciones Quir&uacute;rgicas en Centros de Salud P&uacute;blica
+              [% ELSE %]
+              <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Intervenciones Quir&uacute;rgicas en Centros de Salud P&uacute;blica
+            [% END %]
+          </td>
+          <td width="143px">
+            [% IF destinos.19 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Ex&aacute;menes y Estudios M&eacute;dicos
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Ex&aacute;menes y Estudios M&eacute;dicos
+            [% END %]
+          </td>
+          <td width="274px">
+            [% IF destinos.21 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Dotaci&oacute;n (Insumos, Mobiliario, Materiales y Equipos) a Centros de Salud P&uacute;blica
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Dotaci&oacute;n (Insumos, Mobiliario, Materiales y Equipos) a Centros de Salud P&uacute;blica
+            [% END %]
+          </td>
+        </tr>
+        <tr>
+          <td width="223px">
+            [% IF destinos.11 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Pr&oacute;tesis
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Pr&oacute;tesis
+            [% END %]
+          </td>
+          <td width="447px" colspan="2">
+            [% IF destinos.22 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Refacci&oacute;n y/o Ampliaci&oacute;n de Infraestructura en Centros de Salud P&uacute;blica
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Refacci&oacute;n y/o Ampliaci&oacute;n de Infraestructura en Centros de Salud P&uacute;blica
+            [% END %]
+          </td>
+        </tr>
+      </table>
+    </font>
+    </td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="90px" bgcolor="#A3A8A3"><font size="2"><b>19. Monto de la Solicitud</b></font></td>
+    <td height="7px" width="90px" bgcolor="#A3A8A3"><font size="2"><b>20. Ayuda Tramitada por otro ente</b></font></td>
+    <td height="7px" width="490px" bgcolor="#A3A8A3"><font size="2"><b>21. Motivo de la Solicitud</b></font></td>
+  </tr>
+  <tr>
+    <td height="35px" width="90px" align="right"><font size="2">[% nmntosolicitado %]</font></td>
+    <td height="35px" width="90px" align="center">
+        [% IF botroente == 'SI' %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;SI&nbsp;</font>
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;NO&nbsp;</font>
+        [% ELSE %]
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;SI&nbsp;</font>
+          <font size="2"><img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;NO&nbsp;</font>
+        [% END %]
+    </td>
+    <td height="35px" width="490px" align="justify" valign="top"><font size="2">[% smotivo %]</font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px" bgcolor="#A3A8A3" colspan="2"><font size="2"><b>22. Recaudos</b></font></td>
+  </tr>
+  <tr>
+    <td height="7px" width="390px"><font size="2"><b>Salud</b></font></td>
+    <td height="7px" width="280px"><font size="2"><b>Dotaci&oacute;n y Refacci&oacute;n</b></font></td>
+  </tr>
+  <tr>
+    <td height="40px" width="390px">
+      <font size="2">
+      <table width="390px" cellspacing="0" border="0" cellpadding="2" align="center">
+        <tr>
+          <td width="190px">
+            [% IF anexos.8 %]
+              <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Carta dirigida a Bandes vigente
+              [% ELSE %]
+              <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Carta dirigida a Bandes vigente
+            [% END %]
+          </td>
+          <td width="200px">
+            [% IF anexos.9 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Informe M&eacute;dico Original
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Informe M&eacute;dico Original
+            [% END %]
+          </td>
+        </tr>
+        <tr>
+          <td width="190px">
+            [% IF anexos.10 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Presupuesto Original vigente
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Presupuesto Original vigente
+            [% END %]
+          </td>
+          <td width="200px">
+            [% IF anexos.11 %]
+            <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Fotograf&iacute;a cuerpo entero del Beneficiario
+            [% ELSE %]
+            <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Fotograf&iacute;a cuerpo entero del Beneficiario
+            [% END %]
+          </td>
+        </tr>
+      </table>
+    </font>
+    </td>
+    <td height="40px" width="280px">
+    <font size="2">
+      <table width="280px" cellspacing="0" border="0" cellpadding="2" align="center">
+        <tr>
+          <td height="40px" width="280px" valign="top">
+            [% IF anexos.12 %]
+              <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;Carta Exposici&oacute;n de Motivos dirigida a Bandes
+              [% ELSE %]
+              <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;Carta Exposici&oacute;n de Motivos dirigida a Bandes
+            [% END %]
+          </td>
+        </tr>
+      </table>
+    </font>
+    </td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="20px" width="390px" colspan="2" valign="top">
+      <font size="2">
+        [% IF anexos.5 %]
+          <img src="[% ruta_estatica %]/imagenes/cerrar.gif" width="7" height="7" />&nbsp;<b>Otro, Especifique:</b>&nbsp;[% sotroanexo %]
+        [% ELSE %]
+          <img src="[% ruta_estatica %]/imagenes/vacio.gif" width="7" height="7" />&nbsp;<b>Otro, Especifique:</b>
+        [% END %]
+      </font>
+    </td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px" colspan="3" bgcolor="#A3A8A3"><font size="2"><b>23. Firma y Huella del Solicitante</b></b></td>
+  </tr>
+  <tr>
+    <td height="100px" width="223px">&nbsp;</td>
+    <td height="100px" width="223px">&nbsp;</td>
+    <td height="100px" width="224px">&nbsp;</td>
+  </tr>
+<table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="223px" align="center"><font size="2"><b>Firma</b></font></td>
+    <td height="7px" width="447px" align="center"><font size="2"><b>Huellas D&aacute;ctilares</font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px" align="center" bgcolor="#A3A8A3"><font size="2"><b>S&oacute;lo para Uso de la Gerencia Ejecutiva de Programas Sociales</font></td>
+  </tr>
+  <tr>
+    <td height="7px" width="670px" align="center" bgcolor="#A3A8A3"><font size="2"><b>FIRMAS Y SELLOS</b></font></td>
+  </tr>
+</table>
+<table border="1" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="163px"><font size="2"><b>24. Especialista</b></font></td>
+    <td height="7px" width="163px"><font size="2"><b>25. Coordinador(a)</b></font></td>
+    <td height="7px" width="344px"><font size="2"><b>26. Gerente Ejecutivo(a) de Programas Sociales</b></font></td>
+  </tr>
+  <tr>
+    <td height="60px" width="163px">&nbsp;</td>
+    <td height="60px" width="163px">&nbsp;</td>
+    <td height="60px" width="344px">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="7px" width="163px" align="center"><font size="2"><b>Nombre y Apellido</b></font></td>
+    <td height="7px" width="163px" align="center"><font size="2"><b>Firma y Sello</b></font></td>
+    <td height="7px" width="344px" align="center"><font size="2"><b>Firma y Sello</b></font></td>
+  </tr>
+</table>
+<table border="0" cellpadding="2" cellspacing="0" align="center" width="670px">
+  <tr>
+    <td height="7px" width="670px"><font size="1"><b>FORM.B_ASO_03_10</b></font></td>
+  </tr>
+</table>

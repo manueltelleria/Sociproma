@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+[%INCLUDE jsgenerales.tt %]
+
+[%formbuilder.jshead%]
+<script type="text/javascript">
+
+function verReporte() {
+  if (document.datosCedula.stproceso.value != "") {
+      document.datosCedula.submit();
+  }
+}
+</script>
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu()">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+  <legend>Recibo de Pago</legend>
+  <table align="center">
+    <tr>
+      <td><b>Nombres y Apellidos:</b>&nbsp;[% nombcompleto %]</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td><br>
+    </tr>
+    <tr align="center">
+      <td><b>Periodos:&nbsp;</b>[%formbuilder.field.stproceso.field %]</td>
+    </tr>
+    <tr align="center">
+      <td>[% formbuilder.field.volver.field %]&nbsp;[% formbuilder.submit %]</td>
+    </tr>
+  </table>
+[%formbuilder.end%]
+<br/>
+</body>
+</html>

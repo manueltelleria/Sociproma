@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+<script type="text/javascript">
+
+function ismaxlength(obj){
+  var mlength=obj.getAttribute? parseInt(obj.getAttribute("maxlength")) : ""
+  if (obj.getAttribute && obj.value.length>mlength)
+    obj.value=obj.value.substring(0,mlength)
+}
+
+</script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+<legend>Datos del Evaluado</legend>
+<table border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td border="1"><b>Nro. C&eacute;dula:</b></td>
+    <td border="1">[% cedula %]
+    <td border="1"><b>Nombres y Apellidos:</b></td>
+    <td border="1">[% nombreapellido %]
+    <td border="1"><b>Cargo:</b></td>
+    <td border="1">[% cargo %]</td>
+  </tr>
+</table>
+</fieldset>
+<br>
+<fieldset>
+<legend>Objetivos por Evaluado</legend>
+<table align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td>Descripci&oacute;n del objetivo:</td>
+    <td>[% formbuilder.field.descripcion.field %]</td>
+  </tr>
+  <tr>
+    <td>[% formbuilder.field.npeso.label %]</td>
+    <td>[% formbuilder.field.npeso.field %]</td>
+  </tr>
+</table>
+</fieldset>
+<table align="center" colspan="3">
+  <tr>
+    <td align="center">[% formbuilder.field.btnvolver.field %]</td>
+    <td align="center">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+[% formbuilder.field.ncedula.field %]
+[% formbuilder.field.idOdi.field %]
+[% formbuilder.field.ntotalpeso.field %]
+[% formbuilder.field.origen.field %]
+[% formbuilder.end %]
+<br/>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+<script type="text/javascript">
+
+function validate_autorizaevaluados( form ){
+  var alertstr = '';
+  var invalid  = 0;
+  var invalid_fields = new Array();
+
+// funcion: select list, always assume it's multiple to get all values
+
+  var checked_autoriza = 0;
+  if ( form.elements['chk_autoriza'].length ){
+    for (var loop = 0; loop < form.elements['chk_autoriza'].length; loop++) {
+      if (form.elements['chk_autoriza'][loop].checked) {
+        checked_autoriza++;
+      } // if
+    } // for funcion
+  }
+  else{
+      if (form.elements['chk_autoriza'].checked) {
+        checked_autoriza++;
+      }
+  }
+
+  if ( checked_autoriza == 0 ) {
+    alertstr += '- Debe seleccionar al menos un evaluado para realizar la operación.\n\n';
+    invalid++;
+    invalid_fields.push('chk_autoriza');
+  }
+
+  if (invalid > 0 || alertstr != '') {
+   if (! invalid) invalid = 'The following';   // catch for programmer error
+     alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'
+     +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
+     return false;
+   }
+   return true;  // all checked ok
+}
+
+</script>
+
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+<legend>Datos Evaluador</legend>
+<table border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td border="1"><b>Nro. Cédula:</b></td>
+    <td border="1">[% cedula %]
+    <td border="1"><b>Nombres y Apellidos:</b></td>
+    <td border="1">[% nombreapellido %]
+    <td border="1"><b>Cargo:</b></td>
+    <td border="1">[% cargo %]</td>
+  </tr>
+</table>
+</fieldset>
+<br>
+<fieldset>
+<legend>Lista de Evaluados-Empleados</legend>
+<table align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td>
+      [% IF listado %]
+        <table align="center" border="1" cellspacing="3">
+          <tr class="titulodonforojo">
+            <td align="center">Nombre Evaluado</td>
+            <td align="center">Autorizar</td>
+          </tr>
+          [% FOREACH listado %]
+            <tr bgcolor="[% clase %]">
+              <td nowrap><input type="hidden" name="id_evaluado" id="id_evaluado" value="[% id_evaluado %]">[% NombreEvaluado %]</td>
+              <td align="center"><input type="checkbox" name="chk_autoriza" id="chk_autoriza" value="[% id_evaluado %]" ></td>
+            </tr>
+          [% END %]
+          <tr>
+            <td align="center" colspan="2"><b>Cantidad de Evaluados:&nbsp;</b>[% cantevaluado %]</td>
+          </tr>
+        </table>
+      [% ELSE %]
+        <table align="center" border="1">
+          <tr>
+            <td colspan="3" align="center" class="titulodonfomarillo">No hay relación de Evaluados con este Usuario</td>
+          </tr>
+        </table>
+      [% END %]
+      <table align="center">
+        <tr>
+          <td align="center">[% formbuilder.submit %]</td>
+        </tr>
+      </table>
+    </td>  
+  </tr>  
+</table>
+[% formbuilder.field.ncedevaluador.field %]
+[% formbuilder.end %]
+<br/>
+</body>
+</html>

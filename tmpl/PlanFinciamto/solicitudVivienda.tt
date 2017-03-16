@@ -1,0 +1,560 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar-setup.js"></script>
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+[%formbuilder.jshead%]
+
+<script type="text/javascript">
+
+var arregloCampos = new Array(
+  new Array('id_tpentfederal','id_tpciudad'),
+  new Array('id_tpentfederal_1','id_tpciudad_1')
+);
+
+//Función funcionCargarListas: se encarga de cargar el contenido de las listas dependientes de municipios o parroquias de acuerdo a la selección realizada (Entidad Federal seleccionada para el caso de un municipio, y municipio seleccionado para el caso de parroquias).
+function funcionCargarListas(nombreCampoSeleccionado){
+  var forma = document.indexsolicitudvivienda;
+  var listaSeleccionada = eval('forma.'+nombreCampoSeleccionado);
+  var url = '[%ruta_listas%]';
+  var campoLlenar = buscarValorAsociadoEnArreglo(arregloCampos, '0', nombreCampoSeleccionado, 1);
+  var funcion = eval('llenar_' + campoLlenar);
+  var valorSeleccionado = listaSeleccionada.options[listaSeleccionada.selectedIndex].value;
+  if (valorSeleccionado) {
+    var pars = nombreCampoSeleccionado+"="+valorSeleccionado;
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: funcion});
+  }
+  else {
+    limpiarListas(campoLlenar);
+  }
+}
+
+//Función llenarListaDependiente: método encargado de traducir la respuesta del servidor con la lista de valores que deben ser incluidas y llenar las listas dependientes con la información.
+function llenarListaDependiente(originalRequest, nombreListaLlenar) {
+  var respuesta = originalRequest.responseText;
+  var forma = document.indexsolicitudvivienda;
+  var listaLlenar = eval('forma.'+nombreListaLlenar);
+  limpiarListas(nombreListaLlenar);
+
+  //agregarOpcionLista(listaLlenar,new Option("- Seleccione -",''));
+  var primerarreglo = respuesta.split("|");
+  for(i=0;i<primerarreglo.length;i++){
+    var elemento  = primerarreglo[i].split(":");
+    agregarOpcionLista(listaLlenar,new Option(elemento[1],elemento[0]));
+  }
+}
+
+//Función limpiarListas: Método encargado de limpiar el contenido de una lista desplegable.
+function limpiarListas(nombreLista) {
+  var forma = document.indexsolicitudvivienda;
+  vaciarLista(eval('forma.'+nombreLista));
+}
+
+//Función llenar_id_tpciudad: Método encargado de hacer el llamado al método llenarListaDependiente, indicando que la lista a trabajar es la de los municipios.
+function llenar_id_tpciudad(originalRequest) {
+  llenarListaDependiente(originalRequest, 'id_tpciudad');
+}
+
+//Función llenar_id_tpmunicipio: Método encargado de hacer el llamado al método llenarListaDependiente, indicando que la lista a trabajar es la de los municipios.
+function llenar_id_tpciudad_1(originalRequest) {
+  llenarListaDependiente(originalRequest, 'id_tpciudad_1');
+}
+
+
+function conMayusculas(nombreTextoEscrito) {
+  var forma = document.indexsolicitudvivienda;
+  var palabra = eval('forma.'+nombreTextoEscrito);
+  palabra.value = palabra.value.toUpperCase()
+}
+
+function validaMontoSolic(form) {
+  if (validate_indexsolicitudvivienda(form)){
+  var form = document.indexsolicitudvivienda;
+      var alertstr='';
+      var invalid=0;
+
+    if (form.elements['id_tpsolicitud'].value == "1" || form.elements['id_tpsolicitud'].value == "3"){
+      var npreciocompra = form.elements['npreciocompra'].value;
+      var nmontosolicitado = form.elements['nmonto'].value;
+      var procedencia = form.elements['procedencia'].value;
+      var nlimite = form.elements['nlimite'].value;
+      var nmonto=nmontosolicitado.replace(/\./g,'');
+      nmonto=nmonto.replace(',','.');
+      nmonto=parseFloat(nmonto);
+      npreciocompra=npreciocompra.replace(/\./g,'');
+      npreciocompra=npreciocompra.replace(',','.');
+      npreciocompra=parseFloat(npreciocompra);
+      nlimite=nlimite.replace(/\./g,'');
+      nlimite=nlimite.replace(',','.');
+      nlimite=parseFloat(nlimite);
+
+      if ( npreciocompra > nmonto ) {
+        document.getElementById('fieldset3').style.display="";
+        if (procedencia == ""){
+          alertstr += "- Debe especificar la procedencia de los fondos para la solicitud del credito\n";
+          invalid++;
+        }
+      }else{
+         document.getElementById('fieldset3').style.display='none';
+         form.elements['procedencia'].value = '';
+      }
+
+      if (form.elements['id_tpsolicitud'].value == "1"){
+        if (npreciocompra < nmonto){
+          alertstr += "- El precio de venta Bs. "+ formatearMoneda(npreciocompra) + " de la Vivienda no puede ser menor al monto Solicitado Bs. "+ formatearMoneda(nmonto) +"\n";
+          invalid++;
+        }
+      }
+
+      if (nlimite != ""){
+        if (nmonto > nlimite){
+          alertstr += "- El monto máximo permitido para la solicitud de Credito es de "+ formatearMoneda(nlimite) +"\n";
+          invalid++;
+        }
+      }
+
+      if ((form.elements['challenge1CedulaRef_0'].value != '') && (form.elements['challenge1CedulaRef_1'].value != '')){
+        if  (form.elements['challenge1NacRef_0'].value+form.elements['challenge1CedulaRef_0'].value ==  form.elements['challenge1NacRef_1'].value+form.elements['challenge1CedulaRef_1'].value){
+            alert('No puede ser igual el valor de las Cedulas de Identidad de los Representantes Legales');
+            return false;
+        }
+      }
+
+      if (invalid > 0 || alertstr != '') {
+        alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'
+                +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
+        return false;
+      }
+    }
+  }else{ return false; }
+}
+
+function funcionBuscarLimite(nombreCampoSeleccionado){
+   var forma = document.indexsolicitudvivienda;
+   var listaSeleccionada = eval('forma.'+nombreCampoSeleccionado);
+   var url = '[%ruta_limite%]';
+
+   var campoLlenar = 'nlimite';
+   var funcion = eval('llenar_valor_limite');
+   var valorSeleccionado = listaSeleccionada.options[listaSeleccionada.selectedIndex].value;
+   if (valorSeleccionado) {
+     var pars = nombreCampoSeleccionado+"="+valorSeleccionado;
+     var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: funcion});
+   }
+}
+
+//Función llenar_valor_limite: Método encargado de hacer el llamado al método llenarListaDependiente
+function llenar_valor_limite(originalRequest) {
+  llenarLista(originalRequest, 'nlimite');
+}
+
+//Función llenarListaDependiente: método encargado de traducir la respuesta del servidor con la lista de valores que deben ser incluidas y llenar las listas dependientes con la información.
+function llenarLista(originalRequest, nombreListaLlenar) {
+  var respuesta = originalRequest.responseText;
+  document.indexsolicitudvivienda.nlimite.value = respuesta;
+  var forma = document.indexsolicitudvivienda;
+  var listaLlenar = eval('forma.'+nombreListaLlenar);
+  var primerarreglo = respuesta;
+}
+
+function validaCedulaRepresentante() {
+  var form = document.indexsolicitudvivienda;
+
+  if ((form.elements['challenge1CedulaRef_0'].value != '') && (form.elements['challenge1CedulaRef_1'].value != '')){
+    if  (form.elements['challenge1CedulaRef_0'].value ==  form.elements['ncedula'].value){
+        alert('No puede ser igual el valor de las Cedulas de Identidad del Representante Legal y el Solicitante');
+        return false;
+    }
+    if  (form.elements['challenge1CedulaRef_1'].value ==  form.elements['ncedula'].value){
+        alert('No puede ser igual el valor de las Cedulas de Identidad del Representante Legal y el Solicitante');
+        return false;
+    }
+  }
+
+  if ((form.elements['challenge1CedulaRef_0'].value != '') && (form.elements['challenge1CedulaRef_1'].value != '')){
+    if  (form.elements['challenge1NacRef_0'].value+form.elements['challenge1CedulaRef_0'].value ==  form.elements['challenge1NacRef_1'].value+form.elements['challenge1CedulaRef_1'].value){
+        alert('No puede ser igual el valor de las Cedulas de Identidad de los Representantes Legales');
+        return false;
+    }
+  }
+}
+
+// Función desactivará todos los días el futuro de los días actuales, pero el día actual se mantendrá activo.
+function dateRange(date) {
+  var now = new Date();
+  return (date.getTime() >= now.getTime() )
+}
+
+</script>
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu(); mostrarFieldset();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<table width="800px" colspan="9" border="0" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td width="100px" colspan="1" style="vertical-align: top;"><small><b>
+    Fecha:</b></small>&nbsp;[%fecsolicitud%]</td>
+    <td width="700px" align="right" colspan="8" style="vertical-align: top;"><small><b>1.N° de Solicitud:</b></small>&nbsp;<b>GEGTH-VIV-</b>[%nnrosolicitud%]</td>
+  </tr>
+</table>
+<br>
+<div  align="center"><big><b>SOLICITUD DEL PROGRAMA DE VIVIENDA</b></big>
+<br>
+<br>
+[% FOREACH rrhh%]
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+  <tr>
+    <td  width="800px" colspan="9" align="center" bgcolor="#DDDDDD"><b>DATOS DEL SOLICITANTE</b><br></td>
+  </tr>
+  <tr>
+    <td width="360px" align="left" style="vertical-align: top;"><small><b>2.
+    Apellidos y Nombres:</b></small><br>[%sapellido%]&nbsp;[%snombre%]</td>
+    <td width="150px" align="left" style="vertical-align: top;"><small><b>3.
+   C&eacute;dula de Identidad:</b></small><br>[%ncedula%]
+    </td>
+    <td width="160px"  align="left" style="vertical-align: top;"><small><b>4.
+    Correo Personal:</b></small><br>[%formbuilder.field.scorreo.field %]
+    </td>
+    <td width="130px" align="left" style="vertical-align: top;"><small><b>5.
+    Estado Civil:</b></small><br>[% IF sedocivil == 'C' %]CASADO
+        [% ELSIF sedocivil == 'D' %]DIVORCIADO
+        [% ELSIF sedocivil == 'K' %]CONCUBINO
+        [% ELSIF sedocivil == 'S' %]SOLTERO
+        [% ELSIF sedocivil == 'V' %]VIUDO
+        [% ELSE %]---[% END %]
+    </td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+  <tr>
+    <td width="350px" align="left" style="vertical-align: top;"><small><b>6.
+    Cargo:</b></small><br>[%socupacion%]</td>
+    <td width="100px" align="left" style="vertical-align: top;"><small><b>7.
+    Sueldo B&aacute;sico Mensual:</b></small><br>[%nsueldomensual%]
+    </td>
+    <td width="75px" align="left" style="vertical-align: top;"><small><b>8.
+   Fecha de Ingreso:</b></small><br>[%dfechaing%]
+    </td>
+    <td width="75px" align="left" style="vertical-align: top;"><small><b>9.
+   Profesi&oacute;n:</b></small><br>[%formbuilder.field.sprofesion.field %]
+    </td>
+  </tr>
+  <tr>
+    <td width="300px" align="left" style="vertical-align: top;"><small><b>10.
+    Unidad de Adscripci&oacute;n:</b></small><br>[% subicacion %]</td>
+    <td width="100px" align="left" style="vertical-align: top;"><small><b>11.
+    Extensi&oacute;n:</b></small><br>[%ntelfoficina%]</td>
+    <td width="175px" align="left" style="vertical-align: top;"><small><b>12.
+   Tel&eacute;fono (Nro. Celular):</b></small><br>
+    [%formbuilder.field.codarea1.field %][%formbuilder.field.ntelefcelsolic.field %]<br>
+    </td>
+    <td width="175px" align="left" style="vertical-align: top;"><small><b>13.
+    Condici&oacute;n del Trabajador:</b></small><br>&nbsp;[%scondicion%]
+    </td>
+  </tr>
+</table>
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><b>DATOS DE LA VIVIENDA DONDE RESIDE ACTUALMENTE</b><br></td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+  <tr>
+    <td width="800px" colspan="9" align="left" style="vertical-align: top;" ><small><b>14.
+        Direcci&oacute;n del Inmueble:</b></small><br>[%formbuilder.field.sdireccionsolic.field %]
+    </td>
+  </tr>
+  <tr>
+    <td width="266px" align="left" style="vertical-align: top;"><small><b>15.
+    Estado:</b></small><br>[%formbuilder.field.id_tpentfederal.field %]
+    </td>
+    <td width="266px" align="left" style="vertical-align: top;"><small><b>16.
+   Ciudad:</b></small><br>[%formbuilder.field.id_tpciudad.field %]
+    </td>
+    <td width="266px" align="left" style="vertical-align: top;"><small><b>17.
+    Tel&eacute;fono Habitaci&oacute;n:</b></small><br>[%formbuilder.field.codarea2.field %][%formbuilder.field.ntelefhabsolic.field %]
+    </td>
+  </tr>
+[%END%]
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+  <tr>
+    <td width="200px" colspan="2" align="left" style="vertical-align: top;"><small><b>18.
+    Tipo de Vivienda:</b></small><br>
+      [%formbuilder.field.id_tpvivienda.field %]
+         <fieldset id=fieldset1 style="display:none">
+          <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>[%formbuilder.field.stpvivienda.field %]</td>
+            </tr>
+          </table>
+        </fieldset>
+    </td>
+    <td width="200px" colspan="2" align="left" style="vertical-align: top;"><small><b>19.
+   Tenencia:</b></small><br>
+      [%formbuilder.field.id_tptenencia.field %]
+         <fieldset id=fieldset2 style="display:none">
+          <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>[%formbuilder.field.stptenencia.field %]</td>
+            </tr>
+          </table>
+        </fieldset>
+    </td>
+    <td width="200px" colspan="2" align="left" style="vertical-align: top;"><small><b>20.
+    Canon de Arrendamiento:</b></small><br>[%formbuilder.field.ncanon.field %]
+    </td>
+    <td width="200px" colspan="2" align="left" style="vertical-align: top;"><small><b>21.
+    Saldo Hipotecario (Actual) en Bs.</b></small><br>[%formbuilder.field.nsaldo.field %]
+    </td>
+  </tr>
+
+  <tr>
+    <td width="500px" colspan="6" align="left" style="vertical-align: top;" ><small><b>22.
+    Nombre del Propietario, Arrendadora y/o entidad Financiera:</b></small><br>
+      [%formbuilder.field.snombrearrend.field %]</td>
+
+    <td width="300px" colspan="3" align="left" style="vertical-align: top;"><small><b>23.
+    Tel&eacute;fonos:</b></small><br>
+    [%formbuilder.field.codarea3.field %][%formbuilder.field.ntelefarrend.field %]</td>
+  </tr>
+</table>
+<table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td  align="center" bgcolor="#DDDDDD"><b>DATOS DE LA SOLICITUD</b><br></td>
+  </tr>
+</table>
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+  <tr>
+    <td width="200px"  align="left" style="vertical-align: top;"><small><b>24.Uso del Programa de Vivienda:</b></small><br>
+      [%formbuilder.field.id_tpusoprograma.field %]</td>
+    <td width="200px"  align="left" style="vertical-align: top;"><small><b>25.
+    Tipo de Solicitud:</b></small><br>
+      <b><u>[%stpsolicitud%]</u></b></td>
+    <td width="200px"  align="left" style="vertical-align: top;"><small><b>26.
+   Monto Opci&oacute;n Compra Venta:</b></small><br>[%formbuilder.field.nopcioncompra.field %]
+    </td>
+    <td width="200px" align="left" style="vertical-align: top;"><small><b>27.
+    Fecha (D&iacute;a/Mes/Año):</b></small><br>[%formbuilder.field.dopcioncompra.field%]&nbsp;
+        [%IF tpsolicitud == '1'%]<img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="f_dopcioncompra" style="cursor: pointer; border: 1px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onMouseOut="this.style.background=''"/>
+        <script type="text/javascript">
+        Calendar.setup({
+                      inputField     :    "dopcioncompra",     // id of the input field
+                      button         :    "f_dopcioncompra",  // trigger for the calendar (button ID)
+                      align          :    "Tl",           // alignment (defaults to "Bl")
+                      singleClick    :    true,
+                      dateStatusFunc :    dateRange
+                    });
+        </script>[%END%]
+      </td>
+  </tr>
+  <tr>
+    <td width="200px"   align="left" style="vertical-align: top;"><small><b>28.
+   Precio Compra Bs.:</b></small><br>[%formbuilder.field.npreciocompra.field %]
+    </td>
+    <td width="200px"  align="left" style="vertical-align: top;"><small><b>29.
+    Monto Solicitado en Bs.:</b></small><br>[%formbuilder.field.nmonto.field %]
+    </td>
+    <td width="200px"  align="left" style="vertical-align: top;"><small><b>30.
+   Monto del Adelanto Aprobado:</b></small><br>[%formbuilder.field.nadelantoaprob.field %]
+    </td>
+    <td width="200px"  align="left" style="vertical-align: top;"><small><b>31.
+    Fecha (D&iacute;a/Mes/Año):</b></small><br>[%formbuilder.field.dadelantoaprob.field%]&nbsp;
+      </td>
+  </tr>
+</table>
+<fieldset id=fieldset4 style="display:none">
+<table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+  <tr>
+    <td width="400px" colspan="5" align="left" style="vertical-align: top;"><small><b>32.
+        Direcci&oacute;n del Inmueble a Comprar:</b></small><br>[%formbuilder.field.sdireccion.field %]
+    </td>
+    <td width="250px" colspan="2" align="left" style="vertical-align: top;"><small><b>33.
+   Estado:</b></small><br>[%formbuilder.field.id_tpentfederal_1.field %]
+    </td>
+    <td width="250px" colspan="2" align="left" style="vertical-align: top;"><small><b>34.
+   Ciudad:</b></small><br>[%formbuilder.field.id_tpciudad_1.field %]
+    </td>
+  </tr>
+  <tr>
+    <td width="500px" colspan="5" align="left" style="vertical-align: top;"><small><b>35.
+    Nombre del Propietario:</b></small><br>[%formbuilder.field.snombreprop.field %]</td>
+
+    <td width="300px" colspan="4" align="left" style="vertical-align: top;"><small><b>36.
+    C&eacute;dula de Identidad:</b></small><br>[%formbuilder.field.nnacprop.field %][%formbuilder.field.ncedulaprop.field %]
+    </td>
+  </tr>
+  <tr>
+    <td width="500px" colspan="5" align="left" style="vertical-align: top;"><small><b>37.
+    Direcci&oacute;n de Localizaci&oacute;n del Propietario</b></small></br>[%formbuilder.field.sdireccionprop.field %]</td>
+
+    <td width="300px" colspan="4" align="left" style="vertical-align: top;"><small><b>38.
+    Tel&eacute;fonos:</b></small><br>[%formbuilder.field.codarea4.field %][%formbuilder.field.ntelefprop.field %]
+    </td>
+  </tr>
+</table>
+</fieldset>
+        <table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+        <tr>
+          <td align="center" bgcolor="#DDDDDD"><b>GRUPO FAMILIAR QUE OCUPARA LA VIVIENDA</b></td>
+        </tr>
+        </table>
+          <tr>
+            <td>
+              <table width="800px" colspan="9" id="challenge" align="center" border="1" cellpadding="0" cellpadding="5" >
+                <thead>
+                  <tr>
+                    <td align="left" style="vertical-align: top;" width="150px"><small><b>Apellidos:</b></small></td>
+                    <td align="left" style="vertical-align: top;" width="150px"><small><b>Nombres:</b></small></td>
+                    <td align="left" style="vertical-align: top;" width="430px"><small><b>C&eacute;dula de Identidad:</b></small></td>
+                    <td align="left" style="vertical-align: top;" width="100px"><small><b>Parentesco</b></small></td>
+                    <td align="left" style="vertical-align: top;" width="170px"><small><b>Ocupaci&oacute;n</b></small></td>
+                  </tr>
+                </thead>
+                  <tr>
+                    <td align="left" width="100px">
+                      [% formbuilder.field.challengeApeFliar_0.field %]
+                    </td>
+                    <td align="left" width="100px">
+                      [% formbuilder.field.challengeNombFliar_0.field %]
+                    </td>
+                  <td align="left" width="330px">
+                      [% formbuilder.field.challengeNacFliar_0.field %]
+                      [% formbuilder.field.challengeCedulaFliar_0.field %]
+                    </td>
+                  <td align="left" width="100px">
+                      [% formbuilder.field.challengeParentesco_0.field %]
+                    </td>
+                  <td align="left" width="170px">
+                      [% formbuilder.field.challengeOcupacion_0.field %]
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+          <tr>
+            <td valign="top" align="left" width="20%">
+              <div id="add_new" style="display: " align="center">
+                <a href="#challenge" onclick="javascript:createElementsFliar('challenge');">Agregar una Carga Familiar</a>
+              </div>
+              <div id="etiqueta_challenge" style="display: none;" align="center">
+                <br><a href="#challenge" onclick="javascript:deleteElements('challenge');">Eliminar &uacute;ltimo </a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      <table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+        <tr>
+          <td align="center" bgcolor="#DDDDDD"><b>DATOS ADICIONALES</b></td>
+        </tr>
+        </table>
+          <tr>
+            <td>
+              <table width="800px" colspan="9" id="challenge1" align="center" border="1" cellpadding="0" cellpadding="5" >
+                <thead>
+                  <tr>
+                    <td colspan="9" align="center" bgcolor="#DDDDDD"><b>REFERENCIAS PERSONALES (Por favor colocar referencias de dos familiares)</b></td>
+                  </tr>
+                  <tr>
+                    <td align="left" style="vertical-align: top;" width="40px"><small><b>Apellidos:</b></small></td>
+                    <td align="left" style="vertical-align: top;" width="40px"><small><b>Nombres:</b></small></td>
+                    <td align="left" style="vertical-align: top;" width="150px"><small><b>C&eacute;dula de Identidad:</b></small></td>
+                    <td align="left" style="vertical-align: top;" width="70px"><small><b>Parentesco:</b></small></td>
+                    <td align="left" style="vertical-align: top;" width="90px"><small><b>Direcci&oacute;n:</b></small></td>
+                    <td align="left" style="vertical-align: top;" width="440px"><small><b>Tel&eacute;fono:</b></small></td>
+                  </tr>
+                </thead>
+                  <tr>
+                    <td align="left" width="30px">
+                      [% formbuilder.field.challenge1ApeRef_0.field %]
+                    </td>
+                    <td align="left" width="30px">
+                      [% formbuilder.field.challenge1NombRef_0.field %]
+                    </td>
+                  <td align="left" width="300px">
+                      [% formbuilder.field.challenge1NacRef_0.field %][% formbuilder.field.challenge1CedulaRef_0.field %]
+                    </td>
+                  <td align="left" width="60px">
+                      [% formbuilder.field.challenge1ParentescoRef_0.field %]
+                    </td>
+                  <td align="left" width="50px">
+                      [% formbuilder.field.challenge1Direccion_0.field %]
+                    </td>
+                  <td align="left" width="330px">
+                  [%formbuilder.field.challenge1CodArea_0.field %][% formbuilder.field.challenge1Telefono_0.field %]
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="left" width="30px">
+                      [% formbuilder.field.challenge1ApeRef_1.field %]
+                    </td>
+                    <td align="left" width="30px">
+                      [% formbuilder.field.challenge1NombRef_1.field %]
+                    </td>
+                  <td align="left" width="300px">
+                      [% formbuilder.field.challenge1NacRef_1.field %][% formbuilder.field.challenge1CedulaRef_1.field %]
+                    </td>
+                  <td align="left" width="60px">
+                      [% formbuilder.field.challenge1ParentescoRef_1.field %]
+                    </td>
+                  <td align="left" width="50px">
+                      [% formbuilder.field.challenge1Direccion_1.field %]
+                    </td>
+                  <td align="left" width="330px">
+                  [%formbuilder.field.challenge1CodArea_1.field %][% formbuilder.field.challenge1Telefono_1.field %]
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </table>
+<fieldset id=fieldset3 style="display:none">
+  <table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <tr>
+      <td  align="center" bgcolor="#DDDDDD"><b>PROCEDENCIA DE FONDOS</b><br></td>
+    </tr>
+  </table>
+  <table width="800px" align="center" border="1" cellpadding="2" cellspacing="1">
+    <tr>
+      <td width="800px" colspan="9" align="left" style="vertical-align: top;">[%formbuilder.field.procedencia.field %]
+      </td>
+    </tr>
+  </table>
+</fieldset>
+<br>
+  <table align="center">
+    <tr>
+      <td align="center">[% formbuilder.submit %]</td>
+      <td align="center">[% formbuilder.field.btnvolver.field %]</td>
+  </table>
+[% formbuilder.field.ncedula.field %]
+[% formbuilder.field.id_tpsolicitud.field %]
+[% formbuilder.field.nlimite.field %]
+[%formbuilder.end%]
+</body>
+</html>

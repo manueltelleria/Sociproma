@@ -1,0 +1,124 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+[%estilo_completar%]
+
+[%formbuilder.jshead%]
+
+<script type="text/javascript">
+
+function conMayusculas(nombreTextoEscrito) {
+  var forma = document.indexconsulta;
+  var palabra = eval('forma.'+nombreTextoEscrito);
+  palabra.value = palabra.value.toUpperCase()
+}
+
+</script>
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu(); mostrarFieldset();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+  <table width="800px" border="1" align="center" cellspacing="0" cellpadding="5">
+    <tr>
+      <td align="center" colspan="10" bgcolor="#DDDDDD"><b><big>[%titfuncion%]</big></b></td>
+    </tr>
+      <tr>
+        <td align="center" colspan="10">&nbsp;</td>
+     </tr>
+    <tr>
+      <td align="center" colspan="8"  bgcolor="#DDDDDD"><b><big>Tipo de Consulta</big></b></td>
+    </tr>
+    <tr colspan="1">
+      <td align="center">[%formbuilder.field.id_tpconsulta.field %]</td>
+    </tr>
+  </table>
+<br>
+<table align="center" colspan="3">
+  <tr>
+    <td>
+      <fieldset id=fieldset1 style="display:none">
+        <table border="0" cellspacing="0" cellpadding="5" align="center" >
+          <tr>
+            <td bgcolor="#DDDDDD"><b>Criterio:</b></td>
+            <td bgcolor="#DDDDDD">[%formbuilder.field.ncedula.field %]<b>*</b><br></td>
+          </tr>
+        </table>
+        <table width="240px" border="0" align="center" cellspacing="0" cellpadding="5">
+          <tr>
+            <td align="left">*Campos Obligatorios</td>
+          </tr>
+        </table>
+      </fieldset>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <fieldset id=fieldset2 style="display:none">
+        <table border="0" cellspacing="0" cellpadding="5" align="center" >
+          <tr>
+            <td bgcolor="#DDDDDD"><b>Criterio:</b></td>
+            <td bgcolor="#DDDDDD">[%formbuilder.field.nnrosolicitud.field %]<b>*</b><br></td>
+          </tr>
+        </table>
+        <table width="240px" border="0" align="center" cellspacing="0" cellpadding="5">
+          <tr>
+            <td align="left">*Campos Obligatorios</td>
+          </tr>
+        </table>
+      </fieldset>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <fieldset id=fieldset3 style="display:none">
+        <table border="0" cellspacing="0" cellpadding="5" align="center" >
+          <tr>
+            <td bgcolor="#DDDDDD"><b>[% formbuilder.field.nombre.label %]</b></td>
+            <td bgcolor="#DDDDDD">[%formbuilder.field.nombre.field %]<b>*</b><br></td>
+          </tr>
+        [%IF nombresolicitante%]
+        <tr>
+          <td><b>Solicitante:</b></td>
+          <td><b>[%nombresolicitante%]</b></td>
+        </tr>
+        [%END%]
+        </table>
+      <table width="500px" border="0" align="center" cellspacing="0" cellpadding="5">
+        <tr>
+          <td align="left">*Campos Obligatorios</td>
+        </tr>
+      </table>
+      </fieldset>
+    </td>
+  </tr>
+</table>
+<table align="center" colspan="3">
+  <tr>
+    <td align="center">[% formbuilder.submit %]</td>
+  </tr>
+</table>
+<span style="display:none" id="nombre_stat">Buscando...</span><br />
+<div class="auto_complete" id="nombre_auto_complete"></div><br/>
+[%completar%]
+[%formbuilder.field.idsolicitante.field%]
+[%formbuilder.end%]
+<br/>
+</body>
+</html>

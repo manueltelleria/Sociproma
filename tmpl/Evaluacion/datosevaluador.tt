@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/controls.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/effects.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/dragdrop.js"></script>
+
+[%formbuilder.jshead%]
+
+<script>
+
+function validate_datosevaluador (form) {
+  var alertstr = '';
+  var invalid  = 0;
+  var invalid_fields = new Array();
+  var chkaplica = form.elements['chkaplica'].checked;
+  var ncedulasup = form.elements['ncedulasup'].value;
+
+  if (!chkaplica){
+
+// ncedulasup: standard text, hidden, password, or textarea box
+    if (ncedulasup == null || ! ncedulasup.match(/^-?\s*[0-9]+\.?[0-9]*$|^-?\s*\.[0-9]+$/)) {
+      alertstr += '- Indique un valor válido para el campo "Cedula del Supervisor"\n';
+      invalid++;
+      invalid_fields.push('ncedulasup');
+    }
+    form.chkaplica.value = '';
+  }
+  else{
+    if (ncedulasup && ncedulasup != null) {
+      alertstr += '- Si se indico no aplica en Supervisor no debe indicar ningún número de Cédula\n';
+      invalid++;
+      invalid_fields.push('ncedulasup');
+    }
+    form.chkaplica.value = '1';
+  }
+// ncedulaevaluador: standard text, hidden, password, or textarea box
+  var ncedulaevaluador = form.elements['ncedulaevaluador'].value;
+  if (ncedulaevaluador == null || ! ncedulaevaluador.match(/^-?\s*[0-9]+\.?[0-9]*$|^-?\s*\.[0-9]+$/)) {
+    alertstr += '- Indique un valor válido para el campo "Cedula del Evaluador"\n';
+    invalid++;
+    invalid_fields.push('ncedulaevaluador');
+  }
+  if (invalid > 0 || alertstr != '') {
+    if (! invalid) invalid = 'The following';   // catch for programmer error
+    alert(''+invalid+' error(es) fueron encontrados al aceptar la información:'+'\n\n'+alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
+    return false;
+  }
+
+  return true;  // all checked ok
+}
+
+function buscaNombre(nombre) {
+  var forma = document.datosevaluador;
+  var campo = eval('forma.'+nombre);
+  var chkaplica = forma.chkaplica.checked;
+  var ncedulasup = forma.elements['ncedulasup'].value;
+  var ncedulaevaluador = forma.elements['ncedulaevaluador'].value;
+
+  var texto = campo.value;
+
+  var url = '[% ruta_busca %]';
+  var funcion;
+
+  if ( nombre == "ncedulasup" ){
+    funcion = eval('llenarNombreSup');
+  }
+  else{
+    funcion = eval('llenarNombreEval');
+  }
+
+  if (texto) {
+    var pars = "ncedula="+texto;
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: funcion } );
+  }
+  else{
+    if ( nombre == "ncedulasup" ){
+      if (!chkaplica){
+
+// ncedulasup: standard text, hidden, password, or textarea box
+        if (ncedulasup == null || ! ncedulasup.match(/^-?\s*[0-9]+\.?[0-9]*$|^-?\s*\.[0-9]+$/)) {
+          alert ( '- Indique un valor válido para el campo "Cedula del Supervisor"\n' );
+          return false;
+        }
+      }
+    }
+    else{
+      if (ncedulaevaluador == null || ! ncedulaevaluador.match(/^-?\s*[0-9]+\.?[0-9]*$|^-?\s*\.[0-9]+$/)) {
+        alert ('- Indique un valor válido para el campo "Cedula del Evaluador"\n');
+        return false;
+      }
+    }
+  }
+
+  if (chkaplica){
+    forma.ncedulasup.value = '';
+    document.getElementById('nombresup').innerHTML = '';
+    document.getElementById('cargosup').innerHTML = '';
+  }
+}
+
+function llenarNombreSup(originalRequest) {
+  var respuesta = originalRequest.responseText;
+  var forma     = document.datosevaluador;
+
+  if ( respuesta != 'undef' ){
+    var datos = respuesta.split("|");
+    if ( respuesta == "error" ){
+      datos[0] = "Cédula no existe";
+      datos[1] = '&nbsp;';
+      forma.ncedulasup.value = '';
+    }
+
+    document.getElementById('nombresup').innerHTML = datos[0];
+    document.getElementById('cargosup').innerHTML = datos[1];
+  }
+}
+
+function llenarNombreEval(originalRequest) {
+  var respuesta = originalRequest.responseText;
+  var forma     = document.datosevaluador;
+
+  if ( respuesta != 'undef' ){
+    var datos = respuesta.split("|");
+    if ( respuesta == "error" ){
+      datos[0] = "Cédula no existe";
+      datos[1] = '';
+      forma.ncedulaevaluador.value = '';
+    }
+    document.getElementById('nombreeval').innerHTML = datos[0];
+    document.getElementById('cargoeval').innerHTML = datos[1];
+  }
+}
+
+function limpia(){
+  var forma = document.datosevaluador;
+  var btn   = forma.chkaplica;
+
+  forma.ncedulasup.value = '';
+  document.getElementById('nombresup').innerHTML = '';
+  document.getElementById('cargosup').innerHTML = '';
+
+  if ( btn.checked  == true ){
+    forma.ncedulasup.disabled = true;
+  }
+  else{
+    forma.ncedulasup.disabled = false;
+  }
+
+}
+</script>
+
+[%INCLUDE jscargarmenu.tt%]
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+<fieldset>
+<legend>Datos del Evaluador</legend>
+<table border="0" align="center" cellspacing="0" cellpadding="5">
+  <tr>
+    <td><b>C&eacute;dula del Supervisor:</b></td>
+    <td colspan="2">
+      <table>
+        <tr>
+          <td>[% formbuilder.field.ncedulasup.field %]</td>
+          <td><b><div id="nombresup"></div>&nbsp&nbsp<div id="cargosup"></div></b></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="left"><b><input onclick= "limpia();" type="checkbox" name="chkaplica">No Aplica?</b>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td><b>C&eacute;dula del Evaluador:</b></td>
+    <td>[% formbuilder.field.ncedulaevaluador.field %]</td>
+    <td><b><div id="nombreeval"></div>&nbsp&nbsp<div id="cargoeval"></div></b></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center">
+      <table>
+        <tr>
+          <td border="1">[% formbuilder.field.btnvolver.field %]</td>
+          <td border="1">[% formbuilder.field.btnaceptar.field %]</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</fieldset>
+<br>
+[% formbuilder.end %]
+<br/>
+</body>
+</html>

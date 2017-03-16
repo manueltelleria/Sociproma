@@ -1,0 +1,154 @@
+[% INCLUDE doctype.tt %]
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+<!-- hoja de estilo del calendario -->
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[%ruta_estatica%]/js/jscalendar/calendar-setup.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<script language="JavaScript">
+
+function habilitarCampo(campo){
+
+  var nombre = campo.name;
+  var valor = campo.value;
+
+  if ( nombre == 'id_tpprocedencia' ){
+    if ( valor == 2 ) {
+      document.getElementById('sotraprocedencia').disabled = false;
+    } else {
+      document.getElementById('sotraprocedencia').value = '';
+      document.getElementById('sotraprocedencia').disabled = true;
+    }
+  }
+
+  if ( nombre == 'id_tpdestino' ){
+    if ( valor == 8 ) {
+      document.getElementById('sotrodestino').disabled = false;
+    } else {
+      document.getElementById('sotrodestino').value = '';
+      document.getElementById('sotrodestino').disabled = true;
+    }
+  }
+
+
+}
+function habilitarOpcion(campo){
+
+  var valor = campo.value;
+
+  if ( valor == 'Otro' ) {
+    if ( campo.checked ) {
+      document.getElementById('sotroanexo').disabled = false;
+    } else {
+      document.getElementById('sotroanexo').value = '';
+      document.getElementById('sotroanexo').disabled = true;
+    }
+  }
+
+}
+
+</script>
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+
+<fieldset>
+<legend>Registrar Ayuda Social</legend>
+
+<table align="center" width="100%">
+  <tr>
+    <td>[% INCLUDE 'cssmenu.tt' %]</td>
+  </tr>
+</table>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+<table align="center" width="60%">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">Datos Ayuda Social[% IF tpaccion %][% tpaccion %][% END %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>Beneficiario Solicitante:<b></td>
+    <td width="75%" align="left" class="fondoetiqueta"><b>[% id_tprif %]-[% sidentificador %]&nbsp;&nbsp;[% beneficiario %]</b></td>
+  </tr>
+  [% IF id_familiar %]
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>Beneficiario Familiar:<b></td>
+    <td width="75%" align="left" class="fondoetiqueta"><b>[% datosFamiliar %]&nbsp;&nbsp;&nbsp;Parentesco:&nbsp;[% formbuilder.field.id_tpparentesco.field %]</b></td>
+  </tr>
+  [% END %]
+  <tr>
+    <td colspan="2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.dfecha.label %]<b></td>
+    <td width="75%" align="left">[% formbuilder.field.dfecha.field %]&nbsp;<img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="t_dfecha" style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" onMouseOut="this.style.background=''"/>
+           <script type="text/javascript">
+           Calendar.setup({
+                    inputField     :    "dfecha",     // id of the input field
+                    ifFormat       :    "%d/%m/%Y",      // format of the input field
+                    button         :    "t_dfecha",  // trigger for the calendar (button ID)
+                    align          :    "Tl",           // alignment (defaults to "Bl")
+                    singleClick    :    true
+                        });
+           </script></td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.id_tpprocedencia.label %]<b></td>
+    <td width="75%" align="left">[% formbuilder.field.id_tpprocedencia.field %]&nbsp;&nbsp;&nbsp;&nbsp;[% formbuilder.field.sotraprocedencia.label %]&nbsp;[% formbuilder.field.sotraprocedencia.field %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.smotivo.label %]<b></td>
+    <td width="75%" align="left">[% formbuilder.field.smotivo.field %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.nmntosolicitado.label %]<b></td>
+    <td width="75%" align="left">[% formbuilder.field.nmntosolicitado.field %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.id_tpdestino.label %]<b></td>
+    <td width="75%" align="left">[% formbuilder.field.id_tpdestino.field %]&nbsp;&nbsp;&nbsp;&nbsp;[% formbuilder.field.sotrodestino.label %]&nbsp;[% formbuilder.field.sotrodestino.field %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.anexos.label %]<b></td>
+    <td width="75%" align="left">[% formbuilder.field.anexos.field %]&nbsp;[% formbuilder.field.sotroanexo.label %]&nbsp;[% formbuilder.field.sotroanexo.field %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.sobservaciones.label %]<b></td>
+    <td width="75%" align="left">[% formbuilder.field.sobservaciones.field %]</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="left" ><font color="#0F305A" size="0" >Nota: Todos los campos son obligatorios.</font></td>
+  </tr>
+</table>
+
+<table align="center" width="60%">
+  <tr>
+    <td colspan="2" align="center">[% formbuilder.field.btnvolver.field %]&nbsp;[% formbuilder.submit %]</td>
+  </tr>
+</table>
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>

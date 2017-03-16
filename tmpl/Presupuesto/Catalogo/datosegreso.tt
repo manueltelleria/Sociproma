@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+<!--
+En la plantilla siguiente se incluye el javascript para cargar el menu,
+asociado al evento onload de la página. Si se quiere personalizar dicho evento,
+debe escribirse la nueva función de javascript requerida y, dentro, invocar a
+la función cargarMenu() existente, cambiando la respectiva etiqueta <body>.
+-->
+[% INCLUDE jscargarmenu.tt %]
+[% formbuilder.jshead %]
+
+<script language="Javascript">
+
+function cargarCombo(campoLlenar){
+  var forma = document.datosegreso;
+
+  var texto = document.getElementById('criterio').value;
+  var funcion = eval('llenar_' + campoLlenar);
+  var url = '[% ruta_combo %]';
+
+  if (texto) {
+    var pars = campoLlenar+"="+texto;
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: funcion});
+  }
+  else {
+    limpiarListas(campoLlenar);
+  }
+}
+
+function llenar_id_partidas(originalRequest) {
+  llenarListaDependiente(originalRequest, 'id_partidas');
+}
+
+function llenarListaDependiente(originalRequest, nombreListaLlenar) {
+  var respuesta = originalRequest.responseText;
+  var forma = document.datosegreso;
+  var listaLlenar = eval('forma.'+nombreListaLlenar);
+
+  limpiarListas(nombreListaLlenar);
+
+  if ( respuesta != 'undef' ){
+    var primerarreglo = respuesta.split("|");
+    for(i=0;i<primerarreglo.length;i++){
+      var elemento  = primerarreglo[i].split(":");
+      agregarOpcionLista(listaLlenar,new Option(elemento[1],elemento[0]));
+    }
+  }
+}
+
+// Función limpiarListas: Método encargado de limpiar el contenido de una lista desplegable.
+function limpiarListas(nombreLista) {
+  var forma = document.datosegreso;
+  vaciarLista(eval('forma.'+nombreLista));
+}
+
+</script>
+
+</head>
+<body onload="cargarMenu()" >
+
+[% INCLUDE encabezado.tt %]
+
+<fieldset>
+<legend>Otros Egresos</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+
+<table align="center" width="80%">
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">[% tituloTabla %]</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.sdescripcion.label %]</b></td>
+    <td width="75%" align="left">[% formbuilder.field.sdescripcion.field %] (*)</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.id_partidas.label %]</b></td>
+    <td width="75%" align="left">[% formbuilder.field.criterio.field %]&nbsp;[% formbuilder.field.id_partidas.field %] (*)</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="left" ><font color="#0F305A" size="0" >Nota: (*) Estos campos son obligatorios.</font></td>
+  </tr>
+</table>
+
+<table align="center" width="50%">
+  <tr>
+    <td colspan="2" align="center">[% formbuilder.field.btnvolver.field %]&nbsp;[% formbuilder.submit %]</td>
+  </tr>
+</table>
+
+[% formbuilder.field.id.field %]
+[% formbuilder.end %]
+
+</fieldset>
+</body>
+</html>

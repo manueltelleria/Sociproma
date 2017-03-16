@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+
+[% formbuilder.jshead %]
+
+
+
+<script type="text/javascript">
+
+    function upd(valor, ruta){
+        document.detallarsaldos.id_saldo.value = valor;
+        document.detallarsaldos.action = ruta;
+        document.detallarsaldos.submit();
+    }
+
+//********************//
+//******  AJAX  ******//
+//********************//
+function cargarCombo(campoLlenar){
+  var forma = document.detallarsaldos;
+
+  var texto = document.getElementById('criterio').value;
+  var funcion = eval('llenar_' + campoLlenar);
+  var url = '[% ruta_combo %]';
+
+  if (texto) {
+    var pars = campoLlenar+"="+texto;
+//     alert('Función:' +funcion +' parametros:' + pars);
+    var myAjax = new Ajax.Request( url, { method: 'post', parameters: pars , onComplete: funcion});
+    
+  }
+  else {
+    limpiarListas(campoLlenar);
+  }
+}
+
+
+function llenar_id_partidas(originalRequest) {
+   
+  llenarListaDependiente(originalRequest, 'id_partidas');
+}
+
+
+function llenarListaDependiente(originalRequest, nombreListaLlenar) {
+//      alert(originalRequest.responseText);
+  var respuesta = originalRequest.responseText;
+  var forma = document.detallarsaldos;
+//     alert ('_'+nombreListaLlenar);
+  var listaLlenar = eval('forma.'+nombreListaLlenar);
+//     alert ('|');
+  limpiarListas(nombreListaLlenar);
+
+  if ( respuesta != 'undef' ){
+    var primerarreglo = respuesta.split("|");
+    for(i=0;i<primerarreglo.length;i++){
+      var elemento  = primerarreglo[i].split(":");
+      agregarOpcionLista(listaLlenar,new Option(elemento[1],elemento[0]));
+    }
+  }
+}
+
+
+function limpiarListas(nombreLista) {
+  var forma = document.detallarsaldos;
+  vaciarLista(eval('forma.'+nombreLista));
+}
+
+function limpiar(){
+    document.detallarsaldos.flag.value=1;
+    document.detallarsaldos.id_partidas.value='';
+    document.detallarsaldos.id_partidas.disabled=false;
+    document.detallarsaldos.criterio.value='';
+    document.detallarsaldos.nmntoreal.value='';
+    document.detallarsaldos.nmntoestimado.value='';
+    document.detallarsaldos.nmntoestimado.readOnly=false;
+    document.detallarsaldos.id_saldo.value='';
+    document.detallarsaldos.hoja.value='';
+//     document.getElementById("imgLock").src = '';
+    document.getElementById("imgLock").width = 0;
+}
+
+</script>
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Saldos Hist&oacute;ricos</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+<table align="center" width="65%" border=0>
+    
+  <tr>
+    <td align="center" colspan="2" class="titulodonforojo">Saldos Hist&oacute;ricos </td>
+  </tr>
+
+ <td align="left" class="fondoetiqueta" nowrap><b>A&ntilde;o del [% formbuilder.field.id_presupuestos.label %]<b></td>
+    <td align="left"><b><!--[% formbuilder.field.id_presupuestos.value %]--->[% formbuilder.field.id_presupuestos.field %]  [% formbuilder.field.ianio.value %]</b></td>
+  </tr>
+  <tr>
+  <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.nmntoestimado.label %]<b></td>
+    <td align="left">[% formbuilder.field.nmntoestimado.field %] Bsf (*) [% IF bbloqueo %]<IMG src="[% ruta_estatica %]/imagenes/block1.gif"  border="0" width=10 onmouseover="Tip('<IMG src=\'[% ruta_estatica %]/imagenes/block1.gif\'  border=0 width=10/> <b>Registro bloqueado:</b><br>Sólo se podrá modificar monto real')"  onmouseout="UnTip()" id="imgLock">[% END %]</td>
+  </tr>
+  <tr>
+    <td align="left" class="fondoetiqueta" nowrap><b>[% formbuilder.field.nmntoreal.label %]<b></td>
+    <td align="left">[% formbuilder.field.nmntoreal.field %] Bsf (*)</td>
+  </tr>
+  <tr>
+    <td width="25%" align="left" class="fondoetiqueta"><b>[% formbuilder.field.id_partidas.label %]</b></td>
+    <td width="75%" align="left">[% formbuilder.field.criterio.field %]&nbsp;[% formbuilder.field.id_partidas.field %] (*)</td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2" align=""><a style="text-decoration:none" href="javascript:document.detallarsaldos.hoja.value=1;upd(0,'/presupuesto/historico/registrarsaldos/detallarSaldos')"><IMG src="/static/imagenes/excel.jpg" border="0">Generar hoja de c&aacute;lculo</a></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><!--&nbsp;[% formbuilder.submit %]&nbsp;--> 
+        <input type=button  onclick="javascript: document.detallarsaldos.flag.value=1;document.detallarsaldos.hoja.value=0; if (validate_detallarsaldos(document.detallarsaldos)){upd(document.detallarsaldos.id_saldo.value,'/presupuesto/historico/registrarsaldos/detallarSaldos')}" value='Guardar'/>
+
+        <input type=button  onclick="javascript: limpiar();" value='Nuevo'/>
+
+        <input type=button  onclick="javascript: document.detallarsaldos.flag.value=0; upd(0,'/presupuesto/historico/registrarsaldos/listarPresupuestos')" value='<< Regresar'/>
+    </td>
+  </tr>
+    <tr class=''>
+      <td colspan=2 >(*) Estos campos son obligatorios</td>
+    </tr>
+
+      <tr>
+    <td colspan="2" align="center">
+    
+    </td>
+  </tr>
+
+    <tr>
+    <td align="left" class="" nowrap colspan=2 >
+            <table align="center" border=0 cellspacing="1" cellpadding="2" width="65%">
+        <tr class=titulodonforojo>
+            <th width=40 colspan=12 align=center> Saldos Hist&oacute;ricos para el [% formbuilder.field.ianio.value %]</th>
+        </tr>
+        <tr class=fondoetiqueta5 align=center>
+            <th width=40>N°</th>
+            <th width=40>Partida</th>
+            <th width=100 align=just>Denominaci&oacute;n</th>
+            <th >Monto Estimado</th>
+            <th width=40>Monto Real</th>
+            <th width=40>Eliminar</th>
+        </tr>
+        [% FOREACH field IN tabla %]
+        <tr class=[% field.clase %]>
+            <td>[% IF field.id %]<a  style="text-decoration:none" href="javascript:document.detallarsaldos.flag.value=0; upd([% field.id %],'/presupuesto/historico/registrarsaldos/detallarSaldos')">[% field.num %]</a>[% END %]</td>
+            <td><a onmouseover="javascript: var str= '[% field.partida %]'; Tip('<b>PARTIDA: </b>' + str.substring(0,3) + '<br><b>GENERICA: </b>' + str.substring(3,5) +'<br><b>ESPECIFICA: </b>' + str.substring(5,7) +'<br><b>SUB-ESPECIFICA: </b>' + str.substring(7,9) )" onmouseout="UnTip()"    />[% field.partida %]<a></td>
+            <td>[% field.denominacion %]</td>
+            <td align=right>[% field.nmntoestimado %]</td>
+            <td align=right>[% field.nmntoreal %]</td>
+
+            <td align=center>[% IF field.num %][% IF field.bbloqueo %]<IMG src="[% ruta_estatica %]/imagenes/block1.gif"  border="0" width=10 onmouseover="Tip('<b>Registro bloqueado:</b><br>Sólo se podrá modificar monto real')"  onmouseout="UnTip()">[% ELSE %]<a style="text-decoration:none" href="javascript:if (confirm('Desea eliminar el registro'))upd([% field.id %],'/presupuesto/historico/registrarsaldos/eliminarSaldo')"><IMG src="/static/imagenes/menu/delete.gif" border="0"></a>[% END %][% END %]</td>
+
+        </tr>
+        [% END %]
+        <tr >
+            <tD colspan=11><hr></tD>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+ 
+</table>
+[% formbuilder.field.id_saldo.field %]
+<!-- [% formbuilder.field.marca.field %] -->
+[% formbuilder.field.flag.field %]
+<input name=hoja type=hidden />
+<!-- <input name=id_saldo type=hidden /> -->
+[% formbuilder.end %]
+
+</fieldset>
+</body>
+</html>

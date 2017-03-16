@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN">
+
+<html>
+   <head> <title> Consultar Clave </title>
+[% formbuilder.jshead %]
+[% INCLUDE estilosgenerales.tt %]
+[%INCLUDE jsgenerales.tt %]
+[%formbuilder.jshead%]
+
+[%INCLUDE jscargarmenu.tt%]
+
+<link rel="stylesheet" type="text/css" media="all" href="[% ruta_estatica %]/js/jscalendar/calendar-win2k-cold-2.css" title="Calendario" />
+
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/lang/calendar-es.js"></script>
+<script type="text/javascript" src="[% ruta_estatica %]/js/jscalendar/calendar-setup.js"></script>
+
+</head>
+<body onload="cargarMenu();">
+
+[%INCLUDE encabezado.tt %]
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+
+   [% formbuilder.start -%]
+     <table border = "0" bordercolor = "black" align = "center">
+       <tr> <td>
+
+       <table border = "0" >
+         <tr> <td> &nbsp; </td> </tr>
+
+         <tr>
+           <td> <strong> &nbsp; Monto: &nbsp; </strong> </td>
+           <td>
+                  [%formbuilder.field.Monto.field %]
+           </td>
+         </tr>
+
+         <tr> <td> &nbsp; </td> </tr>
+
+         <tr>
+            <td> <strong> &nbsp; Moneda: &nbsp; </strong> </td>
+            <td>
+
+
+ [%formbuilder.field.Moneda.field %]
+            </td>
+         </tr>
+
+         <tr> <td> &nbsp; </td> </tr>
+
+         <tr>
+           <td> <strong> &nbsp; Desde: &nbsp; </strong> </td>
+           <td>
+                     [%formbuilder.field.Desde.field %] &nbsp;
+                     <img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="fechadesde" 
+                     style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" 
+                     onMouseOut="this.style.background=''"/>
+                     <script type="text/javascript">
+                        Calendar.setup
+                        ({
+                           inputField   :  "Desde",      // id of the input field
+                           ifFormat     :  "%d/%m/%Y",   // format of the input field
+                           button       :  "fechadesde",   // trigger for the calendar (button ID)
+                           align        :  "Tl",         // alignment (defaults to "Bl")
+                           singleClick  :  true
+                        });
+                     </script>
+ </td>
+         </tr>
+
+
+         <tr>
+           <td> <strong> &nbsp; Hasta: &nbsp; </strong> </td>
+           <td>
+                     [%formbuilder.field.Hasta.field %] &nbsp;
+                     <img src="[% ruta_estatica %]/imagenes/calendario.jpg" title="Desplegar Calendario" width="25" height="18" id="fechahasta" 
+                     style="cursor: pointer; border: 0px solid #0F305A;" onmouseover="this.style.background='#0F305A';" 
+                     onMouseOut="this.style.background=''"/>
+                     <script type="text/javascript">
+                        Calendar.setup
+                        ({
+                           inputField   :  "Hasta",      // id of the input field
+                           ifFormat     :  "%d/%m/%Y",   // format of the input field
+                           button       :  "fechahasta",   // trigger for the calendar (button ID)
+                           align        :  "Tl",         // alignment (defaults to "Bl")
+                           singleClick  :  true
+                        });
+                     </script>
+ </td>
+         </tr>
+
+         <tr>
+           <td> <strong> &nbsp; Prefijo: &nbsp; </strong> </td>
+           <td>
+                  [%formbuilder.field.Prefijo.field %]
+           </td>
+         </tr>
+         <tr>
+           <td> <strong> &nbsp; Clave: &nbsp; </strong> </td>
+           <td>
+                  [%formbuilder.field.Clave.field %]
+           </td>
+         </tr>
+         <tr>
+           <td> <strong> &nbsp; Lote: &nbsp; </strong> </td>
+           <td>
+                  [%formbuilder.field.Lote.field %]
+           </td>
+         </tr>
+
+
+         <tr> <td> &nbsp; </td> </tr>
+
+         <tr> <td colspan = "2" align = "center">
+           <table border = "0" colorborder = "black">
+             <tr>
+                <td> &nbsp; [% formbuilder.reset  %] &nbsp; </td>
+                <td> &nbsp; [% formbuilder.submit %] &nbsp; </td>
+             </tr>
+           </table>
+[% resultado %]
+     <table align = "center" border="1" bordercolor = "black">
+       <tr align = "center">
+         <td align = "center"> &nbsp; &nbsp; <strong> Monto   </strong> &nbsp; &nbsp; </td>
+         <td align = "center"> &nbsp; &nbsp; <strong> Moneda  </strong> &nbsp; &nbsp; </td>
+         <td align = "center"> &nbsp; &nbsp; <strong> Fecha   </strong> &nbsp; &nbsp; </td>
+         <td align = "center"> &nbsp; &nbsp; <strong> Prefijo </strong> &nbsp; &nbsp; </td>
+         <td align = "center"> &nbsp; &nbsp; <strong> Clave   </strong> &nbsp; &nbsp; </td>
+         <td align = "center"> &nbsp; &nbsp; <strong> Lote    </strong> &nbsp; &nbsp; </td>
+         <td align = "center"> &nbsp; &nbsp; <strong> Acci&oacute;n    </strong> &nbsp; &nbsp; </td>
+       </tr>
+
+       [% FOREACH clave IN claves  %]
+       <tr align = "center">
+         <td> &nbsp; &nbsp; [% clave.nmonto  %]   &nbsp; &nbsp; </td>
+         <td> &nbsp; &nbsp; [% clave.smoneda %]   &nbsp; &nbsp; </td>
+         <td> &nbsp; &nbsp; [% clave.dfecha  %]   &nbsp; &nbsp; </td>
+         <td> &nbsp; &nbsp; [% clave.nnumero %]   &nbsp; &nbsp; </td>
+         <td> &nbsp; &nbsp; [% clave.sclave  %]   &nbsp; &nbsp; </td>
+         <td> &nbsp; &nbsp; [% clave.nnumlote  %] &nbsp; &nbsp; </td>
+         <td> &nbsp; &nbsp; <a href="modificarClave/[% clave.id  %]">Editar</a> &nbsp; &nbsp; </td>
+       </tr>
+       [% END %]
+     </table>
+
+   </body>
+</html>

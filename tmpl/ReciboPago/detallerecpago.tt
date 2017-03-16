@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+
+[%formbuilder.jshead%]
+
+<script language ="JavaScript">
+
+function imprime(){
+//desaparece el boton
+document.getElementById("noprint").style.visibility='hidden';
+//se imprime la pagina
+print();
+setTimeout("showlayer()",2000);
+}
+function showlayer(){
+     document.getElementById("noprint").style.visibility='visible';
+}
+
+</script>
+</head>
+
+
+[%formbuilder.start%]
+[%formbuilder.statetags%]
+[%formbuilder.keepextras%]
+[%INCLUDE ReciboPago/encabrecpago.tt %]
+<table align="center" width="670px" cellpadding="1" cellspacing="0">
+[% IF recibo %]
+<tr bgcolor="#005288">
+<td  height="15px" width="398px" align="center"><p style="font-family:Helvetica;font-size:55%;color:white"><b>CONCEPTO</b></p></td>
+<td  height="15px" width="68px" align="center"><p style="font-family:Helvetica;font-size:55%;color:white"><b>DIAS/HORAS</b></p></td>
+<td  height="15px" width="68px" align="center"><p style="font-family:Helvetica;font-size:55%;color:white"><b>ASIGNACIONES</b></p></td>
+<td  height="15px" width="68px" align="center"><p style="font-family:Helvetica;font-size:55%;color:white"><b>DEDUCCIONES</b></p></td>
+<td  height="15px" width="68px" align="center"><p style="font-family:Helvetica;font-size:55%;color:white"><b>SALDO</b></p></td>
+</tr>
+[% FOREACH recibo %]
+<tr bgcolor="[% clase %]">
+<td colspan="1" height="15px" width="398px" align="left"><font face="Helvetica" size="1"><small>[% codconcepto %]&nbsp;&nbsp;[% concepto %]</small></font></td>
+<td colspan="1" height="15px" width="68px" align="center"><font face="Helvetica" size="1"><small>[% dhoras %]</small></font></td>
+[% IF tconcepto =='A' %]
+<td colspan="1" height="15px" width="68px" align="right"><font face="Helvetica" size="1"><small>[% monto %]</small></font></td>
+[% ELSE %]
+<td colspan="1" height="15px" width="68px" align="right">&nbsp;</td>
+[% END %]
+[% IF tconcepto =='D' %]
+<td colspan="1" height="15px" width="68px" align="right"><font face="Helvetica" size="1"><small>[% monto %]</small></font></td>
+[% ELSE %]
+<td colspan="1" height="15px" width="68px" align="right">&nbsp;</td>
+[% END %]
+[% IF saldo ==',00' %]
+<td colspan="1" height="15px" width="68px" align="right">&nbsp;</td>
+[% ELSE %]
+<td colspan="1" height="15px" width="68px" align="right">&nbsp;</td>
+[% END %]
+</tr>
+[% END %]
+[% END %]
+</table>
+[%INCLUDE ReciboPago/pierecpago.tt %]
+<div id=noprint>
+      <TABLE align="center" width="93%" cellpadding="2">
+<tr align="center">
+  <td colspan="6">[% formbuilder.field.volver.field %]&nbsp;[% formbuilder.field.imprimir.field %]</td>
+</tr>
+      </TABLE>
+    </div>
+[%formbuilder.end%]
+</body>
+</html>

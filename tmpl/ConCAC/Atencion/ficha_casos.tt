@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>[% titulo %]</title>
+<!-- hojas de estilo generales -->
+[% INCLUDE estilosgenerales.tt %]
+
+<!-- archivos de javascript para Prototype -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/prototype/prototype.js"></script>
+
+<!-- archivos de javascript para Seleccionar Item en las Listas -->
+<script type="text/javascript" src="[%ruta_estatica%]/js/seleccionarItemList.js"></script>
+
+<!-- archivos de javascript generales (cargar en todas las páginas) -->
+[% INCLUDE jsgenerales.tt %]
+
+[% formbuilder.jshead %]
+
+
+
+<script type="text/javascript">
+
+    function upd(valor, ruta){
+//         document.forma.id_ciudadanos.value = valor;
+        document.forma.action = ruta;
+        document.forma.submit();
+    }
+
+    function upd2(valor, ruta){
+        document.forma.id_casos.value = valor;
+        document.forma.action = ruta;
+        document.forma.submit();
+    }
+
+</script>
+</head>
+<body onload="cargarMenu()">
+
+[% INCLUDE encabezado.tt %]
+<fieldset>
+<legend>Casos de Atenci&oacute;n al Ciudadano</legend>
+
+[% formbuilder.start %]
+[% formbuilder.statetags %]
+[% formbuilder.keepextras %]
+[% INCLUDE jscargarmenu.tt %]
+<table align="center" width="65%">
+    <tr>
+        <td align="center" colspan="2" class="titulodonforojo">Datos Caso</td>
+    </tr>
+    <tr>
+        <td align="left" class="" nowrap colspan=2  align=center><b>Datos Ciudadano</b></td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>C&eacute;dula/RIF</td><td>[% id_tprif %]-[% scedularif %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Nombre(s)</td><td>[% snombre %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Apellido(s)</td><td>[% sapellido %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Direcci&oacute;n</td><td>[% sdireccion %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Estado</td><td>[% id_tpentfederal %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Tel&eacute;fonos</td><td>[% stelefono %] / [% stelefono2 %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Sexo</td><td>[% id_tpgenero %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>F. Nacimiento</td><td>[% dnacimiento %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Edad</td><td>[% edad %]</td>
+    </tr>
+
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Observaci&oacute;n</td><td>[% sobservacion_cd %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="" nowrap colspan=2  align=center><b>Datos del Caso</b></td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Tipo</td><td>[% id_tpcaso %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Fecha</td><td>[% dcaso %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Lugar</td><td>[% slugar %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Asunto</td><td>[% sasunto %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Descripci&oacute;n</td><td>[% sdescripcion %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Monto</td><td>[% nmonto %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Observaci&oacute;n</td><td>[% sobservacion %]</td>
+    </tr>
+    <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Remitido por</td><td>[% id_remitidopor %]</td>
+    </tr>
+        <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Remitido para</td><td>[% id_remitidopara %]</td>
+    </tr>
+    </tr>
+        <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Estatus</td><td>[% id_tpedocaso %]</td>
+    </tr>
+
+        <tr>
+        <td align="left" class="fondoetiqueta" nowrap>Unidad Responsable</td><td>[% id_responsables %]</td>
+    </tr>
+
+    <form id="forma" method="post" name="forma">
+        <tr>
+            <td align center  colspan=2  align=center>
+                <input type=button  onclick="javascript: upd(0,'[% retorno %]')" value='<< Regresar'/>&nbsp; 
+            </td>
+        </tr>
+        <input type=hidden name=id_ciudadanos value=[% id_ciudadanos %]>
+
+        <input type=hidden name=id_tprif        value=[% id_tprif_qry %]>
+        <input type=hidden name=scedularif      value=[% scedularif_qry %]>
+        <input type=hidden name=snombre         value=[% snombre_qry %]>
+        <input type=hidden name=id_tpcaso       value=[% id_tpcaso_qry %]>
+        <input type=hidden name=dcaso_desde     value=[% dcaso_desde_qry %]>
+        <input type=hidden name=dcaso_hasta     value=[% dcaso_hasta_qry %]>
+        <input type=hidden name=id_responsables value=[% id_responsables_qry %]>
+        <input type=hidden name=id_tpedocaso    value=[% id_tpedocaso_qry %]>
+        <input type=hidden name=id_remitidopor  value=[% id_remitidopor_qry %]>
+        <input type=hidden name=id_remitidopara value=[% id_remitidopara_qry %]>
+
+
+    </form>
+</table>
+[% formbuilder.field.id_ciudadanos.field %]
+[% formbuilder.field.id_casos.field %]
+[% formbuilder.end %]
+</fieldset>
+</body>
+</html>
