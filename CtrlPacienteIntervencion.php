@@ -31,10 +31,7 @@
   $smarty->assign('id_paciente', '');
   $smarty->assign('nombre_paciente','');
 
-  print "LLEGA ----> ". $_GET['id_paciente'] . " ----> ". $_GET['nombre_paciente'];
-
   if (!empty($_GET['id_paciente']) && !empty($_GET['nombre_paciente'])){
-    print "ENTROOOOOO";
     $smarty->assign('id_paciente', $_GET['id_paciente']);
     $smarty->assign('nombre_paciente',$_GET['nombre_paciente']);
   }
