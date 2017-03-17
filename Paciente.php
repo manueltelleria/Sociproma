@@ -61,9 +61,14 @@ function consulta($Conexion_ID, $Where = "", $Order = ""){
 function create($Conexion_ID, $datos = ""){
 
   $query = "INSERT INTO paciente (shistoria,snombre,sapellido,edad) 
-            VALUES ('".$datos['shistoria']."','".$datos['snombre']."','".$datos['sapellido']."','".$datos['edad']."')";
+            VALUES ('".$datos['shistoria']."','".
+                       strtoupper($datos['snombre'])."','".
+                       strtoupper($datos['sapellido'])."','".
+                       $datos['edad']."')";
 
   $response = mysql_query($query, $Conexion_ID);
+
+  print $query;
 
   mysql_error($Conexion_ID);
 
@@ -76,8 +81,10 @@ function create($Conexion_ID, $datos = ""){
 
 function actualiza($Conexion_ID, $Where = "", $datos = ""){
 
-  $query = "UPDATE paciente set shistoria = '". $datos["shistoria"] ."', snombre = '". utf8_decode($datos["snombre"]) .
-           "', sapellido = '". utf8_decode($datos['sapellido']). "', edad = '".$datos['edad']."' WHERE ";
+  $query = "UPDATE paciente set shistoria = '". $datos["shistoria"].
+           "', snombre = '". strtoupper(utf8_decode($datos["snombre"])).
+           "', sapellido = '". stroupper(utf8_decode($datos['sapellido'])). 
+           "', edad = '".$datos['edad']."' WHERE ";
 
   if (!empty($Where)){
     $query .= $Where;

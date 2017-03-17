@@ -12,6 +12,11 @@
   require ("DetallePacienteInterven.php");
   require ("Fecha.php");
   require ('SmartyIni.php');
+  require ('Session.php');
+
+  $miSession = new Session;
+  
+  $miSession->delete_session();
 
   $smarty  = new SmartyIni;
 
@@ -91,6 +96,17 @@
   $smarty->assign('bpagar', '');
   $smarty->assign('id', '');
 
+  if (!empty($_GET['bcompleto'])){
+    $smarty->assign('bcompleto', $_GET['bcompleto']);
+    $smarty->assign('shistoria', '');
+    $smarty->assign('sapellido', ''); 
+    $smarty->assign('snombre', ''); 
+    $smarty->assign('edad', ''); 
+  }
+  else {
+    $smarty->assign('bcompleto', '');    
+  }
+
   if (!empty($_POST['accion']) && $_POST['accion'] != "buscarPacientes" && $_POST['accion'] != "buscarIntervenciones" ) {
     if ($_POST["accion"] == "actualiza" && !empty($_POST["id"]) ||
         $_POST["accion"] == "pagar" && !empty($_POST["id"]) ) {
@@ -131,15 +147,20 @@
 #Se hace la inserciòn de los valores de la pantalla
 
     if ( $_POST["accion"] == "enviar" && empty($_POST["id"])){
-      if (crear( $miconexion->Conexion_ID, $miPacienteIntervencion )){
-        $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa');
-        $url = $_SERVER["HTTP_REFERER"];
-        list($part1, $part2) = split('\?', $url);
-        $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa'.$part1);
-        header("Location: http://localhost/Sociproma_linux/CtrlPaciente.php") ;
-      }
-      else{
-        $smarty->assign('error_msg', 'Ha ocurrido un error al momento de la creación de los datos');
+      if (!empty($_POST['bcompleto'])){
+        if (crear_completo( $miconexion->Conexion_ID, $miPaciente, $miPacienteIntervencion )){
+          $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa');
+        }
+      } else {
+        if (crear( $miconexion->Conexion_ID, $miPacienteIntervencion )){
+          $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa');
+        //   $url = $_SERVER["HTTP_REFERER"];
+        //   list($part1, $part2) = split('\?', $url);
+        //   $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa'.$part1);
+        //   header("Location: http://localhost/Sociproma_linux/CtrlPaciente.php") ;
+        } else{
+          $smarty->assign('error_msg', 'Ha ocurrido un error al momento de la creación de los datos');
+        }  
       }
     }
     elseif( $_POST["accion"] == "enviar" && !empty($_POST["id"]) ){
@@ -210,27 +231,33 @@
 /* Realiza la insercion de los datos indicados en la forma */
 function crear( $Conexion_ID, $miPacienteIntervencion ){
 
-  $miFecha = new Fecha;
-
-  $datos = array( "num_recibo"          => $_POST["num_recibo"],
-                  "id_paciente"         => $_POST["id_paciente"],
-                  "fecha"               => $miFecha->formatoDbFecha($_POST["fecha"]),
-                  "id_tpoperacion"      => $_POST["id_tpoperacion"],
-                  "id_doctor_cirujano"  => $_POST["id_doctor_cirujano"],
-                  "id_doctor_anestesia" => $_POST["id_doctor_anestesia"],
-                  "monto_total"         => $_POST["monto_total"],
-                  "monto_sap"           => $_POST["monto_sap"],
-                  "id_responsable"      => $_POST["id_responsable"],
-                  "sobservacion"        => $_POST["sobservacion"],
-                  "id_intervencion"     => $_POST["id_intervencion"],
-                  "monto_preva"         => $_POST["monto_preva"],
-                  "monto_anestesia"     => $_POST["monto_anestesia"]);
-  
+  $datos = datos_intervencion(null);
+                  
   $resultado = $miPacienteIntervencion->create( $Conexion_ID, $datos );
 
   return $resultado;
-
 }
+
+/* Realiza la insercion de los datos indicados en la forma */
+function crear_completo( $Conexion_ID, $miPaciente, $miPacienteIntervencion ){
+
+  $datos = datos_paciente();
+
+  $resultado_paciente = $miPaciente->create($Conexion_ID, $datos);
+
+  if ($resultado_paciente){
+    $nuevo_paciente = mysql_insert_id();
+    $datos_interven = datos_intervencion($nuevo_paciente);
+
+    $resultado_interven = $miPacienteIntervencion->create($Conexion_ID, $datos_interven);
+
+    return $resultado_interven;
+  } else {
+
+    return $resultado_paciente;
+  }
+}
+
 
 /* Realiza la actualizacón de los datos indicados en la forma */
 function actualiza( $Conexion_ID, $miPacienteIntervencion ){
@@ -239,22 +266,9 @@ function actualiza( $Conexion_ID, $miPacienteIntervencion ){
 
   $miFecha = new Fecha;
 
-  $datos = array( "id_paciente"         => $_POST["id_paciente"],
-                  "fecha"               => $miFecha->formatoDbFecha($_POST["fecha"]),
-                  "id_tpoperacion"      => $_POST["id_tpoperacion"],
-                  "id_doctor_cirujano"  => $_POST["id_doctor_cirujano"],
-                  "id_doctor_anestesia" => $_POST["id_doctor_anestesia"],
-                  "monto_total"         => $_POST["monto_total"],
-                  "monto_sap"           => $_POST["monto_sap"],
-                  "id_responsable"      => $_POST["id_responsable"],
-                  "sobservacion"        => $_POST["sobservacion"],
-                  "monto_preva"         => $_POST["monto_preva"],
-                  "monto_anestesia"     => $_POST["monto_anestesia"],
-                  "id_intervencion"     => $_POST["id_intervencion"]
-    );
+  $datos = datos_intervencion();
   
   $resultado = $miPacienteIntervencion->actualiza( $Conexion_ID, $Where, $datos );
-
 
   return $resultado;
 }
@@ -359,6 +373,40 @@ function buscarIntervenciones( $Conexion_ID, $Intervencion ) {
 
   echo $Retorno;
 
+}
+
+/* Realiza la insercion de los datos indicados en la forma */
+function datos_paciente(){
+
+  $datos = array( "shistoria" => $_POST["shistoria"],
+                  "sapellido" => $_POST["sapellido"],
+                  "snombre"   => $_POST["snombre"],
+                  "edad"      => $_POST["edad"]);
+  
+
+  return $datos;
+}
+
+/* Realiza la insercion de los datos indicados en la forma */
+function datos_intervencion($id_paciente){
+
+  $miFecha = new Fecha;
+
+  $datos = array( "num_recibo"          => $_POST["num_recibo"],
+                  "id_paciente"         => (!empty($id_paciente)) ? $id_paciente : $_POST["id_paciente"],
+                  "fecha"               => $miFecha->formatoDbFecha($_POST["fecha"]),
+                  "id_tpoperacion"      => $_POST["id_tpoperacion"],
+                  "id_doctor_cirujano"  => $_POST["id_doctor_cirujano"],
+                  "id_doctor_anestesia" => $_POST["id_doctor_anestesia"],
+                  "monto_total"         => $_POST["monto_total"],
+                  "monto_sap"           => $_POST["monto_sap"],
+                  "id_responsable"      => $_POST["id_responsable"],
+                  "sobservacion"        => $_POST["sobservacion"],
+                  "id_intervencion"     => $_POST["id_intervencion"],
+                  "monto_preva"         => $_POST["monto_preva"],
+                  "monto_anestesia"     => $_POST["monto_anestesia"]);
+  
+  return $datos;
 }
 
 ?>

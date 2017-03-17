@@ -193,7 +193,7 @@ function validate_busca_recibo (form) {
       </td>
   </tr>
   <tr>
-    <td><b>Anestesiologo:</b></td>
+    <td><b>Anestesiólogo:</b></td>
     <td colspan="3"><select name="id_doctor_anestesia" id="id_doctor_anestesia">
         {html_options options=$doctorAnes_options selected=$id_doctor_anestesia}
     </td>
@@ -238,7 +238,7 @@ function validate_busca_recibo (form) {
      <th>Paciente</th>
      <th>Tipo</th>
      <th>Cirujano</th>
-     <th>Anestesiologo</th>
+     <th>Anestesiólogo</th>
      <th>Monto</th>
      <th>Responsable</th>
      <th>Fecha Pago</th>

@@ -51,7 +51,8 @@
   {/if}
   <li><a href="javascript:void()" title="Recibos">Recibos</a>
     <ul> 
-      <li><div><a href="http://localhost/Sociproma_linux/CtrlPacienteIntervencion.php" title="Cargar Recibo" >Cargar Recibo</a></div></li> 
+      <li><div><a href="http://localhost/Sociproma_linux/CtrlPacienteIntervencion.php?bcompleto=1" title="Cargar Recibo" >Completo</a></div></li>
+      <li><div><a href="http://localhost/Sociproma_linux/CtrlPacienteIntervencion.php?bcompleto=0" title="Cargar Recibo" >Paciente Existe</a></div></li>
     </ul> 
   </li> 
   <li><a href="javascript:void();" title="Consultas del Sistema">Consultas</a>
@@ -85,16 +86,16 @@ if (document.getElementById) {
 <script type="text/javascript" src="/Sociproma_linux/js/tooltip.js"></script>
 {/literal}
 <div id="cargando" style="display: none">
-      <table> 
-         <tr> 
-            <td> 
-               <span style="color: #000000">Cargando</span>
-            </td> 
-         </tr>
-         <tr> 
-            <td align="center">
-               <img alt="Cargando" src="/Sociproma_linux/imagenes/cargando.gif" /> 
-            </td> 
-         </tr>  
-      </table> 
+  <table> 
+    <tr> 
+      <td> 
+        <span style="color: #000000">Cargando</span>
+      </td> 
+    </tr>
+    <tr> 
+      <td align="center">
+        <img alt="Cargando" src="/Sociproma_linux/imagenes/cargando.gif" /> 
+      </td> 
+    </tr>  
+  </table> 
 </div>
