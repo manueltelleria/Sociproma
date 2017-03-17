@@ -12,11 +12,11 @@
   require ("DetallePacienteInterven.php");
   require ("Fecha.php");
   require ('SmartyIni.php');
-  require ('Session.php');
+  // require ('Session.php');
 
-  $miSession = new Session;
+  // $miSession = new Session;
   
-  $miSession->delete_session();
+  // $miSession->delete_session();
 
   $smarty  = new SmartyIni;
 
@@ -181,7 +181,7 @@
     }elseif( $_POST["accion"] == "pagar_recibo" && !empty($_POST["id"]) ){
       if (pagar_recibo( $miconexion->Conexion_ID, $miPacienteIntervencion )){
         $smarty->assign('error_msg', 'El recibo ha cambiado su estatus a pagado de manera exitosa');
-            header('location: http://localhost:8080/sociproma/CtrlBuscarRecibo.php');
+            header('location: http://localhost/Sociproma_linux/CtrlBuscarRecibo.php');
       }
       else{
         $smarty->assign('error_msg', 'Ha ocurrido un error al momento de pagar el registro');

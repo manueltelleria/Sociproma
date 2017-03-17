@@ -16,7 +16,7 @@
 // Finally, destroy the session.
   session_destroy();
 
-  header('location: http://localhost:8080/sociproma/iniciosesion.php');
+  header('location: http://localhost/Sociproma_linux/iniciosesion.php');
 
 ?>
 
