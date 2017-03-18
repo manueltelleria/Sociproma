@@ -12,11 +12,6 @@
   require ("DetallePacienteInterven.php");
   require ("Fecha.php");
   require ('SmartyIni.php');
-  // require ('Session.php');
-
-  // $miSession = new Session;
-  
-  // $miSession->delete_session();
 
   $smarty  = new SmartyIni;
 
@@ -391,6 +386,8 @@ function datos_paciente(){
 function datos_intervencion($id_paciente){
 
   $miFecha = new Fecha;
+  print "LLEGA PARAMETRO ---> ". $id_paciente;
+  print "LLEGA POST ---> ". $_POST['id_paciente'];
 
   $datos = array( "num_recibo"          => $_POST["num_recibo"],
                   "id_paciente"         => (!empty($id_paciente)) ? $id_paciente : $_POST["id_paciente"],

@@ -27,13 +27,13 @@ function validate_fresponsable (form) {
 // snombre: standard text, hidden, password, or textarea box
   var sdescripcion = form.elements['sdescripcion'].value;
   if (sdescripcion == null || sdescripcion == "" ) {
-    alertstr += '- Indique un valor válido para el campo "Descripci&oacute;n"\n';
+    alertstr += '- Indique un valor válido para el campo "Descripción"\n';
     invalid++;
   }
 
   if (invalid > 0 || alertstr != '') {
     if (! invalid) invalid = 'Los Siguiemtes';   // catch for programmer error
-    alert(''+invalid+' error(es) fueron encontrados al enviar la informaci&oacute;n:'+'\n\n'
+    alert(''+invalid+' error(es) fueron encontrados al enviar la información:'+'\n\n'
     +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
     return false;
   }
@@ -58,7 +58,7 @@ function validate_fresponsable (form) {
 <legend>Datos Responsables</legend>
 <table width="100%">
   <tr>
-    <td width="15%"><b>Descripci&oacute;n:</b></td>
+    <td width="15%"><b>Descripción:</b></td>
     <td align="left"><input type="text" name="sdescripcion" id="sdescripcion" size="60" value="{$sdescripcion}"><b>*</b></td>
   </tr>
   <tr>
@@ -82,7 +82,7 @@ function validate_fresponsable (form) {
 <table width="75%" cellpadding="1" align="center">
   <tr class="titulodonforojo">
      <th>Num. Registro</th>
-     <th>Descripci&oacute;n</th>
+     <th>Descripción</th>
      <th></th>
      <th></th>
   </tr>

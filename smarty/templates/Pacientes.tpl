@@ -28,27 +28,27 @@ function validate_fpaciente (form) {
 // shistoria: standard text, hidden, password, or textarea box
   var shistoria = form.elements['shistoria'].value;
   if (shistoria == null || shistoria == "" ) {
-    alertstr += '- Indique un valor válido para el campo "Historia"\n';
+    alertstr += '- Indique un valor vÃ¡lido para el campo "Historia"\n';
     invalid++;
   }
 
 // snombre: standard text, hidden, password, or textarea box
   var snombre = form.elements['snombre'].value;
   if (snombre == null || snombre == "" ) {
-    alertstr += '- Indique un valor válido para el campo "Nombre"\n';
+    alertstr += '- Indique un valor vÃ¡lido para el campo "Nombre"\n';
     invalid++;
   }
 
 // sapellido: standard text, hidden, password, or textarea box
   var sapellido = form.elements['sapellido'].value;
   if (sapellido == null || sapellido == "" ) {
-    alertstr += '- Indique un valor válido para el campo "Apellido"\n';
+    alertstr += '- Indique un valor vÃ¡lido para el campo "Apellido"\n';
     invalid++;
   }
 
   if (invalid > 0 || alertstr != '') {
     if (! invalid) invalid = 'Los Siguiemtes';   // catch for programmer error
-    alert(''+invalid+' error(es) fueron encontrados al enviar la información:'+'\n\n'
+    alert(''+invalid+' error(es) fueron encontrados al enviar la informaciÃ³n:'+'\n\n'
     +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
     return false;
   }

@@ -68,8 +68,6 @@ function create($Conexion_ID, $datos = ""){
 
   $response = mysql_query($query, $Conexion_ID);
 
-  print $query;
-
   mysql_error($Conexion_ID);
 
   $this->error = mysql_error();

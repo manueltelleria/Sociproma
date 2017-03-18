@@ -63,8 +63,6 @@ function consulta($Conexion_ID, $Where = ""){
     $SQL .= " AND " . $Where;
   }
 
-//print $SQL;
-
 //ejecutamos la consulta
 
   $this->Consulta_ID = @mysql_query($SQL, $Conexion_ID);
@@ -127,8 +125,6 @@ function create($Conexion_ID, $datos = ""){
 
   $response = mysql_query($query, $Conexion_ID);
 
-  print mysql_error();
-
   return $response;
 }
 
@@ -182,9 +178,14 @@ function actualiza($Conexion_ID, $Where = "", $datos = ""){
 
 function pagar($Conexion_ID, $Where = "", $datos = ""){
 
-  $query = "UPDATE paciente_intervencion set monto_pagado = '". $datos["monto_pagado"] .
-		"', fecha_pago = '". $datos['fecha_pago']. 
-	        "', id_estatus = 2  WHERE ";
+  if (strpos($datos['monto_pagado'], ",")){
+    $monto_pagado = str_replace(".","",$datos['monto_pagado']);
+    $monto_pagado = str_replace(",",".",$monto_pagado);
+  }
+
+  $query = "UPDATE paciente_intervencion set monto_pagado = '". $monto_pagado .
+		       "', fecha_pago = '". $datos['fecha_pago']. 
+	         "', id_estatus = 2  WHERE ";
 
   if (!empty($Where)){
     $query .= $Where;

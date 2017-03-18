@@ -117,7 +117,7 @@ function llenaValores(){
 <legend>Datos Usuarios</legend>
 <table width="100%">
   <tr>
-    <td nowrap><b>Si el usuario es doctor seleccionelo</b></td>
+    <td nowrap><b>Si el usuario es doctor seleccionelo:</b></td>
     <td><select name="id_doctor" id="id_doctor" onchange=" llenaValores(); ">
           {html_options options=$doctor_options selected=$id_doctor}
         </select>

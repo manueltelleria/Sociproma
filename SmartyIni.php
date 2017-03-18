@@ -3,7 +3,7 @@
 // load Smarty library
 #require('c:\wamp\Smartylibs\Smarty.class.php');
 #require('c:\xampp\htdocs\Sociproma\libs\Smarty.class.php');
-require('/opt/lampp/htdocs/sociproma/libs/Smarty.class.php');
+require('/opt/lampp/htdocs/Sociproma_linux/libs/Smarty.class.php');
 
 class SmartyIni extends Smarty {
 

@@ -65,14 +65,18 @@ function runMode( accion, Id ){
       accion != "crear_responsable" && accion != "volver" &&
       accion != "pagar_recibo" ){
 {/literal}
-    {if $bcompleto == 1}
-      {literal}
-        if (validate_fpacienteInterven_completo(forma)){ forma.submit() };
-      {/literal}
+    {if $bpagar == 1}
+      if (validate_fpacienteInterven_existe(forma)){ forma.submit() };
     {else}
-      {literal}
-        if (validate_fpacienteInterven_existe(forma)){ forma.submit() };
-      {/literal}
+      {if $bcompleto == 1}
+        {literal}
+          if (validate_fpacienteInterven_completo(forma)){ forma.submit() };
+        {/literal}
+      {else}
+        {literal}
+          if (validate_fpacienteInterven_existe(forma)){ forma.submit() };
+        {/literal}
+      {/if}
     {/if}      
 {literal}
   } else if( accion == "crear_paciente"){
@@ -82,8 +86,10 @@ function runMode( accion, Id ){
     forma.action = "CtrlResponsable.php";
     forma.submit();
   } else if( accion == "pagar_recibo"){
-    forma.action = "CtrlPacienteIntervencion.php";
-    forma.submit();
+    if (validate_fpacienteInterven_pago(forma)){
+      forma.action = "CtrlPacienteIntervencion.php";
+      forma.submit();
+    }
   }else if( accion == "volver"){
     forma.submit();
   }
@@ -93,10 +99,14 @@ function runMode( accion, Id ){
 }
 {/literal}
 
-{if $bcompleto == 1}
-  {include file='js/validate_fpacienteInterven_completo.js'}
+{if $bpagar == 1}
+  {include file='js/validate_fpacienteInterven_pago.js'}
 {else}
-  {include file='js/validate_fpacienteInterven_existe.js'}
+  {if $bcompleto == 1}
+    {include file='js/validate_fpacienteInterven_completo.js'}
+  {else}
+    {include file='js/validate_fpacienteInterven_existe.js'}
+  {/if}
 {/if}
 
 
@@ -215,7 +225,7 @@ function calcula_monto( ){
        <td align="left">
         <select name="id_tpoperacion" id="id_tpoperacion">
           {html_options options=$tpopera_options selected=$id_tpoperacion}
-        </select>
+        </select><b>*</b>
       </td>
     </tr>
     <tr>
@@ -239,7 +249,7 @@ function calcula_monto( ){
       <td><input type="text" name="monto_sap" id="monto_sap" size="17" value="{$monto_sap}" onchange="calcula_monto()"></td>
     </tr>
     <tr>
-      <td><b>Monto Pre-Evaluación:</b></td>
+      <td><b>Monto Pre-Anestesia:</b></td>
       <td><input type="text" name="monto_preva" id="monto_preva" size="17" value="{$monto_preva}" onchange="calcula_monto()"></td>
     </tr>
     <tr>
@@ -255,7 +265,7 @@ function calcula_monto( ){
       <td>
         <select name="id_responsable" id="id_responsable">
           {html_options options=$respon_options selected=$id_responsable}
-        </select>&nbsp;&nbsp;<a href="#" onclick=" runMode( 'crear_responsable' ); ">Responsable Nuevo</a>
+        </select><!--&nbsp;&nbsp;<a href="#" onclick=" runMode( 'crear_responsable' ); ">Responsable Nuevo</a>-->
       </td>
     </tr>
     <tr>
@@ -263,7 +273,7 @@ function calcula_monto( ){
       <td>
         <select name="id_intervencion" id="id_intervencion">
           {html_options options=$interven_options selected=$id_intervencion}
-        </select>
+        </select><b>*</b>
       </td>
     </tr>
     <tr>
@@ -296,6 +306,12 @@ function calcula_monto( ){
       <td align="left"><b>{$nombre_anestesiologo}</b></td>       
     </tr>
     <tr>
+      <td width="15%"><b>Monto Pagado:</b></td>
+      <td align="left">
+        <input type="text" name="monto_pagado" id="monto_pagado" size="15" value="0" onchange="this.value = formatearMoneda(this.value)">
+      </td>       
+    </tr>
+    <tr>
       <td width="15%"><b>Fecha de Pago:</b></td>
     <td>
       <INPUT TYPE="text" NAME="fecha_pago" id="fecha_pago" SIZE="10">
@@ -312,10 +328,7 @@ function calcula_monto( ){
        <b>*</b>
     </td>
     </tr>
-    <tr>
-      <td width="15%"><b>Monto Pagado:</b></td>
-      <td align="left"><input type="text" name="monto_pagado" id="monto_pagado" size="15" onchange="formatearMoneda(this.value)"></td>       
-    </tr>
+    
   </table>
   </fieldset>
 {/if}  

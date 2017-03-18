@@ -53,7 +53,7 @@
         $smarty->assign('snombre',         $row["snombre"]);
         $smarty->assign('sapellido',       $row["sapellido"]);
         $smarty->assign('stelefono',       $row["stelefono"]);
-	$smarty->assign('stelefono_1',     $row["stelefono_1"]);
+	      $smarty->assign('stelefono_1',     $row["stelefono_1"]);
         $smarty->assign('id_especialidad', $row["esp_id"]);
       }
     }

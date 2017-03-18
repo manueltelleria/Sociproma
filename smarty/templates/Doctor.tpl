@@ -38,12 +38,12 @@ function validate_fdoctor (form) {
 // stelefono: standard text, hidden, password, or textarea box
   var stelefono = form.elements['stelefono'].value;
   if (stelefono == null || stelefono == "" ) {
-    alertstr += '- Indique un valor válido para el campo "N&uacute;mero Telef&oacute;nico"\n';
+    alertstr += '- Indique un valor válido para el campo "Número Telefónico"\n';
     invalid++;
   }
   else{
     if (!stelefono.match(/^[0-9]+-[0-9]*$/)) {
-      alertstr += '- El n&uacute;mero telef&oacute;nico debe cumplir con el formato que se indica "0212-12345678"\n';
+      alertstr += '- El número telefónico debe cumplir con el formato que se indica "0212-12345678"\n';
       invalid++;
     }
   }
@@ -56,7 +56,7 @@ function validate_fdoctor (form) {
       id_especialidad = form.elements['id_especialidad'].options[loop].value;
       selected_id_especialidad++;
       if (id_especialidad == 0 || id_especialidad === 0) {
-        alertstr += '- Seleccione una opci&oacute;n para el campo "Especialidad"\n';
+        alertstr += '- Seleccione una opción para el campo "Especialidad"\n';
         invalid++;
       }
     } // if
@@ -64,7 +64,7 @@ function validate_fdoctor (form) {
 
   if (invalid > 0 || alertstr != '') {
     if (! invalid) invalid = 'Los Siguiemtes';   // catch for programmer error
-    alert(''+invalid+' error(es) fueron encontrados al enviar la informaci&oacute;n:'+'\n\n'
+    alert(''+invalid+' error(es) fueron encontrados al enviar la información:'+'\n\n'
     +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
     return false;
   }
@@ -96,11 +96,11 @@ function validate_fdoctor (form) {
     <td align="left"><input type="text" name="sapellido" id="sapellido" size="30" value="{$sapellido}"> <b>*</b></td>
   </tr>
   <tr>
-    <td><b>N&uacute;mero Telef&oacute;nico:</b></td>
+    <td><b>Número Telefónico:</b></td>
     <td><input type="text" name="stelefono" id="stelefono" size="14" value="{$stelefono}"><b>Ejm. 0414-12345678 *</b></td>
   </tr>
   <tr>
-    <td><b>N&uacute;mero Telef&oacute;nico:</b></td>
+    <td><b>Número Telefónico Secundario:</b></td>
     <td><input type="text" name="stelefono_1" id="stelefono_1" size="14" value="{$stelefono_1}"><b>Ejm. 0414-12345678 (Opcional)</b></td>
   </tr>
   <tr>
@@ -123,8 +123,8 @@ function validate_fdoctor (form) {
   <tr class="titulodonforojo">
      <th>Nombre</th>
      <th>Apellido</th>
-     <th>Tel&eacute;fono</th>
-     <th>Tel&eacute;fono Opc.</th>
+     <th>Teléfono</th>
+     <th>Teléfono Sec.</th>
      <th>Especialidad</th>
      <th></th>
      <th></th>

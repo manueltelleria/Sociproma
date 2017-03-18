@@ -73,6 +73,7 @@
         $smarty->assign('sapellido',   "");
         $smarty->assign('susuario',    "");
         $smarty->assign('scontrasena', '');
+        $smarty->assign('sconfirma', '');
         $smarty->assign('scorreo',     "");
         $smarty->assign('id_doctor',   "");
         $smarty->assign('adm_id',   "");
@@ -89,6 +90,7 @@
         $smarty->assign('sapellido',   "");
         $smarty->assign('susuario',    "");
         $smarty->assign('scontrasena', '');
+        $smarty->assign('sconfirma', '');
         $smarty->assign('scorreo',     "");
         $smarty->assign('id_doctor',   "");
         $smarty->assign('adm_id',   "");
@@ -116,6 +118,7 @@
     $smarty->assign('sapellido',   "");
     $smarty->assign('susuario',    "");
     $smarty->assign('scontrasena', '');
+    $smarty->assign('sconfirma', '');
     $smarty->assign('scorreo',     "");
     $smarty->assign('id_doctor',   "");
 
@@ -142,12 +145,12 @@ function crear( $Conexion_ID, $miUsuario ){
   }
 
   $datos = array( "snombre"        => $_POST["snombre"],
-	          "sapellido"      => $_POST["sapellido"],
-		  "susuario"       => $_POST["susuario"],
-		  "scontrasena"    => $_POST["scontrasena"],
-		  "scorreo"        => $_POST["scorreo"] || '',
-		  "badministrador" => $_POST["badministrador"][0],
-	          "id_doctor"      => $id_doc );
+	                "sapellido"      => $_POST["sapellido"],
+		              "susuario"       => $_POST["susuario"],
+		              "scontrasena"    => $_POST["scontrasena"],
+		              "scorreo"        => $_POST["scorreo"] || '',
+		              "badministrador" => $_POST["badministrador"][0],
+	                "id_doctor"      => $id_doc );
 
   
   $resultado = $miUsuario->create( $Conexion_ID, $datos );
@@ -161,13 +164,13 @@ function actualiza( $Conexion_ID, $miUsuario ){
   $Where = " id = " . $_POST["id"];
 
   $datos = array( "id"             => $_POST["id"],
-		  "snombre"        => $_POST["snombre"],
-		  "sapellido"      => $_POST["sapellido"],
-		  "susuario"       => $_POST["susuario"],
-		  "scontrasena"    => $_POST["scontrasena"],
-		  "scorreo"        => $_POST["scorreo"],
-	          "badministrador" => $_POST["badministrador"],
-	          "id_doctor"      => $_POST["id_doctor"] );
+		              "snombre"        => $_POST["snombre"],
+		              "sapellido"      => $_POST["sapellido"],
+		              "susuario"       => $_POST["susuario"],
+		              "scontrasena"    => $_POST["scontrasena"],
+		              "scorreo"        => $_POST["scorreo"],
+	                "badministrador" => $_POST["badministrador"],
+	                "id_doctor"      => $_POST["id_doctor"] );
 
   
   $resultado = $miUsuario->actualiza( $Conexion_ID, $Where, $datos );

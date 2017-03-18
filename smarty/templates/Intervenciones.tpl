@@ -24,13 +24,13 @@ function validate_fintervencion (form) {
 // snombre: standard text, hidden, password, or textarea box
   var sdescripcion = form.elements['sdescripcion'].value;
   if (sdescripcion == null || sdescripcion == "" ) {
-    alertstr += '- Indique un valor v醠ido para el campo "Descripci&oacute;n"\n';
+    alertstr += '- Indique un valor v谩lido para el campo "Descripci贸n"\n';
     invalid++;
   }
 
   if (invalid > 0 || alertstr != '') {
     if (! invalid) invalid = 'Los Siguiemtes';   // catch for programmer error
-    alert(''+invalid+' error(es) fueron encontrados al enviar la informaci&oacute;n:'+'\n\n'
+    alert(''+invalid+' error(es) fueron encontrados al enviar la informaci贸n:'+'\n\n'
     +alertstr+'\n'+'- Por favor corrija los campos y trate de nuevo');
     return false;
   }
@@ -55,7 +55,7 @@ function validate_fintervencion (form) {
 <legend>Datos de las Intervenciones</legend>
 <table width="100%">
   <tr>
-    <td width="15%"><b>Descripci&oacute;n:</b></td>
+    <td width="15%"><b>Descripci贸n:</b></td>
     <td align="left"><input type="text" name="sdescripcion" id="sdescripcion" size="60" value="{$sdescripcion}"><b>*</b></td>
   </tr>
   <tr>
@@ -78,7 +78,7 @@ function validate_fintervencion (form) {
 <br/><br/>
 <table width="75%" cellpadding="1" align="center">
   <tr class="titulodonforojo">
-     <th>Descripci&oacute;n</th>
+     <th>Descripci贸n</th>
      <th>Monto de Referencia</th>
      <th></th>
      <th></th>

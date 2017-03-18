@@ -82,30 +82,17 @@ function validate_fpacienteInterven_existe (form) {
     invalid++;
   }
 
-  for (var i=0; i<=4; i++){
-    var linea = i + 1;
-    var Cuantos = 0;
-    var SelInter = document.getElementById('id_intervencion_'+i);
-    if (SelInter){
-      var id_Inter = 0;
-      var selected_id_interven = 0;
-      if ( SelInter.options.length == 0){
-        alertstr += '- Seleccione una opción para el campo "Intervención" '+linea+'\n';
+  var id_intervencion = 0;
+  var selected_id_intervencion = 0;
+  for (var loop = 0; loop < form.elements['id_intervencion'].options.length; loop++) {
+    if (form.elements['id_intervencion'].options[loop].selected) {
+      id_intervencion = form.elements['id_intervencion'].options[loop].value;
+      selected_id_intervencion++;
+      if (id_intervencion == 0 || id_intervencion === 0) {
+        alertstr += '- Seleccione una opción para el campo "Tipo de Intervención"\n';
         invalid++;
-      }
-      else{
-        for (var loop = 0; loop < SelInter.options.length; loop++) {
-          if (SelInter.options[loop].selected) {
-            id_Inter = SelInter.options[loop].value;
-            selected_id_interven++;
-            if (id_Inter == 0 || id_Inter === 0) {
-              alertstr += '- Seleccione una opción para el campo "Intervención" '+linea+'\n';
-              invalid++;
-            }
-          } // if
-        } // for id_intervencion
-      } 
-    } 
+      } // if
+    } // for id_intervencion
   }
 
   if (invalid > 0 || alertstr != '') {
