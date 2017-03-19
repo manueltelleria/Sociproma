@@ -6,11 +6,14 @@
 
   session_start();
 
-  require ("MysqlDB.php");
-  require ("Doctor.php");
-  require ("Especialidad.php");
-  require ('SmartyIni.php');
-  require ('Session.php');
+  require("MysqlDB.php");
+  require("Doctor.php");
+  require("Especialidad.php");
+  require('SmartyIni.php');
+  require('Session.php');
+  require_once('ParamConf.php');
+
+  $miParamConf = new ParamConf;
 
   $miSession = new Session;
 
@@ -24,9 +27,12 @@
   $smarty->assign('badministra', $_SESSION['badministra']);
   $smarty->assign('subtitulo', '');
   $smarty->assign('error_msg', '');
+  $smarty->assign('direccion', $miParamConf->getLocalhost());
+
 
   if(!$_SESSION['usuario_log']){
-    header('location: http://localhost:8080/iniciosesion.php');
+    $localhost = "location: ".$miParamConf->getLocalhost()."/iniciosesion.php";
+    header($localhost);
   }
 
   $ConsultaId;

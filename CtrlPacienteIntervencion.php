@@ -2,16 +2,19 @@
 
   session_start();
 
-  require ("MysqlDB.php");
-  require ("Doctor.php");
-  require ("Paciente.php");
-  require ("TipoOperacion.php");
-  require ("Responsable.php");
-  require ("Intervencion.php");
-  require ("PacienteIntervencion.php");
-  require ("DetallePacienteInterven.php");
-  require ("Fecha.php");
-  require ('SmartyIni.php');
+  require("MysqlDB.php");
+  require("Doctor.php");
+  require("Paciente.php");
+  require("TipoOperacion.php");
+  require("Responsable.php");
+  require("Intervencion.php");
+  require("PacienteIntervencion.php");
+  require("DetallePacienteInterven.php");
+  require("Fecha.php");
+  require('SmartyIni.php');
+  require_once('ParamConf.php');
+
+  $miParamConf = new ParamConf;
 
   $smarty  = new SmartyIni;
 
@@ -20,6 +23,8 @@
   $smarty->assign('badministra', $_SESSION['badministra']);
 
   $smarty->assign('titulo','Intervención por Paciente');
+  $smarty->assign('direccion', $miParamConf->getLocalhost());
+
   $smarty->assign('monto_total','');
   $smarty->assign('num_recibo','');
   $smarty->assign('fecha','');
@@ -38,7 +43,8 @@
   //$smarty->assign('id','');
 
   if(!$_SESSION['usuario_log']){
-    header('location: http://localhost:8080/sociproma/iniciosesion.php');
+    $direcc = "location: ".$miParamConf->getLocalhost()."/iniciosesion.php";
+    header($direcc);
   }
 
   $ConsultaId;
@@ -176,7 +182,8 @@
     }elseif( $_POST["accion"] == "pagar_recibo" && !empty($_POST["id"]) ){
       if (pagar_recibo( $miconexion->Conexion_ID, $miPacienteIntervencion )){
         $smarty->assign('error_msg', 'El recibo ha cambiado su estatus a pagado de manera exitosa');
-            header('location: http://localhost/Sociproma_linux/CtrlBuscarRecibo.php');
+        $direcc = "location: ".$miParamConf->getLocalhost()."/CtrlBuscarRecibo.php";
+        header($direcc);
       }
       else{
         $smarty->assign('error_msg', 'Ha ocurrido un error al momento de pagar el registro');
@@ -386,8 +393,6 @@ function datos_paciente(){
 function datos_intervencion($id_paciente){
 
   $miFecha = new Fecha;
-  print "LLEGA PARAMETRO ---> ". $id_paciente;
-  print "LLEGA POST ---> ". $_POST['id_paciente'];
 
   $datos = array( "num_recibo"          => $_POST["num_recibo"],
                   "id_paciente"         => (!empty($id_paciente)) ? $id_paciente : $_POST["id_paciente"],

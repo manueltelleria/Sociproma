@@ -4,9 +4,12 @@
 
 <?php
 
-  require ("MysqlDB.php");
-  require ("Usuario.php");
+  require("MysqlDB.php");
+  require("Usuario.php");
   require('SmartyIni.php');
+ // require_once('ParamConf.php');
+
+  $miParamConf = new ParamConf;
 
   $smarty  = new SmartyIni;
 
@@ -18,6 +21,7 @@
 
   $miconexion->conectar("", "", "", "");
 
+  $smarty->assign('direccion', $miParamConf->getLocalhost());
   $smarty->assign('error_msg', "");
   $smarty->assign('titulo', "SOCIPROMA");
   $smarty->assign('subtitulo', " ");
@@ -45,9 +49,9 @@
         $_SESSION['apellido_log'] = $apellido_log;
         $_SESSION['badministra']  = $badministra;
 
-        print("ANTESSSSSSSSSSSSS");
+        $localhost = "location: ".$miParamConf->getLocalhost()."/Home.php";
 
-        header( 'Location: http://localhost/Sociproma_linux/Home.php' ) ;
+        header($localhost) ;
       }
       else{
         $smarty->assign('error_msg','Las credenciales indicadas no corresponden con ningún usuario registrado');

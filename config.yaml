@@ -1,0 +1,12 @@
+controller:
+  localhost: http://localhost/sociproma
+  dir_base: /sociproma
+
+smarty:
+  lib: /opt/lampp/htdocs/sociproma/libs/Smarty.class.php
+  template_dir: /opt/lampp/htdocs/sociproma/smarty/templates
+  cache_dir: /opt/lampp/smarty/cache
+  compile_dir: /opt/lampp/htdocs/sociproma/smarty/templates_c
+
+directorios:
+  imagenes: /imagenes

@@ -15,7 +15,7 @@ Arraymontos = new Array();
 //Función cargarCaomboPaciente: se encarga de cargar el contenido de las listas Paciente depediendo del criterio de busqueda en el campo criterio
 function cargarCombo( listaLlenar ){
   var forma = document.fpaciente_intervencion;
-  var url = '/Sociproma_linux/CtrlPacienteIntervencion.php';
+  var url = '/sociproma/CtrlPacienteIntervencion.php';
   campo = eval('forma.'+listaLlenar);
   if ( listaLlenar == 'id_paciente' ){
     var funcion = eval('llenar_id_paciente');

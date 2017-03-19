@@ -3,14 +3,20 @@
   session_start();
 
   require('SmartyIni.php');
+  //require('ParamConf.php');
+
+  $miParamConf = new ParamConf;
 
   $smarty  = new SmartyIni;
 
+  $smarty->assign('titulo', 'SOCIPROMA');
   $smarty->assign('subtitulo', '');
+  $smarty->assign('direccion', $miParamConf->getLocalhost());
   $smarty->assign('error_msg', '');
 
   if (!$_SESSION['usuario_log']){
-    header('location: http://localhost/Sociproma_linux/iniciosesion.php');
+    $direcc = "location: "."/iniciosesion.php";
+    header($direcc);
   }
   else{
     $smarty->assign('usuario_log', $_SESSION['usuario_log']);

@@ -2,17 +2,20 @@
 
   session_start();
 
-  require ("MysqlDB.php");
-  require ("Doctor.php");
-  require ("Paciente.php");
-  require ("TipoOperacion.php");
-  require ("Responsable.php");
-  require ("Intervencion.php");
-  require ("PacienteIntervencion.php");
-  require ("DetallePacienteInterven.php");
-  require ("Fecha.php");
-  require ("Estatus.php");
+  require("MysqlDB.php");
+  require("Doctor.php");
+  require("Paciente.php");
+  require("TipoOperacion.php");
+  require("Responsable.php");
+  require("Intervencion.php");
+  require("PacienteIntervencion.php");
+  require("DetallePacienteInterven.php");
+  require("Fecha.php");
+  require("Estatus.php");
   require("SmartyIni.php");
+  require_once('ParamConf.php');
+
+  $miParamConf = new ParamConf;
 
   $smarty  = new SmartyIni;
 
@@ -25,9 +28,12 @@
   $smarty->assign('monto_total', '');
 
   $smarty->assign('titulo','Consulta de Recibos');
+  $smarty->assign('direccion', $miParamConf->getLocalhost());
+
 
   if(!$_SESSION['usuario_log']){
-    header('location: http://localhost:8080/iniciosesion.php');
+    $localhost = "location: ".$miParamConf->getLocalhost()."/iniciosesion.php";
+    header($localhost);
   }
 
   $ConsultaId;

@@ -13,6 +13,9 @@
   require ("Fecha.php");
   require ("Estatus.php");
   require("SmartyIni.php");
+  require('ParamConf.php');
+
+  $miParamConf = new ParamConf;
 
   $smarty  = new SmartyIni;
 
@@ -23,7 +26,8 @@
   $smarty->assign('titulo','Consulta de Recibos');
 
   if(!$_SESSION['usuario_log']){
-    header('location: http://localhost:8080/sociproma/iniciosesion.php');
+    $direcc = "location: ".$miParamConf->getLocalhost()."/iniciosesion.php";
+    header($direcc);
   }
 
   $ConsultaId;

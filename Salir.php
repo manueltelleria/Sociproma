@@ -3,6 +3,10 @@
 // If you are using session_name("something"), don't forget it now!
   session_start();
 
+  require('ParamConf.php');
+
+  $miParamConf = new ParamConf;
+
 // Unset all of the session variables.
   $_SESSION = array();
 
@@ -16,7 +20,9 @@
 // Finally, destroy the session.
   session_destroy();
 
-  header('location: http://localhost/Sociproma_linux/iniciosesion.php');
+  $direcc = "location: ".$miParamConf->getLocalhost()."/iniciosesion.php";
+
+  header($direcc);
 
 ?>
 

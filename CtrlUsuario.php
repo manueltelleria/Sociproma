@@ -6,11 +6,14 @@
 
   session_start();
 
-  require ("MysqlDB.php");
-  require ("Usuario.php");
-  require ("Doctor.php");
-  require ('SmartyIni.php');
-  require ('Session.php');
+  require("MysqlDB.php");
+  require("Usuario.php");
+  require("Doctor.php");
+  require('SmartyIni.php');
+  require('Session.php');
+  require_once('ParamConf.php');
+
+  $miParamConf = new ParamConf;
 
   $miSession = new Session;
   
@@ -20,7 +23,8 @@
   $miDoctor = new Doctor;
 
   if (!$_SESSION['usuario_log']){
-    header('location: http://localhost:8080/sociproma/iniciosesion.php');
+    $direcc = "location: ".$miParamConf->getLocalhost()."/iniciosesion.php";
+    header($direcc);
   }
   $smarty->assign('usuario_log', $_SESSION['usuario_log']);
   $smarty->assign('nombre_log', $_SESSION['nombre_log'].", ".$_SESSION['apellido_log']);
@@ -38,6 +42,8 @@
   $smarty->assign('adm_ids', array(1,0));
   $smarty->assign('adm_names', array( 'Si', 'No' ));
   $smarty->assign('error_msg', "");
+  $smarty->assign('direccion', $miParamConf->getLocalhost());
+  
   $Doctores = $miDoctor->listarDoctores( $miconexion->Conexion_ID, '' );
   $smarty->assign('doctor_options', $Doctores);
 
