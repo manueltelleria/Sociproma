@@ -258,15 +258,7 @@ function calcula_monto( ){
     </tr>
     <tr>
       <td><b>Monto Total:</b></td>
-      <td><input type="text" name="monto_total" id="monto_total" size="17" value="{$monto_total}" onchange="formatearMoneda(this.value)"><b>*</b></td>
-    </tr>
-    <tr>
-      <td><b>Responsable:</b></td>
-      <td>
-        <select name="id_responsable" id="id_responsable">
-          {html_options options=$respon_options selected=$id_responsable}
-        </select><!--&nbsp;&nbsp;<a href="#" onclick=" runMode( 'crear_responsable' ); ">Responsable Nuevo</a>-->
-      </td>
+      <td><input type="text" name="monto_total" id="monto_total" size="17" value="{$monto_total}" onchange=" this.value=formatearMoneda(this.value)"><b>*</b></td>
     </tr>
     <tr>
       <td><b>Tipo Intervención:</b></td>
@@ -274,6 +266,14 @@ function calcula_monto( ){
         <select name="id_intervencion" id="id_intervencion">
           {html_options options=$interven_options selected=$id_intervencion}
         </select><b>*</b>
+      </td>
+    </tr>
+    <tr>
+      <td><b>Responsable:</b></td>
+      <td>
+        <select name="id_responsable" id="id_responsable">
+          {html_options options=$respon_options selected=$id_responsable}
+        </select><!--&nbsp;&nbsp;<a href="#" onclick=" runMode( 'crear_responsable' ); ">Responsable Nuevo</a>-->
       </td>
     </tr>
     <tr>

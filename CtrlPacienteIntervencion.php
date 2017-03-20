@@ -97,8 +97,9 @@
   $smarty->assign('bpagar', '');
   $smarty->assign('id', '');
 
-  if (!empty($_GET['bcompleto'])){
-    $smarty->assign('bcompleto', $_GET['bcompleto']);
+  if (!empty($_GET['bcompleto']) || !empty($_POST['bcompleto'])){
+    $smarty->assign('bcompleto', (!empty($_GET['bcompleto'])) ? $_GET['bcompleto'] : $_POST['bcompleto']);  
+
     $smarty->assign('shistoria', '');
     $smarty->assign('sapellido', ''); 
     $smarty->assign('snombre', ''); 
@@ -151,14 +152,15 @@
       if (!empty($_POST['bcompleto'])){
         if (crear_completo( $miconexion->Conexion_ID, $miPaciente, $miPacienteIntervencion )){
           $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa');
+        } else {
+          if (!empty($_SESSION['error_msg'])) {
+            $smarty->assign('error_msg', $_SESSION['error_msg']);
+            unset($_SESSION['error_msg']);
+          }
         }
       } else {
         if (crear( $miconexion->Conexion_ID, $miPacienteIntervencion )){
           $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa');
-        //   $url = $_SERVER["HTTP_REFERER"];
-        //   list($part1, $part2) = split('\?', $url);
-        //   $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa'.$part1);
-        //   header("Location: http://localhost/Sociproma_linux/CtrlPaciente.php") ;
         } else{
           $smarty->assign('error_msg', 'Ha ocurrido un error al momento de la creación de los datos');
         }  
@@ -233,7 +235,7 @@
 /* Realiza la insercion de los datos indicados en la forma */
 function crear( $Conexion_ID, $miPacienteIntervencion ){
 
-  $datos = datos_intervencion(null);
+  $datos = datos_intervencion($_POST['id_paciente']);
                   
   $resultado = $miPacienteIntervencion->create( $Conexion_ID, $datos );
 
@@ -255,9 +257,13 @@ function crear_completo( $Conexion_ID, $miPaciente, $miPacienteIntervencion ){
 
     return $resultado_interven;
   } else {
-
-    return $resultado_paciente;
+    $_SESSION['error_msg'] = 'Ha ocurrido un error al momento de la creación de los datos';
+    if (preg_match("/Duplicate/", $miPaciente->error)) {
+      $_SESSION['error_msg'] .= "<br>El número de historia ya existe";
+    }
   }
+  
+  return $resultado_paciente;
 }
 
 
@@ -395,7 +401,7 @@ function datos_intervencion($id_paciente){
   $miFecha = new Fecha;
 
   $datos = array( "num_recibo"          => $_POST["num_recibo"],
-                  "id_paciente"         => (!empty($id_paciente)) ? $id_paciente : $_POST["id_paciente"],
+                  "id_paciente"         => $id_paciente,
                   "fecha"               => $miFecha->formatoDbFecha($_POST["fecha"]),
                   "id_tpoperacion"      => $_POST["id_tpoperacion"],
                   "id_doctor_cirujano"  => $_POST["id_doctor_cirujano"],
@@ -407,7 +413,7 @@ function datos_intervencion($id_paciente){
                   "id_intervencion"     => $_POST["id_intervencion"],
                   "monto_preva"         => $_POST["monto_preva"],
                   "monto_anestesia"     => $_POST["monto_anestesia"]);
-  
+
   return $datos;
 }
 
