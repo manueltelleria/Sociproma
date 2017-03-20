@@ -105,65 +105,16 @@
       exit;
     }
 
-	if (!empty($_SESSION['numreciboini'])){
-	  $smarty->assign('numreciboini', $_SESSION['numreciboini']);	
-	}  else {
-	  $smarty->assign('numreciboini', '');	
-	}
-
-	if (!empty($_SESSION['numrecibofin'])){
-	  $smarty->assign('numrecibofin', $_SESSION['numrecibofin']);
-	} else {
-	  $smarty->assign('numrecibofin', '');
-	}
-
-	if (!empty($_SESSION['id_paciente'])){
-	  $smarty->assign('id_paciente', $_SESSION['id_paciente']);
-	} else {
-	  $smarty->assign('id_paciente', '');
-	}
-
-	if (!empty($_SESSION['id_fechainicial'])){
-	  $smarty->assign('fechainicial', $_SESSION['id_fechainicial']);	
-	} else {
-	  $smarty->assign('fechainicial', '');	
-	}
-
-	if (!empty($_SESSION['id_fechafinal'])){
-	  $smarty->assign('fechafinal', $_SESSION['id_fechafinal']);
-	} else {
-	  $smarty->assign('fechafinal', '');	
-	}
-
-	if (!empty($_SESSION['id_tpoperacion'])){
-	  $smarty->assign('id_tpoperacion', $_SESSION['id_tpoperacion']);
-	} else {
-	  $smarty->assign('id_tpoperacion', '');	
-	}
-
-	if (!empty($_SESSION['id_doctor_cirujano'])){
-	  $smarty->assign('id_doctor_cirujano', $_SESSION['id_doctor_cirujano']);
-	} else {
-	  $smarty->assign('id_doctor_cirujano', '');	
-	}
-
-	if (!empty($_SESSION['id_doctor_anestesia'])){
-	  $smarty->assign('id_doctor_anestesia', $_SESSION['id_doctor_anestesia']);
-	} else {
-	  $smarty->assign('id_doctor_anestesia', '');	
-	}
-
-	if (!empty($_SESSION['id_responsable'])){
-	  $smarty->assign('id_responsable', $_SESSION['id_responsable']);
-	} else {
-	  $smarty->assign('id_responsable', '');	
-	}
-
-	if (!empty($_SESSION['id_estatus'])){
-	  $smarty->assign('id_estatus', $_SESSION['id_estatus']);
-	} else {
-	  $smarty->assign('id_estatus', '');	
-	}
+	  $smarty->assign('numreciboini', (!empty($_SESSION['numreciboini'])) ? $_SESSION['numreciboini'] : '');	
+    $smarty->assign('numrecibofin', (!empty($_SESSION['numrecibofin'])) ? $_SESSION['numrecibofin'] : '');
+    $smarty->assign('id_paciente', (!empty($_SESSION['id_paciente'])) ? $_SESSION['id_paciente'] : '');
+    $smarty->assign('fechainicial', (!empty($_SESSION['id_fechainicial'])) ? $_SESSION['id_fechainicial'] : '');	
+    $smarty->assign('fechafinal', (!empty($_SESSION['id_fechafinal'])) ? $_SESSION['id_fechafinal'] : '');
+    $smarty->assign('id_tpoperacion', (!empty($_SESSION['id_tpoperacion'])) ? $_SESSION['id_tpoperacion'] : '');
+    $smarty->assign('id_doctor_cirujano', (!empty($_SESSION['id_doctor_cirujano'])) ? $_SESSION['id_doctor_cirujano'] : '');
+    $smarty->assign('id_doctor_anestesia', (!empty($_SESSION['id_doctor_anestesia'])) ? $_SESSION['id_doctor_anestesia'] : '');
+    $smarty->assign('id_responsable', (!empty($_SESSION['id_responsable'])) ? $_SESSION['id_responsable'] : '');
+	  $smarty->assign('id_estatus', (!empty($_SESSION['id_estatus'])) ? $_SESSION['id_estatus'] : '');
 
     if (empty($_POST["accion"]) && !empty($_SESSION['condicion'])){
       buscar( $smarty, $miconexion->Conexion_ID, $miPacienteIntervencion );
@@ -265,37 +216,7 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
       $Where[] = " id_estatus = ". $_SESSION["id_estatus"];
       $smarty->assign('id_estatus', $_SESSION["id_estatus"] ); 
     }
-  //  $ConsultaID = $PacienteIntervencion->consulta($Conexion_ID, $_SESSION['condicion']);
   }
-  // if ($_POST["numrecibofin"]){
-  //   $Where[] = " num_recibo <= ". $_POST["numrecibofin"];
-  // }
-  // if ($_POST["id_paciente"]){
-  //   $Where[] = " id_paciente = ". $_POST["id_paciente"];
-  // }
-  // if ($_POST["fechainicial"]){
-  //   $Where[] = " fecha_intervencion >= '". $miFecha->formatoDbFecha($_POST["fechainicial"])."'";
-  // }
-  // if ($_POST["fechafinal"]){
-  //   $Where[] = " fecha_intervencion <= '". $miFecha->formatoDbFecha($_POST["fechafinal"])."'";
-  // }
-  // if ($_POST["id_tpoperacion"]){
-  //   $Where[] = " id_tpoperacion = ". $_POST["id_tpoperacion"];
-  // }
-  // if ($_POST["id_doctor_cirujano"]){
-  //   $Where[] = " id_doctor_cirujano = ". $_POST["id_doctor_cirujano"];
-  // }
-  // if ($_POST["id_doctor_anestesia"]){
-  //   $Where[] = " id_doctor_anestesia = ". $_POST["id_doctor_anestesia"];
-  // }
-  // if ($_POST["id_responsable"]){
-  //   $Where[] = " id_responsable = ". $_POST["id_responsable"];
-  // }
-  // if ($_POST["id_estatus"]){
-  //   $Where[] = " id_estatus = ". $_POST["id_estatus"];
-  // }
-
-  #print join(" AND ", $Where);
 
   $ConsultaID = $PacienteIntervencion->consulta($Conexion_ID, join(" AND ", $Where));
 // mostrarmos los registros

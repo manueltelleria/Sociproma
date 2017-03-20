@@ -210,9 +210,7 @@
       exit;
     }
     else{
-     // $smarty->assign('id', '');
       $smarty->assign('num_recibo', '');
-      //$smarty->assign('id_paciente', '');
       $smarty->assign('fecha', '');
       $smarty->assign('id_tpoperacion', '');
       $smarty->assign('id_doctor_cirujano', '');
@@ -305,10 +303,8 @@ function pagar_recibo( $Conexion_ID, $miPacienteIntervencion ){
   
   $resultado = $miPacienteIntervencion->pagar( $Conexion_ID, $Where, $datos );
 
-
   return $resultado;
 }
-
 
 function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
 
