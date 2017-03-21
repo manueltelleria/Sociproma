@@ -125,8 +125,6 @@ function create($Conexion_ID, $datos = ""){
 
   $response = mysql_query($query, $Conexion_ID);
 
-  print $query;
-
   return $response;
 }
 
