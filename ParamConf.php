@@ -23,7 +23,7 @@ class ParamConf {
     $this->template_dir = $Param['smarty']['template_dir'];
     $this->cache_dir = $Param['smarty']['cache_dir'];
     $this->compile_dir = $Param['smarty']['compile_dir'];
-    $this->libSmarty = $Param['smarty']['lib'];
+    $this->libSmarty = $Param['smarty']['class'];
 
 
   }

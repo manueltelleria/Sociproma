@@ -5,7 +5,7 @@ require_once('ParamConf.php');
 
 $miParamConf = new ParamConf;
 
-require('/opt/lampp/htdocs/sociproma/libs/Smarty.class.php');
+require($miParamConf->getLibSmarty());
 
 
 class SmartyIni extends Smarty {
