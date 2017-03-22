@@ -12,6 +12,9 @@ class ParamConf {
 
   var $libSmarty;
 
+  var $classPdf;
+
+
 /* Método Constructor: Cada vez que creemos una variable de esta clase, se ejecutará esta función */
 
   function ParamConf(){
@@ -24,7 +27,7 @@ class ParamConf {
     $this->cache_dir = $Param['smarty']['cache_dir'];
     $this->compile_dir = $Param['smarty']['compile_dir'];
     $this->libSmarty = $Param['smarty']['class'];
-
+    $this->classPdf = $Param['pdf']['class'];
 
   }
 
@@ -46,5 +49,9 @@ class ParamConf {
 
   function getLibSmarty() {
     return $this->libSmarty;
+  }
+
+  function getClassPdf() {
+    return $this->classPdf;
   }
 }
