@@ -1,0 +1,16 @@
+
+controller:
+        localhost: http://localhost:8080/sociproma
+    dir_base: /sociproma
+
+smarty:
+    class: c:xampp\htdocs\sociproma\libs\Smarty.class.php
+    template_dir: c:xampp\htdocs\sociproma\smarty\templates
+    cache_dir: c:xampp\smarty\cache
+    compile_dir: c:xampp\htdocs\sociproma\smarty\templates_c
+
+directorios:
+    imagenes: \imagenes
+
+pdf:
+    class: c:xampp\htdocs\sociproma\html2pdf\html2pdf.class.php
