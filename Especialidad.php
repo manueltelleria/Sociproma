@@ -109,7 +109,7 @@ function listarEspecialidad($Conexion_ID){
   $Datos[0] = "Seleccione -----";
   while ($row = mysql_fetch_row($this->Consulta_ID)) {
 
-    $Datos[$row[0]] = utf8_encode($row[1]);
+    $Datos[$row[0]] = utf8_encode(strtoupper($row[1]));
 
   }
 

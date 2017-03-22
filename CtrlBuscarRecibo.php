@@ -129,8 +129,6 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
 
   $Where =  array();
 
-  #print join(" AND ", $Where);
-
   if (empty($_SESSION['condicion'])){
     if ($_POST["numreciboini"]){
       $Where[] = " num_recibo >= ". $_POST["numreciboini"];
@@ -172,8 +170,11 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
       $Where[] = " id_estatus = ". $_POST["id_estatus"];
       $_SESSION['id_estatus'] = $_POST["id_estatus"];
     }
+    if ($_POST["diferencia"]){
+      $Where[] = " (monto_total - monto_pagado != 0)";
+      $_SESSION['diferencia'] = $_POST["diferencia"];
+    }
 
-//    $ConsultaID = $PacienteIntervencion->consulta($Conexion_ID, join(" AND ", $Where));
     $_SESSION['condicion'] = join(" AND ", $Where);     
   } else {
   	if (!empty($_SESSION["numreciboini"])){
@@ -214,7 +215,11 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
     }
     if (!empty($_SESSION["id_estatus"])){
       $Where[] = " id_estatus = ". $_SESSION["id_estatus"];
-      $smarty->assign('id_estatus', $_SESSION["id_estatus"] ); 
+      $smarty->assign('id_estatus', $_SESSION["id_estatus"]); 
+    }
+    if (!empty($_SESSION["diferencia"])){
+      $Where[] = " (monto_total - monto_pagado) != 0";
+      $smarty->assign('diferencia', $_SESSION["diferencia"]); 
     }
   }
 
@@ -239,6 +244,7 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
     $Datos['monto_pagado']     = ($row->id_estatus == 1) ? "&nbsp;" : number_format($row->monto_pagado, 2, ",", ".");
     $Datos['descestatus']      = strtoupper($row->descestatus);
     $Datos['id_estatus']       = strtoupper($row->id_estatus);
+    $Datos['diferencia']       = ($row->id_estatus != 1) ? number_format(($row->monto_total - $row->monto_pagado),2, ",", ".") : "&nbsp;";
     $Datos['clase']            = $clase;
 
     $Recibos[$row->id] = $Datos;
