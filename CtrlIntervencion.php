@@ -6,10 +6,13 @@
 
   session_start();
 
-  require ("MysqlDB.php");
-  require ("Intervencion.php");
+  require("MysqlDB.php");
+  require("Intervencion.php");
   require('SmartyIni.php');
-  require ('Session.php');
+  require('Session.php');
+  require_once('ParamConf.php');
+
+  $miParamConf = new ParamConf;
 
   $miSession = new Session;
   
@@ -18,7 +21,9 @@
   $smarty   = new SmartyIni;
 
   if (!$_SESSION['usuario_log']){
-    header('location: http://localhost:8080/sociproma/iniciosesion.php');
+    $localhost = "location: ".$miParamConf->getLocalhost()."/iniciosesion.php";
+
+    header($localhost);
   }
   $smarty->assign('usuario_log', $_SESSION['usuario_log']);
   $smarty->assign('nombre_log', $_SESSION['nombre_log'].", ".$_SESSION['apellido_log']);
@@ -35,6 +40,8 @@
   $miconexion->conectar("", "", "", "");
 
   $smarty->assign('titulo','Tipo de Intervenciones');
+  $smarty->assign('direccion', $miParamConf->getLocalhost());
+
 
   if (!empty($_POST['accion']) ) {
     if ($_POST["accion"] == "actualiza" && !empty($_POST["id"]) ){

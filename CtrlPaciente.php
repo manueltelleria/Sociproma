@@ -6,10 +6,13 @@
 
   session_start();
 
-  require ("MysqlDB.php");
-  require ("Paciente.php");
-  require ("SmartyIni.php");
-  require ('Session.php');
+  require("MysqlDB.php");
+  require("Paciente.php");
+  require("SmartyIni.php");
+  require('Session.php');
+  require_once('ParamConf.php');
+  
+  $miParamConf = new ParamConf;
 
   $miSession = new Session;
   
@@ -24,8 +27,12 @@
   $miPaciente  = new Paciente;
 
   $smarty->assign('titulo','Pacientes del Sistema de Control de Intervenciones');
+  $smarty->assign('direccion', $miParamConf->getLocalhost());
+
   if (!$_SESSION['usuario_log']){
-    header('location: http://localhost:8080/sociproma/iniciosesion.php');
+    $localhost = "Location: ".$miParamConf->getLocalhost()."/iniciosesion.php";
+
+    header($localhost);
   }
   $smarty->assign('usuario_log', $_SESSION['usuario_log']);
   $smarty->assign('nombre_log', $_SESSION['nombre_log'].", ".$_SESSION['apellido_log']);
@@ -63,11 +70,13 @@
 #Se hace la inserciòn de los valores de la pantalla
 
     if ( $_POST["accion"] == "enviar" && empty($_POST["id"])){
-      if (crear( $miconexion->Conexion_ID, $miPaciente )){
+      if (crear( $miconexion->Conexion_ID, $miPaciente )){ 
         $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa');
 
         $nombrePaciente = $_POST['sapellido'].", ".$_POST['snombre'];
-        header( 'Location: http://localhost/Sociproma_linux/CtrlPacienteIntervencion.php?id_paciente='.mysql_insert_id().'&nombre_paciente='.      urlencode($nombrePaciente) ) ;
+        $direcc = "Location: ".$miParamConf->getLocalhost()."CtrlPacienteIntervencion.php?id_paciente=".mysql_insert_id().'&nombre_paciente='.      urlencode($nombrePaciente);
+
+        header($direcc) ;
       }
       else{
       	$Error = 'Ha ocurrido un error al momento de la creación de los datos';

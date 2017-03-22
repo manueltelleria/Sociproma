@@ -6,10 +6,13 @@
 
   session_start();
 
-  require ("MysqlDB.php");
-  require ("Responsable.php");
-  require ('SmartyIni.php');
-  require ('Session.php');
+  require("MysqlDB.php");
+  require("Responsable.php");
+  require('SmartyIni.php');
+  require('Session.php');
+  require_once('ParamConf.php');
+
+  $miParamConf = new ParamConf;
 
   $miSession = new Session;
   
@@ -19,7 +22,8 @@
   $miResponsable = new Responsable;
 
   if (!$_SESSION['usuario_log']){
-    header('location: http://localhost/iniciosesion.php');
+    $direcc = "location: ".$miParamConf->getLocalhost()."/iniciosesion.php";
+    header($direcc);
   }
   $smarty->assign('usuario_log', $_SESSION['usuario_log']);
   $smarty->assign('nombre_log', $_SESSION['nombre_log'].", ".$_SESSION['apellido_log']);
@@ -36,6 +40,8 @@
   $miconexion->conectar("", "", "", "");
 
   $smarty->assign('titulo','Responsables de las Intervenciones');
+  $smarty->assign('direccion', $miParamConf->getLocalhost());
+
 
   if (!empty($_POST['accion']) ) {
     if ($_POST["accion"] == "actualiza" && !empty($_POST["id"]) ){
@@ -56,9 +62,10 @@
     if ( $_POST["accion"] == "enviar" && empty($_POST["id"])){
       if (crear( $miconexion->Conexion_ID, $miResponsable ) ){
         $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa');
-	if (preg_match("/CtrlPacienteIntervencion/", $_POST['referente'])) {
-	  header( 'Location: http://localhost:8080/sociproma/CtrlPacienteIntervencion.php' ) ;
-	}
+	      if (preg_match("/CtrlPacienteIntervencion/", $_POST['referente'])) {
+          $direcc = "location: ".$miParamConf->getLocalhost()."/CtrlPacienteIntervencion.php";
+	        header($direcc);
+	      }
       }
       else{
         $smarty->assign('error_msg', 'Ha ocurrido un error al momento de la creación de los datos');

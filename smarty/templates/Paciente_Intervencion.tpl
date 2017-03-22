@@ -15,7 +15,7 @@ Arraymontos = new Array();
 //Función cargarCaomboPaciente: se encarga de cargar el contenido de las listas Paciente depediendo del criterio de busqueda en el campo criterio
 function cargarCombo( listaLlenar ){
   var forma = document.fpaciente_intervencion;
-  var url = '/Sociproma_linux/CtrlPacienteIntervencion.php';
+  var url = '/sociproma/CtrlPacienteIntervencion.php';
   campo = eval('forma.'+listaLlenar);
   if ( listaLlenar == 'id_paciente' ){
     var funcion = eval('llenar_id_paciente');
@@ -184,7 +184,7 @@ function calcula_monto( ){
   {/if}
   <table width="100%" border=0>
     <tr>
-      <td width="15%"><b>Número de Recibo:</b></td>
+      <td width="15%"><b>Número de Recibo/Presupuesto:</b></td>
       <td align="left"><input type="text" name="num_recibo" id="num_recibo" size="10" value="{$num_recibo}"><b>*</b></td>
     </tr>
     {if $id_paciente != ''}
@@ -258,15 +258,7 @@ function calcula_monto( ){
     </tr>
     <tr>
       <td><b>Monto Total:</b></td>
-      <td><input type="text" name="monto_total" id="monto_total" size="17" value="{$monto_total}" onchange="formatearMoneda(this.value)"><b>*</b></td>
-    </tr>
-    <tr>
-      <td><b>Responsable:</b></td>
-      <td>
-        <select name="id_responsable" id="id_responsable">
-          {html_options options=$respon_options selected=$id_responsable}
-        </select><!--&nbsp;&nbsp;<a href="#" onclick=" runMode( 'crear_responsable' ); ">Responsable Nuevo</a>-->
-      </td>
+      <td><input type="text" name="monto_total" id="monto_total" size="17" value="{$monto_total}" onchange=" this.value=formatearMoneda(this.value)"><b>*</b></td>
     </tr>
     <tr>
       <td><b>Tipo Intervención:</b></td>
@@ -274,6 +266,14 @@ function calcula_monto( ){
         <select name="id_intervencion" id="id_intervencion">
           {html_options options=$interven_options selected=$id_intervencion}
         </select><b>*</b>
+      </td>
+    </tr>
+    <tr>
+      <td><b>Responsable:</b></td>
+      <td>
+        <select name="id_responsable" id="id_responsable">
+          {html_options options=$respon_options selected=$id_responsable}
+        </select><!--&nbsp;&nbsp;<a href="#" onclick=" runMode( 'crear_responsable' ); ">Responsable Nuevo</a>-->
       </td>
     </tr>
     <tr>
@@ -287,10 +287,10 @@ function calcula_monto( ){
   </fieldset>
 {else}
   <fieldset style="background-color : #e3e3e3">
-  <legend>Datos del Pago del Recibo</legend>
+  <legend>Datos del Pago del Recibo/Presupuesto</legend>
   <table width="100%" border=0>
     <tr>
-      <td width="15%"><b>Número de Recibo:</b></td>
+      <td width="15%"><b>Número de Recibo/Presupuesto:</b></td>
       <td align="left"><b>{$num_recibo}</b></td>       
     </tr>
     <tr>

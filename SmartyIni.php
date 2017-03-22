@@ -1,9 +1,12 @@
 <?php
 
 // load Smarty library
-#require('c:\wamp\Smartylibs\Smarty.class.php');
-#require('c:\xampp\htdocs\Sociproma\libs\Smarty.class.php');
-require('/opt/lampp/htdocs/Sociproma_linux/libs/Smarty.class.php');
+require_once('ParamConf.php');
+
+$miParamConf = new ParamConf;
+
+require($miParamConf->getLibSmarty());
+
 
 class SmartyIni extends Smarty {
 
@@ -11,21 +14,15 @@ class SmartyIni extends Smarty {
 	
     parent::__construct(); 
 
+    $miParamConf = new ParamConf;
+
+
 // Class Constructor. 
 // These automatically get set with each new instance.
 
-  //$this->Smarty();
-
-  #$this->template_dir = 'C:\xampp\htdocs\Sociproma\smarty\templates';
-    $this->template_dir = '/opt/lampp/htdocs/Sociproma_linux/smarty/templates';
-  #$this->config_dir = ' C:\wamp\www\Smartyconfig';
-  #$this->config_dir = '/opt/lamppp/htdocs/smarty/config';
-  #$this->cache_dir = 'C:\wamp\Smartycache';
-  #$this->cache_dir = '/opt/lampp/smarty/cache';
-  #$this->cache_dir = 'C:\xampp\htdocs\Sociproma\smarty\cache';
-    $this->cache_dir = '/opt/lampp/smarty/cache';
-  #$this->compile_dir = 'C:\xampp\htdocs\Sociproma\smarty\templates_c';
-    $this->compile_dir = '/opt/lampp/htdocs/Sociproma_linux/smarty/templates_c';
+    $this->template_dir = $miParamConf->getTemplateDir();
+    $this->cache_dir = $miParamConf->getCacheDir();
+    $this->compile_dir = $miParamConf->getCompileDir();
 
   }
 }
