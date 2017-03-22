@@ -184,7 +184,7 @@ function calcula_monto( ){
   {/if}
   <table width="100%" border=0>
     <tr>
-      <td width="15%"><b>Número de Recibo:</b></td>
+      <td width="15%"><b>Número de Recibo/Presupuesto:</b></td>
       <td align="left"><input type="text" name="num_recibo" id="num_recibo" size="10" value="{$num_recibo}"><b>*</b></td>
     </tr>
     {if $id_paciente != ''}
@@ -287,10 +287,10 @@ function calcula_monto( ){
   </fieldset>
 {else}
   <fieldset style="background-color : #e3e3e3">
-  <legend>Datos del Pago del Recibo</legend>
+  <legend>Datos del Pago del Recibo/Presupuesto</legend>
   <table width="100%" border=0>
     <tr>
-      <td width="15%"><b>Número de Recibo:</b></td>
+      <td width="15%"><b>Número de Recibo/Presupuesto:</b></td>
       <td align="left"><b>{$num_recibo}</b></td>       
     </tr>
     <tr>

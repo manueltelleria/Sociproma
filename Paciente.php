@@ -62,8 +62,8 @@ function create($Conexion_ID, $datos = ""){
 
   $query = "INSERT INTO paciente (shistoria,snombre,sapellido,edad) 
             VALUES ('".$datos['shistoria']."','".
-                       strtoupper($datos['snombre'])."','".
-                       strtoupper($datos['sapellido'])."','".
+                       strtoupper(utf8_decode($datos['snombre']))."','".
+                       strtoupper(utf8_decode($datos['sapellido']))."','".
                        $datos['edad']."')";
 
   $response = mysql_query($query, $Conexion_ID);
@@ -81,7 +81,7 @@ function actualiza($Conexion_ID, $Where = "", $datos = ""){
 
   $query = "UPDATE paciente set shistoria = '". $datos["shistoria"].
            "', snombre = '". strtoupper(utf8_decode($datos["snombre"])).
-           "', sapellido = '". stroupper(utf8_decode($datos['sapellido'])). 
+           "', sapellido = '". strtoupper(utf8_decode($datos['sapellido'])). 
            "', edad = '".$datos['edad']."' WHERE ";
 
   if (!empty($Where)){

@@ -124,6 +124,7 @@ function create($Conexion_ID, $datos = ""){
 						                    $datos['id_intervencion']."','".$monto_anestesia."')";
 
   $response = mysql_query($query, $Conexion_ID);
+  print $query;
 
   return $response;
 }

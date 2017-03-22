@@ -135,9 +135,9 @@ function validate_busca_recibo (form) {
 <legend>Critério de Búsqueda</legend>
 <table width="100%">
   <tr>
-    <td nowrap width="25%"><b>Número de Recibo Inicial:</b></td>
+    <td nowrap width="25%"><b>Número de Recibo/Presupuesto Inicial:</b></td>
     <td width="25%" align="left"><input type="text" name="numreciboini" id="num_reciboini" size="10" value="{$numreciboini}"></td>
-    <td width="25%" nowrap><b>Número de Recibo Final:</b></td>
+    <td width="25%" nowrap><b>Número de Recibo/Presupuesto Final:</b></td>
     <td width="25%" align="left"><input type="text" name="numrecibofin" id="num_recibofin" size="10" value="{$numrecibofin}"></td>
   </tr>
   <tr>
@@ -233,7 +233,7 @@ function validate_busca_recibo (form) {
 <br/><br/>
 <table width="90%" cellpadding="1" align="center" id="tabla">
   <tr class="titulodonforojo">
-     <th>Recibo</th>
+     <th>Recibo/Presupuesto</th>
      <th>Fecha</th>
      <th>Paciente</th>
      <th>Tipo</th>

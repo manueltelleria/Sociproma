@@ -99,7 +99,7 @@
 	require_once('c:\xampp\htdocs\sociproma\html2pdf\html2pdf.class.php');
 	try
 	{
-          $html2pdf = new HTML2PDF('P','letter','es', false, 'UTF-8');
+          $html2pdf = new HTML2PDF('l','letter','es', false, 'UTF-8');
 	  #$html2pdf->pdf->SetDisplayMode('real');
 //	  $html2pdf->setModeDebug();
 	  $html2pdf->setDefaultFont('Arial','','5');
