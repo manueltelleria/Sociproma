@@ -171,7 +171,7 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
       $_SESSION['id_estatus'] = $_POST["id_estatus"];
     }
     if ($_POST["diferencia"]){
-      $Where[] = " (monto_total - monto_pagado != 0)";
+      $Where[] = " (monto_total - monto_pagado) != 0";
       $_SESSION['diferencia'] = $_POST["diferencia"];
     }
 
@@ -244,7 +244,7 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
     $Datos['monto_pagado']     = ($row->id_estatus == 1) ? "&nbsp;" : number_format($row->monto_pagado, 2, ",", ".");
     $Datos['descestatus']      = strtoupper($row->descestatus);
     $Datos['id_estatus']       = strtoupper($row->id_estatus);
-    $Datos['diferencia']       = ($row->id_estatus != 1) ? number_format(($row->monto_total - $row->monto_pagado),2, ",", ".") : "&nbsp;";
+    $Datos['diferencia']       = (!empty($row->monto_pagado)) ? number_format(($row->monto_total - $row->monto_pagado),2, ",", ".") : 0;
     $Datos['clase']            = $clase;
 
     $Recibos[$row->id] = $Datos;

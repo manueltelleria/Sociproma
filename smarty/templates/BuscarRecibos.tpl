@@ -266,7 +266,6 @@ window.onload = function(){/*hace que se cargue la función lo que predetermina 
      <th>Tipo</th>
      <th>Cirujano</th>
      <th>Anestesiólogo</th>
-     <th>Monto</th>
      <th>Responsable</th>
      <th>Fecha Pago</th>
      <th>Monto</th>
