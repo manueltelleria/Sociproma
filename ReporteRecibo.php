@@ -5,6 +5,9 @@
   require("SmartyIni.php");
   require("PacienteIntervencion.php");
   require("Fecha.php");
+  require_once('ParamConf.php');
+
+  $miParamConf = new ParamConf;
 
   $PacienteIntervencion = new PacienteIntervencion;
   $miFecha = new Fecha;
@@ -96,7 +99,8 @@
 	
 	// conversion HTML => PDF
 	//require_once('c:\wamp\www\html2pdf\html2pdf.class.php');
-	require_once('c:\xampp\htdocs\sociproma\html2pdf\html2pdf.class.php');
+	//require_once('c:\xampp\htdocs\sociproma\html2pdf\html2pdf.class.php');
+  require_once($miParamConf->getClassPdf());
 	try
 	{
           $html2pdf = new HTML2PDF('l','letter','es', false, 'UTF-8');

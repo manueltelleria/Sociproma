@@ -119,6 +119,26 @@ function validate_busca_recibo (form) {
   return true;  // all checked ok
 }
 
+function muestra_difer(id){
+  var estatus = document.getElementById('id_estatus');
+  if (estatus.value == 2){
+    if (document.getElementById){ //se obtiene el id
+      var el = document.getElementById(id); //se define la variable "el" igual a nuestro div
+      //el.style.display = (el.style.display == 'none') ? 'block' : 'none'; //damos un atributo display:none que oculta el div
+      el.style.display = 'block'; //damos un atributo display:none que oculta el div
+    }  
+  } else {
+    if (document.getElementById){ //se obtiene el id
+      var el = document.getElementById(id); //se define la variable "el" igual a nuestro div
+      el.style.display = 'none'; //damos un atributo display:none que oculta el div
+    }
+  }
+}
+
+window.onload = function(){/*hace que se cargue la función lo que predetermina que div estará oculto hasta llamar a la función nuevamente*/
+  muestra_difer('diferencia');/* "contenido_a_mostrar" es el nombre que le dimos al DIV */
+}
+
 </script>
 {/literal}
 
@@ -210,11 +230,18 @@ function validate_busca_recibo (form) {
   </tr>
   <tr>
     <td><b>Estatus:</b></td>
-    <td colspan="3"><select name="id_estatus" id="id_estatus">
+    <td colspan="3"><select name="id_estatus" id="id_estatus" onchange="muestra_difer('diferencia')">
         {html_options options=$estatus_options selected=$id_estatus}
     </td>
   </tr>
 </table>
+<div id="diferencia">
+  <table>
+    <tr>
+      <td><input type="checkbox" name="diferencia" id="diferencia" value="1"><b>Solo con diferencias en los montos?</b></td>
+    </tr>
+  </table>
+</div>
 </fieldset>
 <br/><br/>
 <table width="75%" cellpadding="1" align="center" id="tabla">
@@ -242,7 +269,9 @@ function validate_busca_recibo (form) {
      <th>Monto</th>
      <th>Responsable</th>
      <th>Fecha Pago</th>
+     <th>Monto</th>
      <th>Monto Pagado</th>
+     <th>Diferencia</th>
      <th>Estatus</th>
      <th>Editar</th>
      <th>Pagar</th>
@@ -256,10 +285,11 @@ function validate_busca_recibo (form) {
         <td>{$field.desctpopera}</td>
         <td>{$field.nombre_cirujano}</td>
         <td>{$field.nombre_anestesia}</td>
-        <td align="right">{$field.monto_total}</td>
         <td>{$field.nombre_respon}</td>
         <td align="center">{$field.fecha_pago}</td>
+        <td align="right">{$field.monto_total}</td>
         <td align="right">{$field.monto_pagado}</td>
+        <td align="right">{$field.diferencia}</td>
         <td align="center">{$field.descestatus}</td>
         <td align="center">
           {if $field.id_estatus == 1}
