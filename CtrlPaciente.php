@@ -227,8 +227,12 @@ function buscar( $smarty, $Conexion_ID, $Paciente ) {
     $Pacientes[$row[0]] = $Datos;
   }
 
-  $smarty->assign('ArrPacientes', $Pacientes);
-
+  if (!empty($Pacientes)){
+    $smarty->assign('ArrPacientes', $Pacientes);  
+  } else {
+    $smarty->assign('ArrPacientes', null);  
+    $smarty->assign('error_msg', "No hay información para el criterio de búsqueda indicado");  
+  }
 }
 
 ?>
