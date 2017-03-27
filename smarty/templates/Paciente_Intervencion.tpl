@@ -3,12 +3,6 @@
 <script language="JavaScript" src="js/calendar_eu.js"></script> 
 <script type="text/javascript" src="js/prototype/prototype.js"></script>
 <script type="text/javascript" src="js/seleccionarItemList.js"></script>
-<script>
-
-cont_fila=0; 
-Arraymontos = new Array();
-
-</script>
 
 <script language="javascript">
 
@@ -196,10 +190,8 @@ function calcula_monto( ){
       {if $bcompleto != 1}    
         <tr>
           <td width="15%"><b>Paciente:</b></td>
-          <td align="left"><input type="text" name="criterio" id="criterio" size="15" onKeyup="cargarCombo('id_paciente');">&nbsp;
-            <select name="id_paciente" id="id_paciente">
-              {html_options options=$pacien_options selected=$id_paciente}
-            </select><b>*</b><!--&nbsp;&nbsp;<a href="#" onclick=" runMode( 'crear_paciente' ); ">Paciente Nuevo</a>-->
+          <td>
+            <input type="text" id="paciente" name="paciente" size="50"/><input type="hidden" id="id_paciente" name="id_paciente"/>
           </td>
         </tr>
       {/if}  

@@ -199,12 +199,11 @@
   }
   else{
 
-    if (!empty($_POST["accion"]) && ($_POST["accion"] == "buscarPacientes" || $_POST["accion"] == "buscarIntervenciones") &&
-        !empty($_POST["criterio"]) ){
-      if ($_POST["accion"] == "buscarPacientes"){
+    if (!empty($_GET["accion"]) && ($_GET["accion"] == "buscarPacientes" || $_GET["accion"] == "buscarIntervenciones")){
+      if ($_GET["accion"] == "buscarPacientes"){
         buscarPacientes( $miconexion->Conexion_ID, $miPaciente );
       }
-      elseif ($_POST["accion"] == "buscarIntervenciones"){
+      elseif ($_GET["accion"] == "buscarIntervenciones"){
         buscarIntervenciones( $miconexion->Conexion_ID, $miIntervencion );
       }
       exit;
@@ -339,10 +338,10 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
 function buscarPacientes( $Conexion_ID, $Paciente ) {
 
   $Where =  array();
-  if ($_POST["criterio"]){
-    $Where[] = " LOWER(shistoria) like '%". strtolower($_POST["criterio"])."%'";
-    $Where[] = " LOWER(snombre) like '%". strtolower($_POST["criterio"])."%'";
-    $Where[] = " LOWER(sapellido) like '%". strtolower($_POST["criterio"])."%'";
+  if ($_GET["term"]){
+    $Where[] = " LOWER(shistoria) like '%". strtolower($_GET["term"])."%'";
+    $Where[] = " LOWER(snombre) like '%". strtolower($_GET["term"])."%'";
+    $Where[] = " LOWER(sapellido) like '%". strtolower($_GET["term"])."%'";
   }
 
   $Order = "sapellido";
@@ -350,12 +349,15 @@ function buscarPacientes( $Conexion_ID, $Paciente ) {
   $ConsultaID = $Paciente->consulta($Conexion_ID, join(" OR ", $Where), $Order);
 // Retornamos los registros
 
-  $Retorno = "";
+  $a_json = Array();
   while ($row = mysql_fetch_row($ConsultaID)) {
-    $Retorno .= $row[0].":".utf8_encode($row[1])." - ".utf8_encode($row[3]).", ".utf8_encode($row[2])."|";
+    $a_json_row["id"] = $row[0];
+    $a_json_row["value"] = utf8_encode($row[1]." --- ".$row[3].", ".$row[2]);
+    $a_json_row["label"] = utf8_encode($row[1]." --- ".$row[3].", ".$row[2]);
+    array_push($a_json, $a_json_row);
   }
 
-  echo $Retorno;
+  echo json_encode($a_json);
 
 }
 

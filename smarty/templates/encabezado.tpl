@@ -8,7 +8,6 @@
 <meta charset="utf-8"> 
 
 <link rel="stylesheet" type="text/css" href="/sociproma/css/jquerycssmenu.css" />
-{literal}
 <link href="/sociproma/menu/estilos.css" rel="stylesheet" type="text/css" /> 
 <link href="/sociproma/menu/ADxMenuHoriz.css" rel="stylesheet" type="text/css" media="screen, tv, projection" /> 
 <!--[if lte IE 6]>
@@ -17,6 +16,28 @@
  
 <script type="text/javascript" src="/sociproma/menu/ADxMenu.js"></script> 
 <script language="JavaScript" src="js/generales.js"></script> 
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+  <!-- (2) define two jquery functions we need (default input focus, and autocomplete) -->
+{literal}
+<script>
+
+jQuery(document).ready(function() {
+    // tell the autocomplete function to get its data from our php script
+  if (jQuery('#paciente').length){  
+    jQuery('#paciente').autocomplete({
+      source: "/sociproma/CtrlPacienteIntervencion.php?accion=buscarPacientes",
+      minLength: 4,
+      select: function(event, ui) {
+                jQuery('#id_paciente').val(ui.item.id);
+              }
+    });
+  }
+});
+</script>
 
 {/literal}
 

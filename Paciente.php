@@ -134,6 +134,32 @@ function listarPaciente($Conexion_ID){
   return $Datos;
 }
 
+function listarPaciente1($Conexion_ID){
+
+  $query = "SELECT id,shistoria,sapellido,snombre, edad FROM paciente  WHERE bactivo = 1  ORDER BY sapellido, snombre";
+
+//ejecutamos la consulta
+
+  $this->Consulta_ID = @mysql_query($query, $Conexion_ID);
+
+  if (!$this->Consulta_ID) {
+
+    $this->Errno = mysql_errno();
+
+    $this->error = mysql_error();
+
+  }
+
+  $Datos[0] = "Seleccione -----";
+  while ($row = mysql_fetch_row($this->Consulta_ID)) {
+
+    $Datos[$row[0]] = $row[1]." -- ".utf8_encode(strtoupper($row[2])).", ".strtoupper($row[3]);
+
+  }
+
+  return $Datos;
+}
+
 /* Devuelve el número de campos de una consulta */
 
 function numcampos() {
