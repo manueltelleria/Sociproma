@@ -162,10 +162,8 @@ window.onload = function(){/*hace que se cargue la función lo que predetermina 
   </tr>
   <tr>
     <td><b>Paciente:</b></td>
-    <td colspan="3" align="left"><input type="text" name="criterio" id="criterio" size="15" onKeyup="cargarCombo('id_paciente');">&nbsp;
-      <select name="id_paciente" id="id_paciente">
-        {html_options options=$pacien_options selected=$id_apciente}
-      </select>
+    <td colspan="3" align="left">
+      <input type="text" id="paciente" name="paciente" size="50"/><input type="hidden" id="id_paciente" name="id_paciente"/>
     </td>
   </tr>
   <tr>

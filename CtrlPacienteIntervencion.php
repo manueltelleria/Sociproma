@@ -69,23 +69,23 @@
 
   $miconexion->conectar("", "", "", "");
 
-  $Paciente = $miPaciente->listarPaciente( $miconexion->Conexion_ID );
-  $smarty->assign('pacien_options', $Paciente);
+  // $Paciente = $miPaciente->listarPaciente( $miconexion->Conexion_ID );
+  // $smarty->assign('pacien_options', $Paciente);
 
-  $TipoOperacion = $miTipoOperacion->listarTipoOperacion( $miconexion->Conexion_ID );
-  $smarty->assign('tpopera_options', $TipoOperacion);
+  // $TipoOperacion = $miTipoOperacion->listarTipoOperacion( $miconexion->Conexion_ID );
+  // $smarty->assign('tpopera_options', $TipoOperacion);
 
-  $DoctorCiru = $miDoctor->listarDoctores( $miconexion->Conexion_ID, " id_especialidad in ( 1, 100 ) " );
-  $smarty->assign('doctorCiru_options', $DoctorCiru);
+  // $DoctorCiru = $miDoctor->listarDoctores( $miconexion->Conexion_ID, " id_especialidad in ( 1, 100 ) " );
+  // $smarty->assign('doctorCiru_options', $DoctorCiru);
 
   $DoctorAnes = $miDoctor->listarDoctores( $miconexion->Conexion_ID, " id_especialidad = 2 " );
   $smarty->assign('doctorAnes_options', $DoctorAnes);
 
-  $Respon = $miResponsable->listarResponsable( $miconexion->Conexion_ID );
-  $smarty->assign('respon_options', $Respon);
+  // $Respon = $miResponsable->listarResponsable( $miconexion->Conexion_ID );
+  // $smarty->assign('respon_options', $Respon);
 
-  $Intervencion = $miIntervencion->listarIntervencion( $miconexion->Conexion_ID );
-  $smarty->assign('interven_options', $Intervencion);
+  // $Intervencion = $miIntervencion->listarIntervencion( $miconexion->Conexion_ID );
+  // $smarty->assign('interven_options', $Intervencion);
 
   $smarty->assign('subtitulo', '');
   $smarty->assign('error_msg', '');
@@ -198,34 +198,21 @@
     $smarty->display('Paciente_Intervencion.tpl');
   }
   else{
-
-    if (!empty($_GET["accion"]) && ($_GET["accion"] == "buscarPacientes" || $_GET["accion"] == "buscarIntervenciones")){
-      if ($_GET["accion"] == "buscarPacientes"){
-        buscarPacientes( $miconexion->Conexion_ID, $miPaciente );
-      }
-      elseif ($_GET["accion"] == "buscarIntervenciones"){
-        buscarIntervenciones( $miconexion->Conexion_ID, $miIntervencion );
-      }
-      exit;
-    }
-    else{
-      $smarty->assign('num_recibo', '');
-      $smarty->assign('fecha', '');
-      $smarty->assign('id_tpoperacion', '');
-      $smarty->assign('id_doctor_cirujano', '');
-      $smarty->assign('id_doctor_anestesia', '');
-      $smarty->assign('monto_parcial', '');
-      $smarty->assign('id_responsable', '');
-      $smarty->assign('sobservacion', '');
-      $smarty->assign('monto_sap', 0);
-      $smarty->assign('monto_preva', 0);
-      $smarty->assign('monto_anestesia', 0);
-      $smarty->assign('monto_total', 0);
-      $smarty->assign('id_interven', '');
+    $smarty->assign('num_recibo', '');
+    $smarty->assign('fecha', '');
+    $smarty->assign('id_tpoperacion', '');
+    $smarty->assign('id_doctor_cirujano', '');
+    $smarty->assign('id_doctor_anestesia', '');
+    $smarty->assign('monto_parcial', '');
+    $smarty->assign('id_responsable', '');
+    $smarty->assign('sobservacion', '');
+    $smarty->assign('monto_sap', 0);
+    $smarty->assign('monto_preva', 0);
+    $smarty->assign('monto_anestesia', 0);
+    $smarty->assign('monto_total', 0);
+    $smarty->assign('id_interven', '');
       
-      $smarty->display('Paciente_Intervencion.tpl');
-
-    }
+    $smarty->display('Paciente_Intervencion.tpl');
   }
 
 
@@ -333,52 +320,6 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
   }
 
   $smarty->assign('ArrRecibos', $Recibos);
-}
-
-function buscarPacientes( $Conexion_ID, $Paciente ) {
-
-  $Where =  array();
-  if ($_GET["term"]){
-    $Where[] = " LOWER(shistoria) like '%". strtolower($_GET["term"])."%'";
-    $Where[] = " LOWER(snombre) like '%". strtolower($_GET["term"])."%'";
-    $Where[] = " LOWER(sapellido) like '%". strtolower($_GET["term"])."%'";
-  }
-
-  $Order = "sapellido";
-
-  $ConsultaID = $Paciente->consulta($Conexion_ID, join(" OR ", $Where), $Order);
-// Retornamos los registros
-
-  $a_json = Array();
-  while ($row = mysql_fetch_row($ConsultaID)) {
-    $a_json_row["id"] = $row[0];
-    $a_json_row["value"] = utf8_encode($row[1]." --- ".$row[3].", ".$row[2]);
-    $a_json_row["label"] = utf8_encode($row[1]." --- ".$row[3].", ".$row[2]);
-    array_push($a_json, $a_json_row);
-  }
-
-  echo json_encode($a_json);
-
-}
-
-function buscarIntervenciones( $Conexion_ID, $Intervencion ) {
-
-  $Where =  array();
-  if ($_POST["criterio"]){
-    $Where[] = " LOWER(sdescripcion) like '%". strtolower($_POST["criterio"])."%'";
-  $Where[] = " bactivo = 1 ";
-  }
-
-  $ConsultaID = $Intervencion->consulta($Conexion_ID, join("AND", $Where));
-// Retornamos los registros
-
-  $Retorno = "";
-  while ($row = mysql_fetch_row($ConsultaID)) {
-    $Retorno .= $row[0].":".$row[1].":".$row[2]."|";
-  }
-
-  echo $Retorno;
-
 }
 
 /* Realiza la insercion de los datos indicados en la forma */

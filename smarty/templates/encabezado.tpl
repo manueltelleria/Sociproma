@@ -29,10 +29,40 @@ jQuery(document).ready(function() {
     // tell the autocomplete function to get its data from our php script
   if (jQuery('#paciente').length){  
     jQuery('#paciente').autocomplete({
-      source: "/sociproma/CtrlPacienteIntervencion.php?accion=buscarPacientes",
+      source: "/sociproma/AutoComplete.php?accion=buscarPacientes",
       minLength: 4,
       select: function(event, ui) {
                 jQuery('#id_paciente').val(ui.item.id);
+              }
+    });
+  }
+
+  if (jQuery('#intervencion').length){  
+    jQuery('#intervencion').autocomplete({
+      source: "/sociproma/AutoComplete.php?accion=buscarIntervenciones",
+      minLength: 4,
+      select: function(event, ui) {
+                jQuery('#id_intervencion').val(ui.item.id);
+              }
+    });
+  }
+
+  if (jQuery('#responsable').length){  
+    jQuery('#responsable').autocomplete({
+      source: "/sociproma/AutoComplete.php?accion=buscarResponsables",
+      minLength: 4,
+      select: function(event, ui) {
+                jQuery('#id_responsable').val(ui.item.id);
+              }
+    });
+  }
+
+  if (jQuery('#cirujano').length){  
+    jQuery('#cirujano').autocomplete({
+      source: "/sociproma/AutoComplete.php?accion=buscarCirujanos",
+      minLength: 4,
+      select: function(event, ui) {
+                jQuery('#id_doctor_cirujano').val(ui.item.id);
               }
     });
   }

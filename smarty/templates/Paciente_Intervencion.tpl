@@ -160,15 +160,15 @@ function calcula_monto( ){
     <table width="100%">
       <tr>
         <td width="15%"><b>Historia:</b></td>
-        <td align="left"><input type="text" name="shistoria" id="shistoria" size="10" value="{$shistoria}"><b>*</b></td>
+        <td align="left"><input type="text" name="shistoria" id="shistoria" size="10" value="{$shistoria}">&nbsp;<b>*</b></td>
       </tr>
       <tr>
         <td><b>Apellidos:</b></td>
-        <td><input type="text" name="sapellido" id="sapellido" size="30" value="{$sapellido}"><b>*</b></td>
+        <td><input type="text" name="sapellido" id="sapellido" size="30" value="{$sapellido}">&nbsp;<b>*</b></td>
       </tr>
       <tr>
         <td width="15%"><b>Nombres:</b></td>
-        <td align="left"><input type="text" name="snombre" id="snombre" size="30" value="{$snombre}"><b>*</b></td>
+        <td align="left"><input type="text" name="snombre" id="snombre" size="30" value="{$snombre}">&nbsp;<b>*</b></td>
       </tr>
       <tr>
         <td width="15%"><b>Edad:</b></td>
@@ -179,7 +179,7 @@ function calcula_monto( ){
   <table width="100%" border=0>
     <tr>
       <td width="15%"><b>Número de Recibo/Presupuesto:</b></td>
-      <td align="left"><input type="text" name="num_recibo" id="num_recibo" size="10" value="{$num_recibo}"><b>*</b></td>
+      <td align="left"><input type="text" name="num_recibo" id="num_recibo" size="10" value="{$num_recibo}">&nbsp;<b>*</b></td>
     </tr>
     {if $id_paciente != ''}
       <tr>
@@ -210,22 +210,20 @@ function calcula_monto( ){
     });
          </script>
   {/literal}
-         <b>*</b>
+         &nbsp;<b>*</b>
       </td>
     <tr>
       <td><b>Tipo de Operación:</b></td>
        <td align="left">
         <select name="id_tpoperacion" id="id_tpoperacion">
           {html_options options=$tpopera_options selected=$id_tpoperacion}
-        </select><b>*</b>
+        </select>&nbsp;<b>*</b>
       </td>
     </tr>
     <tr>
       <td><b>Cirujano:</b></td>
       <td>
-        <select name="id_doctor_cirujano" id="id_doctor_cirujano">
-          {html_options options=$doctorCiru_options selected=$id_doctor_cirujano}
-        </select><b>*</b>  
+        <input type="text" id="cirujano" name="cirujano" size="50"/><input type="hidden" id="id_doctor_cirujano" name="id_doctor_cirujano"/>&nbsp;<b>*</b>
       </td>
     </tr>
     <tr>
@@ -233,7 +231,7 @@ function calcula_monto( ){
       <td>
         <select name="id_doctor_anestesia" id="id_doctor_anestesia">
           {html_options options=$doctorAnes_options selected=$id_doctor_anestesia}
-        </select><b>*</b>  
+        </select>&nbsp;<b>*</b>  
       </td>
     </tr>
     <tr>
@@ -250,22 +248,18 @@ function calcula_monto( ){
     </tr>
     <tr>
       <td><b>Monto Total:</b></td>
-      <td><input type="text" name="monto_total" id="monto_total" size="17" value="{$monto_total}" onchange=" this.value=formatearMoneda(this.value)"><b>*</b></td>
+      <td><input type="text" name="monto_total" id="monto_total" size="17" value="{$monto_total}" onchange=" this.value=formatearMoneda(this.value)">&nbsp;<b>*</b></td>
     </tr>
     <tr>
       <td><b>Tipo Intervención:</b></td>
       <td>
-        <select name="id_intervencion" id="id_intervencion">
-          {html_options options=$interven_options selected=$id_intervencion}
-        </select><b>*</b>
+        <input type="text" id="intervencion" name="intervencion" size="50"/><input type="hidden" id="id_intervencion" name="id_intervencion"/>&nbsp;<b>*</b>
       </td>
     </tr>
     <tr>
       <td><b>Responsable:</b></td>
       <td>
-        <select name="id_responsable" id="id_responsable">
-          {html_options options=$respon_options selected=$id_responsable}
-        </select><!--&nbsp;&nbsp;<a href="#" onclick=" runMode( 'crear_responsable' ); ">Responsable Nuevo</a>-->
+        <input type="text" id="responsable" name="responsable" size="50"/><input type="hidden" id="id_responsable" name="id_responsable"/>
       </td>
     </tr>
     <tr>
@@ -317,7 +311,7 @@ function calcula_monto( ){
   });
        </script>
 {/literal}
-       <b>*</b>
+       &nbsp;<b>*</b>
     </td>
     </tr>
     
