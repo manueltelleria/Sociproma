@@ -17,9 +17,9 @@
 <script type="text/javascript" src="/sociproma/menu/ADxMenu.js"></script> 
 <script language="JavaScript" src="js/generales.js"></script> 
 
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<link href="js/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
 
   <!-- (2) define two jquery functions we need (default input focus, and autocomplete) -->
 {literal}
