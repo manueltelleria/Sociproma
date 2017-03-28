@@ -6,47 +6,6 @@
 
 <script language="javascript">
 
-//Función cargarCaomboPaciente: se encarga de cargar el contenido de las listas Paciente depediendo del criterio de busqueda en el campo criterio
-function cargarCombo( listaLlenar ){
-  var forma = document.fpaciente_intervencion;
-  var url = '/sociproma/CtrlPacienteIntervencion.php';
-  campo = eval('forma.'+listaLlenar);
-  if ( listaLlenar == 'id_paciente' ){
-    var funcion = eval('llenar_id_paciente');
-    var accion = 'buscarPacientes';
-  }
-  else{
-    var funcion = eval('llenar_'+listaLlenar);
-    var accion = 'buscarIntervenciones';
-  }
-  var valorCriterio = forma.criterio.value;
-
-  if (valorCriterio) {
-    if (valorCriterio.length > 3){
-      var param = "criterio="+valorCriterio+"&accion="+accion;
-      var myAjax = new Ajax.Request( url, { method: 'post', parameters: param , onComplete: funcion } );
-    }
-  }
-  else {
-    vaciarLista(campo);
-  }
-}
-
-//Función llenar_id_paciente: Método encargado de hacer el llamado al método llenarListaDependiente, indicando que la lista a llenar es la de los Pacientes.
-function llenar_id_paciente(originalRequest) {
-  var respuesta = originalRequest.responseText;
-  var forma = document.fpaciente_intervencion;
-  vaciarLista(forma.id_paciente);
-
-  if ( respuesta != 'undef' ){
-    var primerarreglo = respuesta.split("|");
-    for(i=0;i<primerarreglo.length;i++){
-      var elemento  = primerarreglo[i].split(":");
-      agregarOpcionLista(forma.id_paciente,new Option(elemento[1],elemento[0]));
-    }
-  }
-}
-
 function runMode( accion, Id ){
   forma = document.getElementById('fpaciente_intervencion');
 
@@ -189,7 +148,7 @@ function calcula_monto( ){
     {else}
       {if $bcompleto != 1}    
         <tr>
-          <td width="15%"><b>Paciente:</b></td>
+          <td width="15%"><b>Historia/Paciente:</b></td>
           <td>
             <input type="text" id="paciente" name="paciente" size="50"/><input type="hidden" id="id_paciente" name="id_paciente"/>
           </td>
