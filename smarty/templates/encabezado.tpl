@@ -76,11 +76,12 @@ jQuery(document).ready(function() {
           alert("Hubo error");
         },
         complete: function(){
-          jQuery('#numreciboini').val('');
-          jQuery('#numrecibofin').val('');
-          jQuery('#paciente').val('');
-          jQuery('#id_paciente').val('');
-          jQuery('#id_doctor_anestesia option:first-child').attr('selected', 'selected');
+          $("#busca_recibo").get(0).reset();
+          //jQuery('#numreciboini').val('');
+          //jQuery('#numrecibofin').val('');
+          //jQuery('#paciente').val('');
+          //jQuery('#id_paciente').val('');
+          //jQuery('#id_doctor_anestesia option:first-child').attr('selected', 'selected');
           window.location.replace("http://localhost/sociproma/CtrlBuscarRecibo.php");
         } 
       });
