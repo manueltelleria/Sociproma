@@ -81,6 +81,7 @@ jQuery(document).ready(function() {
           jQuery('#paciente').val('');
           jQuery('#id_paciente').val('');
           jQuery('#id_doctor_anestesia option:first-child').attr('selected', 'selected');
+          window.location.replace("http://localhost/sociproma/CtrlBuscarRecibo.php");
         } 
       });
     });
