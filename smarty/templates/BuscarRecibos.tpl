@@ -5,41 +5,6 @@
 <script type="text/javascript" src="js/seleccionarItemList.js"></script>
 <script language="javascript">
 
-//Función cargarCaomboPaciente: se encarga de cargar el contenido de las listas Paciente depediendo del criterio de busqueda en el campo criterio
-function cargarCombo( listaLlenar ){
-  var forma = document.busca_recibo;
-  var url = '/CtrlBuscarRecibo.php';
-  campo = eval('forma.'+listaLlenar);
-  if ( listaLlenar == 'id_paciente' ){
-    var funcion = eval('llenar_id_paciente');
-  var accion = 'buscarPacientes';
-  }
-  valorCriterio = forma.criterio.value;
-  if (valorCriterio) {
-    if (valorCriterio.length > 3) {
-      var param = "criterio="+valorCriterio+"&accion="+accion;
-      var myAjax = new Ajax.Request( url, { method: 'post', parameters: param , onComplete: funcion } );
-    }
-  }
-  else {
-    vaciarLista(campo);
-  }
-}
-
-//Función llenar_id_paciente: Método encargado de hacer el llamado al método llenarListaDependiente, indicando que la lista a llenar es la de los Pacientes.
-function llenar_id_paciente(originalRequest) {
-  var respuesta = originalRequest.responseText;
-  var forma = document.busca_recibo;
-  vaciarLista(forma.id_paciente);
-    if ( respuesta != 'undef' ){
-    var primerarreglo = respuesta.split("|");
-    for(i=0;i<primerarreglo.length;i++){
-      var elemento  = primerarreglo[i].split(":");
-      agregarOpcionLista(forma.id_paciente,new Option(elemento[1],elemento[0]));
-    }
-  }
-}
-
 function runMode( accion, Id ){
   forma = document.getElementById('busca_recibo');
 
@@ -156,12 +121,12 @@ window.onload = function(){/*hace que se cargue la función lo que predetermina 
 <table width="100%">
   <tr>
     <td nowrap width="25%"><b>Número de Recibo/Presupuesto Inicial:</b></td>
-    <td width="25%" align="left"><input type="text" name="numreciboini" id="num_reciboini" size="10" value="{$numreciboini}"></td>
+    <td width="25%" align="left"><input type="text" name="numreciboini" id="numreciboini" size="10" value="{$numreciboini}"></td>
     <td width="25%" nowrap><b>Número de Recibo/Presupuesto Final:</b></td>
-    <td width="25%" align="left"><input type="text" name="numrecibofin" id="num_recibofin" size="10" value="{$numrecibofin}"></td>
+    <td width="25%" align="left"><input type="text" name="numrecibofin" id="numrecibofin" size="10" value="{$numrecibofin}"></td>
   </tr>
   <tr>
-    <td><b>Paciente:</b></td>
+    <td><b>Historia/Paciente:</b></td>
     <td colspan="3" align="left">
       <input type="text" id="paciente" name="paciente" size="50"/><input type="hidden" id="id_paciente" name="id_paciente"/>
     </td>
@@ -197,18 +162,16 @@ window.onload = function(){/*hace que se cargue la función lo que predetermina 
     </td>
   </tr>
   <tr>
-    <td><b>Tipo de Operación:</b></td>
+    <td><b>Tipo de Intervención:</b></td>
      <td colspan="3" align="left">
-      <select name="id_tpoperacion" id="id_tpoperacion">
-        {html_options options=$tpopera_options selected=$id_tpoperacion}
-      </select>
+      <input type="text" id="intervencion" name="intervencion" size="50"/><input type="hidden" id="id_intervencion" name="id_intervencion"/>
     </td>
   </tr>
   <tr>
     <td><b>Cirujano:</b></td>
-    <td colspan="3"><select name="id_doctor_cirujano" id="id_doctor_cirujano">
-      {html_options options=$doctorCiru_options selected=$id_doctor_cirujano}
-      </td>
+    <td colspan="3">
+        <input type="text" id="cirujano" name="cirujano" size="50"/><input type="hidden" id="id_doctor_cirujano" name="id_doctor_cirujano"/>
+    </td>
   </tr>
   <tr>
     <td><b>Anestesiólogo:</b></td>
@@ -222,8 +185,8 @@ window.onload = function(){/*hace que se cargue la función lo que predetermina 
   </tr>
   <tr>
     <td><b>Responsable:</b></td>
-    <td colspan="3"><select name="id_responsable" id="id_responsable">
-        {html_options options=$respon_options selected=$id_responsable}
+    <td colspan="3">
+      <input type="text" id="responsable" name="responsable" size="50"/><input type="hidden" id="id_responsable" name="id_responsable"/>
     </td>
   </tr>
   <tr>
@@ -245,7 +208,7 @@ window.onload = function(){/*hace que se cargue la función lo que predetermina 
 <table width="75%" cellpadding="1" align="center" id="tabla">
     <tr>
       <td valign="center" align="center">
-        <input type="reset" id="btnCancelar" value="Cancelar">
+        <input type="reset" id="btnCancelaConsulta" value="Cancelar">
         <input type="button" id="Buscar" onClick=" runMode('buscar');" value="Buscar">
         {if $ArrRecibos}        
           <a href="#" onclick=" runMode( 'generar' )"><img src="imagenes/pdf.jpg"></a>

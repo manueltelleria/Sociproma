@@ -86,7 +86,7 @@
       $smarty->assign('id_paciente',         $_POST["id_paciente"] );
       $smarty->assign('fechainicial',        $_POST["fechainicial"] );
       $smarty->assign('fechafinal',          $_POST["fechafinal"] );
-      $smarty->assign('id_tpoperacion',      $_POST["id_tpoperacion"] );
+      $smarty->assign('id_intervencion',     $_POST["id_intervencion"] );
       $smarty->assign('id_doctor_cirujano',  $_POST["id_doctor_cirujano"] );
       $smarty->assign('id_doctor_anestesia', $_POST["id_doctor_anestesia"] );
       $smarty->assign('id_responsable',      $_POST["id_responsable"] );
@@ -110,7 +110,7 @@
     $smarty->assign('id_paciente', (!empty($_SESSION['id_paciente'])) ? $_SESSION['id_paciente'] : '');
     $smarty->assign('fechainicial', (!empty($_SESSION['id_fechainicial'])) ? $_SESSION['id_fechainicial'] : '');	
     $smarty->assign('fechafinal', (!empty($_SESSION['id_fechafinal'])) ? $_SESSION['id_fechafinal'] : '');
-    $smarty->assign('id_tpoperacion', (!empty($_SESSION['id_tpoperacion'])) ? $_SESSION['id_tpoperacion'] : '');
+    $smarty->assign('id_intervencion', (!empty($_SESSION['id_intervencion'])) ? $_SESSION['id_intervencion'] : '');
     $smarty->assign('id_doctor_cirujano', (!empty($_SESSION['id_doctor_cirujano'])) ? $_SESSION['id_doctor_cirujano'] : '');
     $smarty->assign('id_doctor_anestesia', (!empty($_SESSION['id_doctor_anestesia'])) ? $_SESSION['id_doctor_anestesia'] : '');
     $smarty->assign('id_responsable', (!empty($_SESSION['id_responsable'])) ? $_SESSION['id_responsable'] : '');
@@ -150,9 +150,9 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
       $Where[] = " fecha_intervencion <= '". $miFecha->formatoDbFecha($_POST["fechafinal"])."'";
       $_SESSION['fechafinal'] = $_POST["fechafinal"];
     }
-    if ($_POST["id_tpoperacion"]){
-      $Where[] = " id_tpoperacion = ". $_POST["id_tpoperacion"];
-      $_SESSION['id_tpoperacion'] = $_POST["id_tpoperacion"];
+    if ($_POST["id_intervencion"]){
+      $Where[] = " id_intervencion = ". $_POST["id_intervencion"];
+      $_SESSION['id_intervencion'] = $_POST["id_intervencion"];
     }
     if ($_POST["id_doctor_cirujano"]){
       $Where[] = " id_doctor_cirujano = ". $_POST["id_doctor_cirujano"];
@@ -170,7 +170,7 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
       $Where[] = " id_estatus = ". $_POST["id_estatus"];
       $_SESSION['id_estatus'] = $_POST["id_estatus"];
     }
-    if ($_POST["diferencia"]){
+    if (!empty($_POST["diferencia"])){
       $Where[] = " (monto_total - monto_pagado) != 0";
       $_SESSION['diferencia'] = $_POST["diferencia"];
     }
@@ -197,9 +197,9 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
       $Where[] = " fecha_intervencion <= '". $miFecha->formatoDbFecha($_SESSION["fechafinal"])."'";
       $smarty->assign('fechafinal', $_SESSION["fechafinal"] ); 
     }
-    if (!empty($_SESSION["id_tpoperacion"])){
-      $Where[] = " id_tpoperacion = ". $_SESSION["id_tpoperacion"];
-      $smarty->assign('id_tpoperacion', $_SESSION["id_tpoperacion"] ); 
+    if (!empty($_SESSION["id_intervencion"])){
+      $Where[] = " id_intervencion = ". $_SESSION["id_intervencion"];
+      $smarty->assign('id_intervencion', $_SESSION["id_intervencion"] ); 
     }
     if (!empty($_SESSION["id_doctor_cirujano"])){
       $Where[] = " id_doctor_cirujano = ". $_SESSION["id_doctor_cirujano"];
@@ -256,47 +256,6 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
   else{
     $smarty->assign('error_msg', 'No hay información para el criterio de búsqueda indicado');
   }
-
-}
-
-function buscarPacientes( $Conexion_ID, $Paciente ) {
-
-  $Where =  array();
-  if ($_POST["criterio"]){
-    $Where[] = " LOWER(shistoria) like '%". strtolower($_POST["criterio"])."%'";
-    $Where[] = " LOWER(snombre) like '%". strtolower($_POST["criterio"])."%'";
-    $Where[] = " LOWER(sapellido) like '%". strtolower($_POST["criterio"])."%'";
-  }
-
-  $ConsultaID = $Paciente->consulta($Conexion_ID, join(" OR ", $Where));
-// Retornamos los registros
-
-  $Retorno = "";
-  while ($row = mysql_fetch_row($ConsultaID)) {
-    $Retorno .= $row[0].":".$row[1]." - ".$row[3].", ".$row[2]."|";
-  }
-
-  echo $Retorno;
-
-}
-
-function buscarIntervenciones( $Conexion_ID, $Intervencion ) {
-
-  $Where =  array();
-  if ($_POST["criterio"]){
-    $Where[] = " LOWER(sdescripcion) like '%". strtolower($_POST["criterio"])."%'";
-	  $Where[] = " bactivo = 1 ";
-  }
-
-  $ConsultaID = $Intervencion->consulta($Conexion_ID, join("AND", $Where));
-// Retornamos los registros
-
-  $Retorno = "";
-  while ($row = mysql_fetch_row($ConsultaID)) {
-    $Retorno .= $row[0].":".$row[1].":".$row[2]."|";
-  }
-
-  echo $Retorno;
 
 }
 

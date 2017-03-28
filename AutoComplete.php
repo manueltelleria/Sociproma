@@ -84,7 +84,7 @@ function buscarIntervenciones( $Conexion_ID, $Intervencion ) {
     $Where[] = " bactivo = 1 ";
   }
 
-  $ConsultaID = $Intervencion->consulta($Conexion_ID, join(" OR ", $Where));
+  $ConsultaID = $Intervencion->consulta($Conexion_ID, join(" AND ", $Where));
 // Retornamos los registros
 
   $a_json = Array();

@@ -66,6 +66,25 @@ jQuery(document).ready(function() {
               }
     });
   }
+
+  if (jQuery('#btnCancelaConsulta').length){  
+    jQuery('#btnCancelaConsulta').click(function() {
+      jQuery.ajax({
+        url: "/sociproma/CleanSession.php",
+        type: 'POST',
+        error: function(xhr, status){
+          alert("Hubo error");
+        },
+        complete: function(){
+          jQuery('#numreciboini').val('');
+          jQuery('#numrecibofin').val('');
+          jQuery('#paciente').val('');
+          jQuery('#id_paciente').val('');
+          jQuery('#id_doctor_anestesia option:first-child').attr('selected', 'selected');
+        } 
+      });
+    });
+  }
 });
 </script>
 
