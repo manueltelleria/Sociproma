@@ -1,7 +1,5 @@
 <?php
 
-//session_start();
-
 class Session {
 
 /* Método Constructor: Cada vez que creemos una variable de esta clase, se ejecutará esta función */
