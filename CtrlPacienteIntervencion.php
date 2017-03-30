@@ -72,8 +72,8 @@
   // $Paciente = $miPaciente->listarPaciente( $miconexion->Conexion_ID );
   // $smarty->assign('pacien_options', $Paciente);
 
-  // $TipoOperacion = $miTipoOperacion->listarTipoOperacion( $miconexion->Conexion_ID );
-  // $smarty->assign('tpopera_options', $TipoOperacion);
+  $TipoOperacion = $miTipoOperacion->listarTipoOperacion( $miconexion->Conexion_ID );
+  $smarty->assign('tpopera_options', $TipoOperacion);
 
   // $DoctorCiru = $miDoctor->listarDoctores( $miconexion->Conexion_ID, " id_especialidad in ( 1, 100 ) " );
   // $smarty->assign('doctorCiru_options', $DoctorCiru);
