@@ -1,7 +1,3 @@
-<body>
-
-<html>
-
 <?php
 
   require("MysqlDB.php");

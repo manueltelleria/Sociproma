@@ -95,9 +95,11 @@ jQuery(document).ready(function() {
   <tr>
     <td><img src="/sociproma/imagenes/soci.png" alt="soci.png" /></td>
     <td colspan="2" width="100%" align="right" class="titulosistema" background="/sociproma/imagenes/banner_bandes_cen.jpg">Sistema Control de Intervenciones<br/></td>
+    <td><img src="/sociproma/imagenes/soci.png" alt="soci.png" /></td>
+
   </tr>
   <tr>
-    <td colspan="3" align="right">{$nombre_log}&nbsp;{$smarty.now|date_format:"%d/%m/%Y %H:%M:%S"}</td>
+    <td colspan="4" align="right">{$nombre_log}&nbsp;{$smarty.now|date_format:"%d/%m/%Y %H:%M:%S"}</td>
   </tr>
 </table>
 <!-- FIN HEADER VENEZUELA -->

@@ -49,22 +49,23 @@ function validate_iniciosesion( form ){
 </script>
 {/literal}
 
-<body>
-<!-- Login form -->
-<form method='post' name='iniciosesion' id='iniciosesion' action='{$direccion}/iniciosesion.php'>
-<table align='center'>
-  <tr>
-    <td>Usuario:</td>
-    <td><INPUT type='text' size='10' id='susuario' name='susuario'></td>
-  </tr>
-  <tr>
-    <td>Contrase&ntilde;a:</td>
-    <td><INPUT type='password' size='10' id='scontrasena' name='scontrasena'></td>
-  </tr>
-  <tr>
-    <td colspan='2' align='center'><INPUT type='button' value='Enviar' onclick=' forma_enviar() '></td>
-  </tr>
-</table>
-</form>
+<div style="background-image:url('/sociproma/imagenes/anestesia_centro.jpeg');background-repeat:no-repeat;height:500px;  background-position: 50% 50%;background-size: 100% 100%;">
+  <!-- Login form -->
+  <form method='post' name='iniciosesion' id='iniciosesion' action='{$direccion}/iniciosesion.php'>
+  <table align='center'>
+    <tr>
+      <td>Usuario:</td>
+      <td><INPUT type='text' size='10' id='susuario' name='susuario'></td>
+    </tr>
+    <tr>
+      <td>Contrase&ntilde;a:</td>
+      <td><INPUT type='password' size='10' id='scontrasena' name='scontrasena'></td>
+    </tr>
+    <tr>
+      <td colspan='2' align='center'><INPUT type='button' value='Enviar' onclick=' forma_enviar() '></td>
+    </tr>
+  </table>
+  </form>
+</div>
 </body>
 </html>
