@@ -132,7 +132,7 @@ window.onload = function(){/*hace que se cargue la función lo que predetermina 
     </td>
   </tr>
   <tr>
-    <td width="15%"><b>Fecha Inicial:</b></td>
+    <td width="15%"><b>Fecha Intervención Inicial:</b></td>
     <td>
       <INPUT TYPE="text" NAME="fechainicial" id="fechainicial" SIZE="10" value="{$fechainicial}">
 {literal}
@@ -146,7 +146,7 @@ window.onload = function(){/*hace que se cargue la función lo que predetermina 
        </script>
 {/literal}
     </td>
-    <td width="15%"><b>Fecha Final:</b></td>
+    <td width="15%"><b>Fecha Intervención Final:</b></td>
     <td>
       <INPUT TYPE="text" NAME="fechafinal" id="fechafinal" SIZE="10" value="{$fechafinal}">
 {literal}
@@ -187,6 +187,36 @@ window.onload = function(){/*hace que se cargue la función lo que predetermina 
     <td><b>Responsable:</b></td>
     <td colspan="3">
       <input type="text" id="responsable" name="responsable" size="50"/><input type="hidden" id="id_responsable" name="id_responsable"/>
+    </td>
+  </tr>
+   <tr>
+    <td width="15%"><b>Fecha Creación Inicio:</b></td>
+    <td>
+      <INPUT TYPE="text" NAME="fecha_creacionini" id="fecha_creacionini" SIZE="10" value="{$fecha_creacionini}">
+{literal}
+      <script language="JavaScript"> 
+  new tcal ({
+    // form name
+    'formname': 'busca_recibo',
+    // input name
+    'controlname': 'fecha_creinicio'
+  });
+       </script>
+{/literal}
+    </td>
+    <td width="15%"><b>Fecha Creación Fin:</b></td>
+    <td>
+      <INPUT TYPE="text" NAME="fecha_creacionfin" id="fecha_creacionfin" SIZE="10" value="{$fecha_creacionfin}">
+{literal}
+      <script language="JavaScript"> 
+  new tcal ({
+    // form name
+    'formname': 'busca_recibo',
+    // input name
+    'controlname': 'fecha_creacionfin'
+  });
+       </script>
+{/literal}
     </td>
   </tr>
   <tr>

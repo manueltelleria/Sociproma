@@ -59,23 +59,15 @@
 
   $miconexion->conectar("", "", "", "");
 
-  $Paciente = $miPaciente->listarPaciente( $miconexion->Conexion_ID );
-  $smarty->assign('pacien_options', $Paciente);
 
   $TipoOperacion = $miTipoOperacion->listarTipoOperacion( $miconexion->Conexion_ID );
   $smarty->assign('tpopera_options', $TipoOperacion);
 
-  $DoctorCiru = $miDoctor->listarDoctores( $miconexion->Conexion_ID, " id_especialidad = 1 " );
-  $smarty->assign('doctorCiru_options', $DoctorCiru);
+  $Estatus = $miEstatus->listarEstatus( $miconexion->Conexion_ID );
+  $smarty->assign('estatus_options', $Estatus);
 
   $DoctorAnes = $miDoctor->listarDoctores( $miconexion->Conexion_ID, " id_especialidad = 2 " );
   $smarty->assign('doctorAnes_options', $DoctorAnes);
-
-  $Responsable = $miResponsable->listarResponsable( $miconexion->Conexion_ID );
-  $smarty->assign('respon_options', $Responsable);
-
-  $Estatus = $miEstatus->listarEstatus( $miconexion->Conexion_ID );
-  $smarty->assign('estatus_options', $Estatus);
 
   if (!empty($_POST['accion']) && $_POST['accion'] != "buscarPacientes" ) {
     if ($_POST["accion"] == "buscar"){
@@ -91,6 +83,8 @@
       $smarty->assign('id_doctor_anestesia', $_POST["id_doctor_anestesia"] );
       $smarty->assign('id_responsable',      $_POST["id_responsable"] );
       $smarty->assign('id_estatus',          $_POST["id_estatus"] );
+      $smarty->assign('fecha_creacionini',   $_POST["fecha_creacionini"] );
+      $smarty->assign('fecha_creacionfin',   $_POST["fecha_creacionfin"] );
     }
   }
   else{
@@ -115,6 +109,8 @@
     $smarty->assign('id_doctor_anestesia', (!empty($_SESSION['id_doctor_anestesia'])) ? $_SESSION['id_doctor_anestesia'] : '');
     $smarty->assign('id_responsable', (!empty($_SESSION['id_responsable'])) ? $_SESSION['id_responsable'] : '');
 	  $smarty->assign('id_estatus', (!empty($_SESSION['id_estatus'])) ? $_SESSION['id_estatus'] : '');
+    $smarty->assign('fecha_creacionini', (!empty($_SESSION['fecha_creacionini'])) ? $_SESSION['fecha_creacionini'] : ''); 
+    $smarty->assign('fecha_creacionfin', (!empty($_SESSION['fecha_creacionfin'])) ? $_SESSION['fecha_creacionfin'] : '');
 
     if (empty($_POST["accion"]) && !empty($_SESSION['condicion'])){
       buscar( $smarty, $miconexion->Conexion_ID, $miPacienteIntervencion );
@@ -174,6 +170,14 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
       $Where[] = " (monto_total - monto_pagado) != 0";
       $_SESSION['diferencia'] = $_POST["diferencia"];
     }
+    if (!empty($_POST["fecha_creacionini"])){
+      $Where[] = " fecha_creacion >= " . $_POST["fecha_creacionini"];
+      $_SESSION['fecha_creacionini'] = $_POST["fecha_creacionini"];
+    }
+    if (!empty($_POST["fecha_creacionfin"])){
+      $Where[] = " fecha_creacion <= " . $_POST["fecha_creacionfin"];
+      $_SESSION['fecha_creacionfin'] = $_POST["fecha_creacionfin"];
+    }
 
     $_SESSION['condicion'] = join(" AND ", $Where);     
   } else {
@@ -220,6 +224,14 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
     if (!empty($_SESSION["diferencia"])){
       $Where[] = " (monto_total - monto_pagado) != 0";
       $smarty->assign('diferencia', $_SESSION["diferencia"]); 
+    }
+    if (!empty($_SESSION["fecha_creacionini"])){
+      $Where[] = " fecha_creacion >= " . $_SESSION["fecha_creacionini"];
+      $smarty->assign('fecha_creacionini', $_SESSION['fecha_creacionini']);
+    }
+    if (!empty($_SESSION["fecha_creacionfin"])){
+      $Where[] = " fecha_creacion <= " . $_SESSION["fecha_creacionfin"];
+      $smarty->assign('fecha_creacionfin', $_SESSION['fecha_creacionfin']);
     }
   }
 

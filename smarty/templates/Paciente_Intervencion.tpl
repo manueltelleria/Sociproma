@@ -118,19 +118,19 @@ function calcula_monto( ){
   {if $bcompleto == 1}
     <table width="100%">
       <tr>
-        <td width="15%"><b>Historia:</b></td>
+        <td width="15%"><b>Número Historia:</b></td>
         <td align="left"><input type="text" name="shistoria" id="shistoria" size="10" value="{$shistoria}">&nbsp;<b>*</b></td>
       </tr>
       <tr>
-        <td><b>Apellidos:</b></td>
+        <td><b>Apellidos Paciente:</b></td>
         <td><input type="text" name="sapellido" id="sapellido" size="30" value="{$sapellido}">&nbsp;<b>*</b></td>
       </tr>
       <tr>
-        <td width="15%"><b>Nombres:</b></td>
+        <td width="15%"><b>Nombres Paciente:</b></td>
         <td align="left"><input type="text" name="snombre" id="snombre" size="30" value="{$snombre}">&nbsp;<b>*</b></td>
       </tr>
       <tr>
-        <td width="15%"><b>Edad:</b></td>
+        <td width="15%"><b>Edad Paciente:</b></td>
         <td align="left"><input type="text" name="edad" id="edad" size="3" value="{$edad}"></td>
       </tr>
     </table>  
