@@ -20,6 +20,8 @@
 
   $Titulo = "Reporte de Recibos";
 
+  //print var_dump($_POST);
+
   if ($_POST["numreciboini"]){
     $Where[] = " num_recibo >= ". $_POST["numreciboini"];
     $Titulo .= "<br/>Desde " . $_POST["numreciboini"];
@@ -39,9 +41,9 @@
     $Where[] = " fecha_intervencion <= '". $miFecha->formatoDbFecha($_POST["fechafinal"])."'";
     $Titulo .= " Hasta " . $_POST["fechafinal"];
   }
-  if ($_POST["id_tpoperacion"]){
-    $Where[] = " id_tpoperacion = ". $_POST["id_tpoperacion"];
-  }
+  //if ($_POST["id_tpoperacion"]){
+  //  $Where[] = " id_tpoperacion = ". $_POST["id_tpoperacion"];
+  //}
   if ($_POST["id_doctor_cirujano"]){
     $Where[] = " id_doctor_cirujano = ". $_POST["id_doctor_cirujano"];
   }
@@ -98,14 +100,13 @@
 	$content = $smarty->fetch('RecibosPdf.tpl'); //print $content;
 	
 	// conversion HTML => PDF
-	//require_once('c:\wamp\www\html2pdf\html2pdf.class.php');
-	//require_once('c:\xampp\htdocs\sociproma\html2pdf\html2pdf.class.php');
   require_once($miParamConf->getClassPdf());
+  
 	try
 	{
-          $html2pdf = new HTML2PDF('l','letter','es', false, 'UTF-8');
-	  #$html2pdf->pdf->SetDisplayMode('real');
-//	  $html2pdf->setModeDebug();
+    $html2pdf = new HTML2PDF('l','letter','es', false, 'UTF-8');
+	  //$html2pdf->pdf->SetDisplayMode('real');
+	  //$html2pdf->setModeDebug();
 	  $html2pdf->setDefaultFont('Arial','','5');
 	  $html2pdf->writeHTML(utf8_decode($content), isset($_GET['vuehtml']));
  	  $html2pdf->Output('exemple00.pdf');
