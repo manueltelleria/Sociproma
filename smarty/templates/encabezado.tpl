@@ -77,7 +77,7 @@ jQuery(document).ready(function() {
         },
         complete: function(){
           jQuery("#busca_recibo")[0].reset();
-          window.location.replace("http://localhost/sociproma/CtrlBuscarRecibo.php");
+          window.location.replace("http://localhost:8080/sociproma/CtrlBuscarRecibo.php");
         } 
       });
     });
