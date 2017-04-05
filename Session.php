@@ -18,5 +18,7 @@ class Session {
     unset($_SESSION['id_doctor_anestesia']);
     unset($_SESSION['id_responsable']);
     unset($_SESSION['id_estatus']);
+    unset($_SESSION['fecha_creacionini']);
+    unset($_SESSION['fecha_creacionfin']);
   }
 }
