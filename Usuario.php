@@ -42,19 +42,16 @@ function consulta($Conexion_ID, $Where = ""){
 
 //ejecutamos la consulta
 
-  $this->Consulta_ID = @mysql_query($SQL, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($SQL);
 
-  if (!$this->Consulta_ID) {
-
+  if (!$stmt->execute()) {
     $this->Errno = mysql_errno();
-
     $this->Error = mysql_error();
-
   }
 
 /* Si hemos tenido éxito en la consulta devuelve el identificador de la conexión, sino devuelve 0 */
 
-  return $this->Consulta_ID;
+  return $stmt->get_result();
 
 }
 
@@ -63,12 +60,12 @@ function consulta($Conexion_ID, $Where = ""){
 function create($Conexion_ID, $datos = ""){
 
   $query = "INSERT INTO usuario (snombre,sapellido,susuario,scontrasena,scorreo,badministrador, id_doctor) 
-	    VALUES ('".$datos['snombre']."','".$datos['sapellido']."','".$datos['susuario']."','".sha1($datos['scontrasena'])."','".
-	            $datos['scorreo']."','".$datos['badministrador'][0]."','".$datos['id_doctor']."')";
+	               VALUES ('".$datos['snombre']."','".$datos['sapellido']."','".$datos['susuario']."','".sha1($datos['scontrasena'])."','".
+	                       $datos['scorreo']."','".$datos['badministrador'][0]."','".$datos['id_doctor']."')";
 
-  $response = mysql_query($query, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($query);
 
-  return $response;
+  return $stmt->execute();
 }
 
 /* Ejecuta un Actualización */
@@ -77,18 +74,18 @@ function actualiza($Conexion_ID, $Where = "", $datos = ""){
 
   $query = "UPDATE usuario set snombre = '". $datos["snombre"] .
 		           "', sapellido = '". $datos['sapellido']. 
-	                   "', susuario = '". $datos['susuario'].
+	             "', susuario = '". $datos['susuario'].
 		           "', scontrasena = '". sha1($datos['scontrasena']).
 		           "', scorreo = '". $datos['scorreo'].
-	                   "', badministrador = '". $datos['badministrador'][0]."' WHERE ";
+	             "', badministrador = '". $datos['badministrador'][0]."' WHERE ";
 
   if (!empty($Where)){
     $query .= $Where;
   }
 
-  $response = mysql_query($query, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($query);
 
-  return $response;
+  return $stmet->execute();
 }
 
 /* Ejecuta un Actualización del campo bactivo */
@@ -101,33 +98,9 @@ function elimina($Conexion_ID, $Where = ""){
     $query .= $Where;
   }
 
-  $response = mysql_query($query, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($query);
 
-  return $response;
-}
-
-/* Devuelve el número de campos de una consulta */
-
-function numcampos() {
-
-  return mysql_num_fields($this->Consulta_ID);
-
-}
-
-/* Devuelve el número de registros de una consulta */
-
-function numregistros(){
-
-  return mysql_num_rows($this->Consulta_ID);
-
-}
-
-/* Devuelve el nombre de un campo de una consulta */
-
-function nombrecampo($numcampo) {
-
-  return mysql_field_name($this->Consulta_ID, $numcampo);
-
+  return $stmt->execute();
 }
 
 }

@@ -144,29 +144,29 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
     $Where[] = " id_estatus = ". $_POST["id_estatus"];
   }
 
-  $ConsultaID = $PacienteIntervencion->consulta($Conexion_ID, join(" AND ", $Where));
+  $resultado = $PacienteIntervencion->consulta($Conexion_ID, join(" AND ", $Where));
 // mostrarmos los registros
   
   $TotalReg = 0;
   $Recibos = array(); 
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_object($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc()) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos["id"]               = $row->id;
-    $Datos['num_recibo']       = $row->num_recibo;
-    $Datos['nombre_paciente']  = strtoupper($row->apellidopac.", ".$row->nombrepac);
-    $Datos['fecha']            = $miFecha->formatoFecha($row->fecha_intervencion);
-    $Datos['desctpopera']      = $row->desctpopera;
-    $Datos['nombre_cirujano']  = strtoupper($row->apellidociru.", ".$row->nombreciru);
-    $Datos['nombre_anestesia'] = strtoupper($row->apellidoanes.", ".$row->nombreanes);
-    $Datos['monto_total']      = $row->monto_total;
-    $Datos['nombre_respon']    = strtoupper($row->descrespon);
-    $Datos['fecha_pago']       = ($row->id_estatus == 1) ? "&nbsp;" : $miFecha->formatoFecha($row->fecha_pago);
-    $Datos['descestatus']      = strtoupper($row->descestatus);
+    $Datos["id"]               = $row['id'];
+    $Datos['num_recibo']       = $row['num_recibo'];
+    $Datos['nombre_paciente']  = strtoupper($row['apellidopac'].", ".$row['nombrepac']);
+    $Datos['fecha']            = $miFecha->formatoFecha($row['fecha_intervencion']);
+    $Datos['desctpopera']      = $row['desctpopera'];
+    $Datos['nombre_cirujano']  = strtoupper($row['apellidociru'].", ".$row['nombreciru']);
+    $Datos['nombre_anestesia'] = strtoupper($row['apellidoanes'].", ".$row['nombreanes']);
+    $Datos['monto_total']      = $row['monto_total'];
+    $Datos['nombre_respon']    = strtoupper($row['descrespon']);
+    $Datos['fecha_pago']       = ($row['id_estatus'] == 1) ? "&nbsp;" : $miFecha->formatoFecha($row['fecha_pago']);
+    $Datos['descestatus']      = strtoupper($row['descestatus']);
     $Datos['clase']            = $clase;
 
-    $Recibos[$row->id] = $Datos;
+    $Recibos[$row['id']] = $Datos;
     $TotalReg++;
   }
 
@@ -196,9 +196,9 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
       try {
         $html2pdf = new HTML2PDF('P','A4','fr', false, 'ISO-8859-15');
 //      $html2pdf->setModeDebug();
-	$html2pdf->setDefaultFont('Arial');
-	$html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-	$html2pdf->Output('ReporteRecibo.pdf');
+	      $html2pdf->setDefaultFont('Arial');
+	      $html2pdf->writeHTML($content, isset($_GET['vuehtml']));
+	      $html2pdf->Output('ReporteRecibo.pdf');
       }
       catch(HTML2PDF_exception $e) { echo $e; };
 
@@ -211,46 +211,46 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
 
 }
 
-function buscarPacientes( $Conexion_ID, $Paciente ) {
+// function buscarPacientes( $Conexion_ID, $Paciente ) {
 
-  $Where =  array();
-  if ($_POST["criterio"]){
-    $Where[] = " LOWER(shistoria) like '%". strtolower($_POST["criterio"])."%'";
-    $Where[] = " LOWER(snombre) like '%". strtolower($_POST["criterio"])."%'";
-    $Where[] = " LOWER(sapellido) like '%". strtolower($_POST["criterio"])."%'";
-  }
+//   $Where =  array();
+//   if ($_POST["criterio"]){
+//     $Where[] = " LOWER(shistoria) like '%". strtolower($_POST["criterio"])."%'";
+//     $Where[] = " LOWER(snombre) like '%". strtolower($_POST["criterio"])."%'";
+//     $Where[] = " LOWER(sapellido) like '%". strtolower($_POST["criterio"])."%'";
+//   }
 
-  $ConsultaID = $Paciente->consulta($Conexion_ID, join(" OR ", $Where));
-// Retornamos los registros
+//   $resultado = $Paciente->consulta($Conexion_ID, join(" OR ", $Where));
+// // Retornamos los registros
 
-  $Retorno = "";
-  while ($row = mysql_fetch_row($ConsultaID)) {
-    $Retorno .= $row[0].":".$row[1]." - ".$row[3].", ".$row[2]."|";
-  }
+//   $Retorno = "";
+//   while ($row = $resultado->fetch_assoc()) {
+//     $Retorno .= $row[0].":".$row[1]." - ".$row[3].", ".$row[2]."|";
+//   }
 
-  echo $Retorno;
+//   echo $Retorno;
 
-}
+// }
 
-function buscarIntervenciones( $Conexion_ID, $Intervencion ) {
+// function buscarIntervenciones( $Conexion_ID, $Intervencion ) {
 
-  $Where =  array();
-  if ($_POST["criterio"]){
-    $Where[] = " LOWER(sdescripcion) like '%". strtolower($_POST["criterio"])."%'";
-	$Where[] = " bactivo = 1 ";
-  }
+//   $Where =  array();
+//   if ($_POST["criterio"]){
+//     $Where[] = " LOWER(sdescripcion) like '%". strtolower($_POST["criterio"])."%'";
+// 	$Where[] = " bactivo = 1 ";
+//   }
 
-  $ConsultaID = $Intervencion->consulta($Conexion_ID, join("AND", $Where));
-// Retornamos los registros
+//   $ConsultaID = $Intervencion->consulta($Conexion_ID, join("AND", $Where));
+// // Retornamos los registros
 
-  $Retorno = "";
-  while ($row = mysql_fetch_row($ConsultaID)) {
-    $Retorno .= $row[0].":".$row[1].":".$row[2]."|";
-  }
+//   $Retorno = "";
+//   while ($row = mysql_fetch_row($ConsultaID)) {
+//     $Retorno .= $row[0].":".$row[1].":".$row[2]."|";
+//   }
 
-  echo $Retorno;
+//   echo $Retorno;
 
-}
+// }
 
 function salida_pdf( $smarty, $Conexion_ID, $PacienteIntervencion ) {
 
@@ -289,29 +289,29 @@ function salida_pdf( $smarty, $Conexion_ID, $PacienteIntervencion ) {
     $Where[] = " id_estatus = ". $_POST["id_estatus"];
   }
 
-  $ConsultaID = $PacienteIntervencion->consulta($Conexion_ID, join(" AND ", $Where));
+  $resultado = $PacienteIntervencion->consulta($Conexion_ID, join(" AND ", $Where));
 // mostrarmos los registros
   
   $TotalReg = 0;
   $Recibos = array(); 
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_object($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc()) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos["id"]               = $row->id;
-    $Datos['num_recibo']       = $row->num_recibo;
-    $Datos['nombre_paciente']  = strtoupper($row->apellidopac.", ".$row->nombrepac);
-    $Datos['fecha']            = $miFecha->formatoFecha($row->fecha_intervencion);
-    $Datos['desctpopera']      = $row->desctpopera;
-    $Datos['nombre_cirujano']  = strtoupper($row->apellidociru.", ".$row->nombreciru);
-    $Datos['nombre_anestesia'] = strtoupper($row->apellidoanes.", ".$row->nombreanes);
-    $Datos['monto_total']      = $row->monto_total;
-    $Datos['nombre_respon']    = strtoupper($row->descrespon);
-    $Datos['fecha_pago']       = ($row->id_estatus == 1) ? "&nbsp;" : $miFecha->formatoFecha($row->fecha_pago);
-    $Datos['descestatus']      = strtoupper($row->descestatus);
+    $Datos["id"]               = $row['id'];
+    $Datos['num_recibo']       = $row['num_recibo'];
+    $Datos['nombre_paciente']  = strtoupper($row['apellidopac'].", ".$row['nombrepac']);
+    $Datos['fecha']            = $miFecha->formatoFecha($row['fecha_intervencion']);
+    $Datos['desctpopera']      = $row['desctpopera'];
+    $Datos['nombre_cirujano']  = strtoupper($row['apellidociru'].", ".$row['nombreciru']);
+    $Datos['nombre_anestesia'] = strtoupper($row['apellidoanes'].", ".$row['nombreanes']);
+    $Datos['monto_total']      = $row['monto_total'];
+    $Datos['nombre_respon']    = strtoupper($row['descrespon']);
+    $Datos['fecha_pago']       = ($row['id_estatus'] == 1) ? "&nbsp;" : $miFecha->formatoFecha($row['fecha_pago']);
+    $Datos['descestatus']      = strtoupper($row['descestatus)'];
     $Datos['clase']            = $clase;
 
-    $Recibos[$row->id] = $Datos;
+    $Recibos[$row['id'] = $Datos;
     $TotalReg++;
   }
 

@@ -235,31 +235,31 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
     }
   }
 
-  $ConsultaID = $PacienteIntervencion->consulta($Conexion_ID, join(" AND ", $Where));
+  $resultado = $PacienteIntervencion->consulta($Conexion_ID, join(" AND ", $Where));
 // mostrarmos los registros
   
   $Recibos = array(); 
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_object($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc()) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos["id"]               = $row->id;
-    $Datos['num_recibo']       = $row->num_recibo;
-    $Datos['nombre_paciente']  = strtoupper(utf8_encode($row->apellidopac.", ".$row->nombrepac));
-    $Datos['fecha']            = $miFecha->formatoFecha($row->fecha_intervencion);
-    $Datos['desctpopera']      = $row->desctpopera;
-    $Datos['nombre_cirujano']  = strtoupper($row->apellidociru.", ".$row->nombreciru);
-    $Datos['nombre_anestesia'] = strtoupper($row->apellidoanes.", ".$row->nombreanes);
-    $Datos['monto_total']      = number_format($row->monto_total, 2, ",", ".");
-    $Datos['nombre_respon']    = strtoupper($row->descrespon);
-    $Datos['fecha_pago']       = ($row->id_estatus == 1) ? "&nbsp;" : $miFecha->formatoFecha($row->fecha_pago);
-    $Datos['monto_pagado']     = ($row->id_estatus == 1) ? "&nbsp;" : number_format($row->monto_pagado, 2, ",", ".");
-    $Datos['descestatus']      = strtoupper($row->descestatus);
-    $Datos['id_estatus']       = strtoupper($row->id_estatus);
-    $Datos['diferencia']       = (!empty($row->monto_pagado)) ? number_format(($row->monto_total - $row->monto_pagado),2, ",", ".") : 0;
+    $Datos["id"]               = $row['id'];
+    $Datos['num_recibo']       = $row['num_recibo'];
+    $Datos['nombre_paciente']  = strtoupper(utf8_encode($row['apellidopac'].", ".$row['nombrepac']));
+    $Datos['fecha']            = $miFecha->formatoFecha($row['fecha_intervencion']);
+    $Datos['desctpopera']      = $row['desctpopera'];
+    $Datos['nombre_cirujano']  = strtoupper($row['apellidociru'].", ".$row['nombreciru']);
+    $Datos['nombre_anestesia'] = strtoupper($row['apellidoanes'].", ".$row['nombreanes']);
+    $Datos['monto_total']      = number_format($row['monto_total'], 2, ",", ".");
+    $Datos['nombre_respon']    = strtoupper($row['descrespon']);
+    $Datos['fecha_pago']       = ($row['id_estatus'] == 1) ? "&nbsp;" : $miFecha->formatoFecha($row['fecha_pago']);
+    $Datos['monto_pagado']     = ($row['id_estatus'] == 1) ? "&nbsp;" : number_format($row['monto_pagado'], 2, ",", ".");
+    $Datos['descestatus']      = strtoupper($row['descestatus']);
+    $Datos['id_estatus']       = strtoupper($row['id_estatus']);
+    $Datos['diferencia']       = (!empty($row['monto_pagado'])) ? number_format(($row['monto_total'] - $row['monto_pagado']),2, ",", ".") : 0;
     $Datos['clase']            = $clase;
 
-    $Recibos[$row->id] = $Datos;
+    $Recibos[$row['id']] = $Datos;
   }
 
   if ($Recibos){

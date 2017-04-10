@@ -49,21 +49,12 @@ function conectar($bd, $host, $user, $pass){
 
 // Conectamos al servidor
 
-  $this->Conexion_ID = mysql_connect($this->Servidor, $this->Usuario, $this->Clave);
+  //$this->Conexion_ID = mysql_connect($this->Servidor, $this->Usuario, $this->Clave);
+  $this->Conexion_ID = new mysqli($this->Servidor, $this->Usuario, $this->Clave, $this->BaseDatos);
 
   if (!$this->Conexion_ID) {
 
     $this->Error = "Ha fallado la conexión.";
-
-    return 0;
-
-  }
-
-//seleccionamos la base de datos
-
-  if (!@mysql_select_db($this->BaseDatos, $this->Conexion_ID)) {
-
-    $this->Error = "Imposible abrir ".$this->BaseDatos ;
 
     return 0;
 

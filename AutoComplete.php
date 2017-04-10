@@ -62,14 +62,14 @@ function buscarPacientes( $Conexion_ID, $Paciente ) {
 
   $Order = "sapellido";
 
-  $ConsultaID = $Paciente->consulta($Conexion_ID, $whereJ, $Order);
+  $resultado = $Paciente->consulta($Conexion_ID, $whereJ, $Order);
 // Retornamos los registros
 
   $a_json = Array();
-  while ($row = mysql_fetch_row($ConsultaID)) {
-    $a_json_row["id"] = $row[0];
-    $a_json_row["value"] = utf8_encode($row[1]." --- ".$row[3].", ".$row[2]);
-    $a_json_row["label"] = utf8_encode($row[1]." --- ".$row[3].", ".$row[2]);
+  while ($row = $resultado->fetch_assoc()) {
+    $a_json_row["id"] = $row['id'];
+    $a_json_row["value"] = utf8_encode($row['shistoria']." --- ".$row['sapellido'].", ".$row['snombre']);
+    $a_json_row["label"] = utf8_encode($row['shistoria']." --- ".$row['sapellido'].", ".$row['snombre']);
     array_push($a_json, $a_json_row);
   }
 
@@ -84,14 +84,14 @@ function buscarIntervenciones( $Conexion_ID, $Intervencion ) {
     $Where[] = " bactivo = 1 ";
   }
 
-  $ConsultaID = $Intervencion->consulta($Conexion_ID, join(" AND ", $Where));
+  $resultado = $Intervencion->consulta($Conexion_ID, join(" AND ", $Where));
 // Retornamos los registros
 
   $a_json = Array();
-  while ($row = mysql_fetch_row($ConsultaID)) {
-    $a_json_row["id"] = $row[0];
-    $a_json_row["value"] = utf8_encode($row[1]);
-    $a_json_row["label"] = utf8_encode($row[1]);
+  while ($row = $resultado->fetch_assoc($ConsultaID)) {
+    $a_json_row["id"] = $row['id'];
+    $a_json_row["value"] = utf8_encode($row['sdescripcion']);
+    $a_json_row["label"] = utf8_encode($row['sdescripcion']);
     array_push($a_json, $a_json_row);
   }
 
@@ -106,14 +106,14 @@ function buscarResponsables( $Conexion_ID, $Responsable ) {
     $Where[] = " bactivo = 1 ";
   }
 
-  $ConsultaID = $Responsable->consulta($Conexion_ID, join("AND", $Where));
+  $resultado = $Responsable->consulta($Conexion_ID, join("AND", $Where));
 // Retornamos los registros
 
   $a_json = Array();
-  while ($row = mysql_fetch_row($ConsultaID)) {
-    $a_json_row["id"] = $row[0];
-    $a_json_row["value"] = utf8_encode($row[1]);
-    $a_json_row["label"] = utf8_encode($row[1]);
+  while ($row = $resultado->fetch_assoc()) {
+    $a_json_row["id"] = $row['id'];
+    $a_json_row["value"] = utf8_encode($row['sdescripcion']);
+    $a_json_row["label"] = utf8_encode($row['sdescripcion']);
     array_push($a_json, $a_json_row);
   }
 
@@ -135,14 +135,14 @@ function buscarCirujanos( $Conexion_ID, $Doctor ) {
 
   $whereJ .= " AND ".join(" AND ", $Where_1);
 
-  $ConsultaID = $Doctor->consulta($Conexion_ID, $whereJ);
+  $resultado = $Doctor->consulta($Conexion_ID, $whereJ);
 // Retornamos los registros
 
   $a_json = Array();
-  while ($row = mysql_fetch_row($ConsultaID)) {
-    $a_json_row["id"] = $row[0];
-    $a_json_row["value"] = utf8_encode($row[2].", ".$row[1]);
-    $a_json_row["label"] = utf8_encode($row[2].", ".$row[1]);
+  while ($row = $resultado->fetch_assoc()) {
+    $a_json_row["id"] = $row['id'];
+    $a_json_row["value"] = utf8_encode($row['sapellido'].", ".$row['snombre']);
+    $a_json_row["label"] = utf8_encode($row['sapellido'].", ".$row['snombre']);
     array_push($a_json, $a_json_row);
   }
 

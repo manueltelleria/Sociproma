@@ -13,8 +13,10 @@
   $miFecha = new Fecha;
 
   $smarty  = new SmartyIni;
-  $link = mysql_connect("localhost", "root", "") or die ("ERRRRRO");
-  mysql_select_db("anestesia", $link) or die("EN ANestesia");
+  //$link = mysql_connect("localhost", "root", "") or die ("ERRRRRO");
+  $link = new mysqli($miParamConf->getDbServidor(), $miParamConf->getDbUsuario(), $miParamConf->getDbClave(), $miParamConf->getDBDatabase());
+
+  //mysql_select_db("anestesia", $link) or die("EN ANestesia");
 
   $Where =  array();
 
@@ -39,9 +41,9 @@
     $Where[] = " fecha_intervencion <= '". $miFecha->formatoDbFecha($_POST["fechafinal"])."'";
     $Titulo .= " Hasta " . $_POST["fechafinal"];
   }
-  if ($_POST["id_tpoperacion"]){
-    $Where[] = " id_tpoperacion = ". $_POST["id_tpoperacion"];
-  }
+  //if ($_POST["id_tpoperacion"]){
+  //  $Where[] = " id_tpoperacion = ". $_POST["id_tpoperacion"];
+  //}
   if ($_POST["id_doctor_cirujano"]){
     $Where[] = " id_doctor_cirujano = ". $_POST["id_doctor_cirujano"];
   }
@@ -56,7 +58,7 @@
   }
 
 
-  $ConsultaID = $PacienteIntervencion->consulta($link, join(" AND ", $Where));
+  $resultado = $PacienteIntervencion->consulta($link, join(" AND ", $Where));
 
 // mostrarmos los registros
   
@@ -64,25 +66,25 @@
   $TotalMonto = 0;
   $Recibos = array(); 
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_object($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc()) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos["id"]               = $row->id;
-    $Datos['num_recibo']       = $row->num_recibo;
-    $Datos['nombre_paciente']  = strtoupper($row->apellidopac.", ".$row->nombrepac);
-    $Datos['fecha']            = $miFecha->formatoFecha($row->fecha_intervencion);
-    $Datos['desctpopera']      = $row->desctpopera;
-    $Datos['nombre_cirujano']  = strtoupper($row->apellidociru.", ".$row->nombreciru);
-    $Datos['nombre_anestesia'] = strtoupper($row->apellidoanes.", ".$row->nombreanes);
-    $Datos['monto_total']      = number_format ( $row->monto_total, 2, ",", "." );
-    $Datos['nombre_respon']    = strtoupper($row->descrespon);
-    $Datos['fecha_pago']       = ($row->id_estatus == 1) ? "" : $miFecha->formatoFecha($row->fecha_pago);
-    $Datos['descestatus']      = strtoupper($row->descestatus);
+    $Datos["id"]               = $row['id'];
+    $Datos['num_recibo']       = $row['num_recibo'];
+    $Datos['nombre_paciente']  = strtoupper($row['apellidopac'].", ".$row['nombrepac']);
+    $Datos['fecha']            = $miFecha->formatoFecha($row['fecha_intervencion']);
+    $Datos['desctpopera']      = $row['desctpopera'];
+    $Datos['nombre_cirujano']  = strtoupper($row['apellidociru'].", ".$row['nombreciru']);
+    $Datos['nombre_anestesia'] = strtoupper($row['apellidoanes'].", ".$row['nombreanes']);
+    $Datos['monto_total']      = number_format ( $row['monto_total'], 2, ",", "." );
+    $Datos['nombre_respon']    = strtoupper($row['descrespon']);
+    $Datos['fecha_pago']       = ($row['id_estatus'] == 1) ? "" : $miFecha->formatoFecha($row['fecha_pago']);
+    $Datos['descestatus']      = strtoupper($row['descestatus']);
     $Datos['clase']            = $clase;
 
-    $Recibos[$row->id] = $Datos;
+    $Recibos[$row['id']] = $Datos;
     $TotalReg++;
-    $TotalMonto += $row->monto_total;
+    $TotalMonto += $row['monto_total'];
   }
 
 
@@ -105,7 +107,7 @@
 	{
           $html2pdf = new HTML2PDF('l','letter','es', false, 'UTF-8');
 	  #$html2pdf->pdf->SetDisplayMode('real');
-//	  $html2pdf->setModeDebug();
+	  //$html2pdf->setModeDebug();
 	  $html2pdf->setDefaultFont('Arial','','5');
 	  $html2pdf->writeHTML(utf8_decode($content), isset($_GET['vuehtml']));
  	  $html2pdf->Output('exemple00.pdf');

@@ -29,19 +29,17 @@ function consulta($Conexion_ID, $Where = ""){
 
 //ejecutamos la consulta
 
-  $this->Consulta_ID = @mysql_query($SQL, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($SQL);
 
-  if (!$this->Consulta_ID) {
-
+  if (!$stmt->execute()) {
     $this->Errno = mysql_errno();
-
     $this->Error = mysql_error();
-
   }
+  $resultado = $stmt->get_result();
 
 /* Si hemos tenido éxito en la consulta devuelve el identificador de la conexión, sino devuelve 0 */
 
-  return $this->Consulta_ID;
+  return $resultado;
 
 }
 
@@ -51,11 +49,9 @@ function create($Conexion_ID, $datos = ""){
 
   $query = "INSERT INTO estatus (sdescripcion) VALUES ('".$datos['sdescripcion'].")";
 
-  $response = mysql_query($query, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($query);
 
-  print mysql_error($Conexion_ID);
-
-  return $response;
+  return $stmt->execute();
 }
 
 /* Ejecuta un Actualización */
@@ -68,9 +64,9 @@ function actualiza($Conexion_ID, $Where = "", $datos = ""){
     $query .= $Where;
   }
 
-  $response = mysql_query($query, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($query);
 
-  return $response;
+  return $stmt->execute();
 }
 
 /* Ejecuta un Actualización del campo bactivo */
@@ -83,9 +79,9 @@ function elimina($Conexion_ID, $Where = ""){
     $query .= $Where;
   }
 
-  $response = mysql_query($query, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($query);
 
-  return $response;
+  return $stmt->execute();
 }
 
 /* Ejecuta un Actualización */
@@ -96,49 +92,24 @@ function listarEstatus($Conexion_ID){
 
 //ejecutamos la consulta
 
-  $this->Consulta_ID = @mysql_query($query, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($query);
 
-  if (!$this->Consulta_ID) {
-
+  if (!$stmt->execute()) {
     $this->Errno = mysql_errno();
-
     $this->Error = mysql_error();
-
   }
+  $resultado = $stmt->get_result();
 
   $Datos[0] = "Seleccione -----";
-  while ($row = mysql_fetch_row($this->Consulta_ID)) {
+  while ($row = $resultado->fetch_assoc()) {
 
-    $Datos[$row[0]] = strtoupper($row[1]);
+    $Datos[$row['id']] = strtoupper($row['sdescripcion']);
 
   }
 
   return $Datos;
 }
 
-/* Devuelve el número de campos de una consulta */
-
-function numcampos() {
-
-  return mysql_num_fields($this->Consulta_ID);
-
-}
-
-/* Devuelve el número de registros de una consulta */
-
-function numregistros(){
-
-  return mysql_num_rows($this->Consulta_ID);
-
-}
-
-/* Devuelve el nombre de un campo de una consulta */
-
-function nombrecampo($numcampo) {
-
-  return mysql_field_name($this->Consulta_ID, $numcampo);
-
-}
 
 }
 ?>

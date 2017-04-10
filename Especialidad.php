@@ -96,20 +96,23 @@ function listarEspecialidad($Conexion_ID){
 
 //ejecutamos la consulta
 
-  $this->Consulta_ID = @mysql_query($query, $Conexion_ID);
+  //$this->Consulta_ID = @mysql_query($query, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($query);
 
-  if (!$this->Consulta_ID) {
+  //if (!$this->Consulta_ID) {
+  if (!$stmt->execute()) {
 
     $this->Errno = mysql_errno();
 
     $this->Error = mysql_error();
-
   }
 
-  $Datos[0] = "Seleccione -----";
-  while ($row = mysql_fetch_row($this->Consulta_ID)) {
+  $resultado = $stmt->get_result();
 
-    $Datos[$row[0]] = utf8_encode(strtoupper($row[1]));
+  $Datos[0] = "Seleccione -----";
+  while ($row = $resultado->fetch_assoc()) {
+
+    $Datos[$row['id']] = utf8_encode(strtoupper($row['sdescripcion']));
 
   }
 

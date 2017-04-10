@@ -53,15 +53,15 @@
 
 #Se muestran los datos asociados al id en tratamiento
       $Where = " id = " . $_POST["id"];
-      $ConsultaId = $miPaciente->consulta($miconexion->Conexion_ID, $Where);
+      $resultado = $miPaciente->consulta($miconexion->Conexion_ID, $Where);
 
-      $row = mysql_fetch_assoc($ConsultaId);
+      $row = $resultado->fetch_assoc();
       if ($row){
 	      
         $smarty->assign('id',        $row["id"]);
         $smarty->assign('shistoria', $row["shistoria"]);
-        $smarty->assign('snombre',   $row["snombre"]);
-	      $smarty->assign('sapellido', $row["sapellido"]);
+        $smarty->assign('snombre',   strtoupper(utf8_encode($row["snombre"])));
+	      $smarty->assign('sapellido', strtoupper(utf8_encode($row["sapellido"])));
 	      $smarty->assign('edad',      $row["edad"]);
 
       }
@@ -115,8 +115,7 @@
 
   if (empty($_POST['accion']) || $_POST["accion"] != "buscar" ){
     $Where = " bactivo = 1 ";
-    $ConsultaID = $miPaciente->consulta($miconexion->Conexion_ID, $Where);
-    verconsulta( $smarty, $ConsultaID );
+    verconsulta( $smarty, $miPaciente->consulta($miconexion->Conexion_ID, $Where) );
   }
 
     if(isset($_SERVER['HTTP_REFERER'])) {
@@ -170,22 +169,22 @@ function elimina( $Conexion_ID, $miPaciente ){
 
 /* Muestra los datos de una consulta */
 
-function verconsulta( $smarty, $ConsultaID ) {
+function verconsulta( $smarty, $resultado ) {
 
 // mostrarmos los registros
   
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_object($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc()) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos['id']        = $row->id;
-    $Datos['shistoria'] = $row->shistoria;
-    $Datos['snombre']   = utf8_encode(strtoupper($row->snombre));
-    $Datos['sapellido'] = utf8_encode(strtoupper($row->sapellido));
-    $Datos['edad']      = strtoupper($row->edad);
+    $Datos['id']        = $row['id'];
+    $Datos['shistoria'] = $row['shistoria'];
+    $Datos['snombre']   = utf8_encode(strtoupper($row['snombre']));
+    $Datos['sapellido'] = utf8_encode(strtoupper($row['sapellido']));
+    $Datos['edad']      = strtoupper($row['edad']);
     $Datos['clase']     = $clase;
 
-    $Pacientes[$row->id] = $Datos;
+    $Pacientes[$row['id']] = $Datos;
   }
 
   $smarty->assign('ArrPacientes', $Pacientes);
@@ -209,22 +208,22 @@ function buscar( $smarty, $Conexion_ID, $Paciente ) {
     $Where[] = " LOWER(sapellido) like '%". strtolower($_POST["sapellido"])."%'";
   }
 
-  $ConsultaID = $Paciente->consulta($Conexion_ID, join(" AND ", $Where));
+  $resultado = $Paciente->consulta($Conexion_ID, join(" AND ", $Where));
 // mostrarmos los registros
   
 
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_row($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc($ConsultaID)) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos['id']        = $row[0];
-    $Datos['shistoria'] = $row[1];
-    $Datos['snombre']   = $row[2];
-    $Datos['sapellido'] = $row[3];
-    $Datos['edad']      = $row[4];
+    $Datos['id']        = $row['id'];
+    $Datos['shistoria'] = $row['shistoria'];
+    $Datos['snombre']   = $row['snombre'];
+    $Datos['sapellido'] = $row['sapellido'];
+    $Datos['edad']      = $row['edad'];
     $Datos['clase']     = $clase;
 
-    $Pacientes[$row[0]] = $Datos;
+    $Pacientes[$row['id']] = $Datos;
   }
 
   if (!empty($Pacientes)){

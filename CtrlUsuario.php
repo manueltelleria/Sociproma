@@ -53,9 +53,9 @@
 
 #Se muestran los datos asociados al id en tratamiento
       $Where = " id = " . $_POST["id"];
-      $ConsultaId = $miUsuario->consulta($miconexion->Conexion_ID, $Where);
+      $resultado = $miUsuario->consulta($miconexion->Conexion_ID, $Where);
 
-      $row = mysql_fetch_assoc($ConsultaId);
+      $row = $resultado->fetch_assoc();
       if ($row){
         $smarty->assign('id',          $row["id"]);
         $smarty->assign('snombre',     $row["snombre"]);
@@ -132,9 +132,9 @@
   }
 
   $Where = " bactivo = 1 ";
-  $ConsultaID = $miUsuario->consulta($miconexion->Conexion_ID, $Where);
+  //$ConsultaID = $miUsuario->consulta($miconexion->Conexion_ID, $Where);
 
-  verconsulta( $smarty, $ConsultaID );
+  verconsulta( $smarty, $miUsuario->consulta($miconexion->Conexion_ID, $Where));
 
   $smarty->assign('subtitulo', "");
 
@@ -196,23 +196,22 @@ function elimina( $Conexion_ID, $miUsuario ){
 
 /* Muestra los datos de una consulta */
 
-function verconsulta( $smarty, $ConsultaID ) {
+function verconsulta( $smarty, $resultado ) {
 
 // mostrarmos los registros
   
-
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_row($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc()) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos['id']         = $row[0];
-    $Datos['snombre']    = $row[1];
-    $Datos['sapellido']  = $row[2];
-    $Datos['susuario']   = $row[3];
-    $Datos['scorreo']    = $row[5];
+    $Datos['id']         = $row['id'];
+    $Datos['snombre']    = $row['snombre'];
+    $Datos['sapellido']  = $row['sapellido'];
+    $Datos['susuario']   = $row['susuario'];
+    $Datos['scorreo']    = $row['scorreo'];
     $Datos['clase']      = $clase;
 
-    $Usuarios[$row[0]] = $Datos;
+    $Usuarios[$row['id']] = $Datos;
   }
 
   $smarty->assign('ArrUsuarios', $Usuarios);
@@ -238,22 +237,22 @@ function buscar( $smarty, $Conexion_ID, $Usuario ) {
     $Where[] = " badministrador =". $_POST["badministrador"];
   }
 
-  $ConsultaID = $Usuario->consulta($Conexion_ID, join(" AND ", $Where));
+  $resultado = $Usuario->consulta($Conexion_ID, join(" AND ", $Where));
 // mostrarmos los registros
   
 
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_row($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc()) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos['id']         = $row[0];
-    $Datos['snombre']    = $row[1];
-    $Datos['sapellido']  = $row[2];
-    $Datos['susuario']   = $row[3];
-    $Datos['scorreo']    = $row[5];
+    $Datos['id']         = $row['id'];
+    $Datos['snombre']    = $row['snombre'];
+    $Datos['sapellido']  = $row['sapellido'];
+    $Datos['susuario']   = $row['susuario'];
+    $Datos['scorreo']    = $row['scorreo'];
     $Datos['clase']      = $clase;
 
-    $Usuarios[$row[0]] = $Datos;
+    $Usuarios[$row['id']] = $Datos;
   }
 
   $smarty->assign('ArrUsuarios', $Usuarios);

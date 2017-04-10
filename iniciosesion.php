@@ -29,17 +29,17 @@
   if (!empty($_POST['susuario']) ) {
 #Se Busca la información relacionada con el usuario
     $Where = " susuario = '" . $_POST["susuario"]."' AND bactivo = 1";
-    $ConsultaId = $miUsuario->consulta($miconexion->Conexion_ID, $Where);
+    $resultado = $miUsuario->consulta($miconexion->Conexion_ID, $Where);
 
-    if ($ConsultaId){
-      $row = mysql_fetch_object($ConsultaId);
-      if ($row &&  (sha1($_POST['scontrasena']) == $row->scontrasena)){
-        print $row->susuario;
+    if ($resultado){
+      $row = $resultado->fetch_assoc();
+      if ($row &&  (sha1($_POST['scontrasena']) == $row['scontrasena'])){
+        print $row['susuario'];
 	      session_start();
 	      $usuario_log  = $_POST['susuario'];
-	      $nombre_log   = $row->snombre;
-	      $apellido_log = $row->sapellido;
-	      $badministra  = ($row->badministrador == 1) ? 1 : 0;
+	      $nombre_log   = $row['snombre'];
+	      $apellido_log = $row['sapellido'];
+	      $badministra  = ($row['badministrador'] == 1) ? 1 : 0;
         $_SESSION['usuario_log']  = $usuario_log;
         $_SESSION['nombre_log']   = $nombre_log;
         $_SESSION['apellido_log'] = $apellido_log;

@@ -48,9 +48,9 @@
 
 #Se muestran los datos asociados al id en tratamiento
       $Where = " id = " . $_POST["id"];
-      $ConsultaId = $miIntervencion->consulta($miconexion->Conexion_ID, $Where);
+      $resultado = $miIntervencion->consulta($miconexion->Conexion_ID, $Where);
 
-      $row = mysql_fetch_assoc($ConsultaId);
+      $row = $resultado->fetch_assoc($ConsultaId);
       if ($row){
         $smarty->assign('id',          $row["id"]);
         $smarty->assign('sdescripcion',$row["sdescripcion"]);
@@ -140,20 +140,20 @@ function elimina( $Conexion_ID, $miIntervencion ){
 
 /* Muestra los datos de una consulta */
 
-function verconsulta( $smarty, $ConsultaID ) {
+function verconsulta( $smarty, $resultado ) {
 
 // mostrarmos los registros
 
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_row($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc()) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos['id']           = $row[0];
-    $Datos['sdescripcion'] = $row[1];
-    $Datos['nmonto_ref']   = $row[2];
+    $Datos['id']           = $row['id'];
+    $Datos['sdescripcion'] = $row['sdescripcion'];
+    $Datos['nmonto_ref']   = $row['nmonto_ref'];
     $Datos['clase']        = $clase;
 
-    $Intervenciones[$row[0]] = $Datos;
+    $Intervenciones[$row['id']] = $Datos;
   }
 
   $smarty->assign('ArrIntervenciones', $Intervenciones);
@@ -170,20 +170,20 @@ function buscar( $smarty, $Conexion_ID, $Intervencion ) {
     $Where[] = " nmonto_ref = ". $_POST["nmonto_ref"];
   }
 
-  $ConsultaID = $Intervencion->consulta($Conexion_ID, join(" AND ", $Where));
+  $resultado = $Intervencion->consulta($Conexion_ID, join(" AND ", $Where));
 // mostrarmos los registros
   
 
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_row($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc()) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos['id']           = $row[0];
-    $Datos['sdescripcion'] = $row[1];
-    $Datos['nmonto_ref']   = $row[2];
+    $Datos['id']           = $row['id'];
+    $Datos['sdescripcion'] = $row['sdescripcion'];
+    $Datos['nmonto_ref']   = $row['nmonto_ref'];
     $Datos['clase']        = $clase;
 
-    $Intervenciones[$row[0]] = $Datos;
+    $Intervenciones[$row['id']] = $Datos;
   }
 
   $smarty->assign('ArrIntervenciones', $Intervenciones);

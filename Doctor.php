@@ -34,9 +34,11 @@ function Doctor($snombre = "", $sapellido = "", $stelefono = "", $stelefono_1 = 
 function consulta($Conexion_ID, $Where = ""){
 
   $SQL =  "SELECT me.id, me.snombre,
-		  me.sapellido, me.stelefono,
-		  me.stelefono_1, me.id_especialidad,
-		  me.bactivo, esp.id as esp_id, esp.sdescripcion as esp_descrip FROM doctor me, especialidad esp WHERE me.id_especialidad = esp.id  ";
+		              me.sapellido, me.stelefono,
+		              me.stelefono_1, me.id_especialidad,
+		              me.bactivo, esp.id as esp_id, esp.sdescripcion as esp_descrip 
+             FROM doctor me, especialidad esp 
+            WHERE me.id_especialidad = esp.id ";
 
   if (!empty($Where)) {
     $SQL .= " AND " . $Where;
@@ -47,20 +49,18 @@ function consulta($Conexion_ID, $Where = ""){
 
 //ejecutamos la consulta
 
+  $stmt = $Conexion_ID->prepare($SQL);
 
-  $this->Consulta_ID = @mysql_query($SQL, $Conexion_ID);
-
-  if (!$this->Consulta_ID) {
-
+  if (!$stmt->execute()) {
     $this->Errno = mysql_errno();
-
     $this->Error = mysql_error();
-
   }
+
+  $resultado = $stmt->get_result();
 
 /* Si hemos tenido éxito en la consulta devuelve el identificador de la conexión, sino devuelve 0 */
 
-  return $this->Consulta_ID;
+  return $resultado;
 
 }
 
@@ -69,11 +69,12 @@ function consulta($Conexion_ID, $Where = ""){
 function create($Conexion_ID, $datos = ""){
 
   $query = "INSERT INTO doctor (snombre,sapellido,stelefono,stelefono_1,id_especialidad) 
-	  VALUES ('".$datos['snombre']."','".$datos['sapellido']."','".$datos['stelefono']."','".$datos['stelefono_1']."','".$datos['id_especialidad']."')";
+	               VALUES ('".$datos['snombre']."','".$datos['sapellido']."','".$datos['stelefono']."','".
+                            $datos['stelefono_1']."','".$datos['id_especialidad']."')";
 
-  $response = mysql_query($query, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($query);
+  $reponse = $stmt->execute();
 
-  print mysql_error();
   return $response;
 }
 
@@ -82,17 +83,17 @@ function create($Conexion_ID, $datos = ""){
 function actualiza($Conexion_ID, $Where = "", $datos = ""){
 
 	$query = "UPDATE doctor set snombre = '". $datos["snombre"] .
-		                 "', sapellido = '". $datos['sapellido']. 
-	                         "', stelefono = '". $datos['stelefono'].
-	                         "', stelefono_1 = '". $datos['stelefono_1'].
-		                 "', id_especialidad = '". $datos['id_especialidad']."' WHERE ";
+		                      "', sapellido = '". $datos['sapellido']. 
+	                        "', stelefono = '". $datos['stelefono'].
+	                        "', stelefono_1 = '". $datos['stelefono_1'].
+		                      "', id_especialidad = '". $datos['id_especialidad']."' WHERE ";
 
   if (!empty($Where)){
     $query .= $Where;
   }
 
-  $response = mysql_query($query, $Conexion_ID);
-
+  $stmt = $Conexion_ID->prepare($query);
+  $response = $stmt->execute();
 
   return $response;
 }
@@ -107,7 +108,8 @@ function elimina($Conexion_ID, $Where = ""){
     $query .= $Where;
   }
 
-  $response = mysql_query($query, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($query);
+  $response = $stmt->execute();
 
   return $response;
 }
@@ -125,9 +127,9 @@ function listarDoctores($Conexion_ID, $Where){
 
 //ejecutamos la consulta
 
-  $this->Consulta_ID = @mysql_query($query, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($query);
 
-  if (!$this->Consulta_ID) {
+  if (!$stmt->execute()) {
 
     $this->Errno = mysql_errno();
 
@@ -135,10 +137,12 @@ function listarDoctores($Conexion_ID, $Where){
 
   }
 
-  $Datos[0] = "Seleccione -----";
-  while ($row = mysql_fetch_row($this->Consulta_ID)) {
+  $resultado = $stmt->get_result();
 
-    $Datos[$row[0]] = $row[2].", ".$row[1];
+  $Datos[0] = "Seleccione -----";
+  while ($row = $resultado->fetch_assoc()) {
+
+    $Datos[$row['id']] = $row['sapellido'].", ".$row['snombre'];
 
   }
 

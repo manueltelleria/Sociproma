@@ -115,30 +115,30 @@
 
 #Se muestran los datos asociados al id en tratamiento
       $Where = " me.id = " . $_POST["id"];
-      $ConsultaId = $miPacienteIntervencion->consulta($miconexion->Conexion_ID, $Where);
+      $resultado = $miPacienteIntervencion->consulta($miconexion->Conexion_ID, $Where);
 
-      $row = mysql_fetch_object($ConsultaId);
+      $row = $resultado->fetch_assoc();
       if ($row){
-        $smarty->assign('id', $row->id);
-        $smarty->assign('num_recibo', $row->num_recibo);
-        $smarty->assign('id_paciente', $row->id_paciente);
-        $smarty->assign('fecha', $miFecha->formatoFecha($row->fecha_intervencion));
-        $smarty->assign('id_tpoperacion', $row->id_tpoperacion);
-        $smarty->assign('id_doctor_cirujano', $row->id_doctor_cirujano);
-        $smarty->assign('id_doctor_anestesia', $row->id_doctor_anestesia);
-        $smarty->assign('monto_parcial', $row->monto_total - $row->monto_sap);
-        $smarty->assign('id_responsable', $row->id_responsable);
-        $smarty->assign('sobservacion', $row->sobservacion);
-        $smarty->assign('monto_sap', number_format ( $row->monto_sap, 2, ",", "." ));
-        $smarty->assign('monto_preva',  number_format ( $row->monto_preva, 2, ",", "." ));
-        $smarty->assign('monto_anestesia',  number_format ( $row->monto_anestesia, 2, ",", "." ));
-        $smarty->assign('monto_total', number_format ( $row->monto_total, 2, ",", "." ));
-        $smarty->assign('id_intervencion', $row->id_intervencion);
+        $smarty->assign('id', $row['id']);
+        $smarty->assign('num_recibo', $row['num_recibo']);
+        $smarty->assign('id_paciente', $row['id_paciente']);
+        $smarty->assign('fecha', $miFecha->formatoFecha($row['fecha_intervencion']));
+        $smarty->assign('id_tpoperacion', $row['id_tpoperacion']);
+        $smarty->assign('id_doctor_cirujano', $row['id_doctor_cirujano']);
+        $smarty->assign('id_doctor_anestesia', $row['id_doctor_anestesia']);
+        $smarty->assign('monto_parcial', $row['monto_total'] - $row['monto_sap']);
+        $smarty->assign('id_responsable', $row['id_responsable']);
+        $smarty->assign('sobservacion', $row['sobservacion']);
+        $smarty->assign('monto_sap', number_format ( $row['monto_sap'], 2, ",", "." ));
+        $smarty->assign('monto_preva',  number_format ( $row['monto_preva'], 2, ",", "." ));
+        $smarty->assign('monto_anestesia',  number_format ( $row['monto_anestesia'], 2, ",", "." ));
+        $smarty->assign('monto_total', number_format ( $row['monto_total'], 2, ",", "." ));
+        $smarty->assign('id_intervencion', $row['id_intervencion']);
         if ($_POST["accion"] == "pagar"){
-          $smarty->assign('num_recibo', $row->num_recibo);
-          $smarty->assign('nombre_paciente', $row->apellidopac.", ".$row->nombrepac);
-          $smarty->assign('nombre_cirujano', $row->apellidociru.", ".$row->nombreciru);
-          $smarty->assign('nombre_anestesiologo', $row->apellidoanes.", ".$row->nombreanes);
+          $smarty->assign('num_recibo', $row['num_recibo']);
+          $smarty->assign('nombre_paciente', $row['apellidopac'].", ".$row['nombrepac']);
+          $smarty->assign('nombre_cirujano', $row['apellidociru'].", ".$row['nombreciru']);
+          $smarty->assign('nombre_anestesiologo', $row['apellidoanes'].", ".$row['nombreanes']);
           $smarty->assign('bpagar', 1);  
         } else {
           $smarty->assign('bpagar', 0);  
@@ -296,24 +296,23 @@ function buscar( $smarty, $Conexion_ID, $PacienteIntervencion ) {
 
   $Where =  array();
   
-  $ConsultaID = $PacienteIntervencion->consulta($Conexion_ID, join(" AND ", $Where));
+  $resultado = $PacienteIntervencion->consulta($Conexion_ID, join(" AND ", $Where));
 // mostrarmos los registros
-  
 
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_assoc($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc()) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos["id"]                  = $row->id;
-    $Datos['id_paciente']         = strtoupper($row->id_paciente);
-    $Datos['fecha']               = strtoupper($row->fecha);
-    $Datos['id_tpoperacion']      = $row->id_tpoperacion;
-    $Datos['id_doctor_cirujano']  = $row->id_doctor_cirujano;
-    $Datos['id_doctor_anestesia'] = $row->id_doctor_anestesia;
-    $Datos['monto_total']         = $row->monto_total;
-    $Datos['id_responsable']      = $row->id_responsable;
-    $Datos['id_intervencion']     = $row->id_intervencion;
-    $Datos['fecha_pago']          = $row->fecha_pago;
+    $Datos["id"]                  = $row['id'];
+    $Datos['id_paciente']         = strtoupper($row['id_paciente']);
+    $Datos['fecha']               = strtoupper($row['fecha']);
+    $Datos['id_tpoperacion']      = $row['id_tpoperacion'];
+    $Datos['id_doctor_cirujano']  = $row['id_doctor_cirujano'];
+    $Datos['id_doctor_anestesia'] = $row['id_doctor_anestesia'];
+    $Datos['monto_total']         = $row['monto_total'];
+    $Datos['id_responsable']      = $row['id_responsable'];
+    $Datos['id_intervencion']     = $row['id_intervencion'];
+    $Datos['fecha_pago']          = $row['fecha_pago'];
     $Datos['clase']               = $clase;
 
     $Recibos[$row[0]] = $Datos;

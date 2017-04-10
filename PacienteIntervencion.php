@@ -65,21 +65,17 @@ function consulta($Conexion_ID, $Where = ""){
 
 //ejecutamos la consulta
 
-  $this->Consulta_ID = @mysql_query($SQL, $Conexion_ID);
+  $stmt = $Conexion_ID->prepare($SQL);
 
-  if (!$this->Consulta_ID) {
-
+  if (!$stmt->execute()) {
     $this->Errno = mysql_errno();
-
     $this->Error = mysql_error();
-
-    print $this->Error;
-
   }
+  $resultado = $stmt->get_result();
 
 /* Si hemos tenido éxito en la consulta devuelve el identificador de la conexión, sino devuelve 0 */
 
-  return $this->Consulta_ID;
+  return $resultado;
 
 }
 

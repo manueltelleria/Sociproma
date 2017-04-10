@@ -48,9 +48,9 @@
 
 #Se muestran los datos asociados al id en tratamiento
       $Where = " id = " . $_POST["id"];
-      $ConsultaId = $miResponsable->consulta($miconexion->Conexion_ID, $Where);
+      $resultado = $miResponsable->consulta($miconexion->Conexion_ID, $Where);
 
-      $row = mysql_fetch_assoc($ConsultaId);
+      $row = $resultado->fetch_assoc();
       if ($row){
         $smarty->assign('id',          $row["id"]);
         $smarty->assign('sdescripcion', $row["sdescripcion"]);
@@ -100,8 +100,8 @@
 
   if (empty($_POST['accion']) || $_POST["accion"] != "buscar" ){
     $Where = " bactivo = 1 ";
-    $ConsultaID = $miResponsable->consulta($miconexion->Conexion_ID, $Where);
-    verconsulta( $smarty, $ConsultaID );
+    //$ConsultaID = $miResponsable->consulta($miconexion->Conexion_ID, $Where);
+    verconsulta( $smarty, $miResponsable->consulta($miconexion->Conexion_ID, $Where) );
   }
 
   if(isset($_SERVER['HTTP_REFERER'])) {
@@ -151,20 +151,20 @@ function elimina( $Conexion_ID, $miResponsable ){
 
 /* Muestra los datos de una consulta */
 
-function verconsulta( $smarty, $ConsultaID ) {
+function verconsulta( $smarty, $resultado ) {
 
 // mostrarmos los registros
   
 
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_row($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc()) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos['id']           = $row[0];
-    $Datos['sdescripcion'] = $row[1];
+    $Datos['id']           = $row['id'];
+    $Datos['sdescripcion'] = $row['sdescripcion'];
     $Datos['clase']        = $clase;
 
-    $Responsables[$row[0]] = $Datos;
+    $Responsables[$row['id']] = $Datos;
   }
 
   $smarty->assign('ArrResponsables', $Responsables);
@@ -180,18 +180,18 @@ function buscar( $smarty, $Conexion_ID, $Responsable ) {
     $Where[] = " LOWER(sdescripcion) like '%". strtolower($_POST["sdescripcion"])."%'";
   }
 
-  $ConsultaID = $Responsable->consulta($Conexion_ID, join(" AND ", $Where));
+  $resultado = $Responsable->consulta($Conexion_ID, join(" AND ", $Where));
 // mostrarmos los registros
   
   $clase = "fondoetiqueta";
-  while ($row = mysql_fetch_row($ConsultaID)) {
+  while ($row = $resultado->fetch_assoc($ConsultaID)) {
 
     $clase  = ( $clase == "fondoetiqueta" ) ? '' : "fondoetiqueta";
-    $Datos['id']           = $row[0];
-    $Datos['sdescripcion'] = $row[1];
+    $Datos['id']           = $row['id'];
+    $Datos['sdescripcion'] = $row['sdescripcion'];
     $Datos['clase']        = $clase;
 
-    $Responsables[$row[0]] = $Datos;
+    $Responsables[$row['id']] = $Datos;
   }
 
   if ( $Responsables ){
