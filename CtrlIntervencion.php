@@ -58,27 +58,27 @@
       }
     }
 
-#Se hace la inserciòn de los valores de la pantalla
+#Se hace la inserciÃ²n de los valores de la pantalla
 
     if ( $_POST["accion"] == "enviar" && empty($_POST["id"])){
       if (crear( $miconexion->Conexion_ID, $miIntervencion ) ){
-        $smarty->assign('error_msg', 'La creación de los datos se realizó de manera exitosa');
+        $smarty->assign('error_msg', 'La creaciÃ³n de los datos se realizÃ³ de manera exitosa');
       }
       else{
-        $smarty->assign('error_msg', 'Ha ocurrido un error al momento de la creación de los datos');
+        $smarty->assign('error_msg', 'Ha ocurrido un error al momento de la creaciÃ³n de los datos');
       }
     }
     elseif( $_POST["accion"] == "enviar" && !empty($_POST["id"]) ){
       if (actualiza( $miconexion->Conexion_ID, $miIntervencion ) ){
-        $smarty->assign('error_msg', 'La acualización de los datos se realizó de manera exitosa');
+        $smarty->assign('error_msg', 'La acualizaciÃ³n de los datos se realizÃ³ de manera exitosa');
       }
       else{
-        $smarty->assign('error_msg', 'Ha ocurrido un error al momento de la actualización de los datos');
+        $smarty->assign('error_msg', 'Ha ocurrido un error al momento de la actualizaciÃ³n de los datos');
       }
     }
     elseif( $_POST["accion"] == "elimina" && !empty($_POST["id"]) ){
       if (elimina( $miconexion->Conexion_ID, $miIntervencion ) ){
-        $smarty->assign('error_msg', 'La Eliminación del registro se realizó de manera exitosa');
+        $smarty->assign('error_msg', 'La EliminaciÃ³n del registro se realizÃ³ de manera exitosa');
       }
       else{
         $smarty->assign('error_msg', 'Ha ocurrido un error al momento de eliminar el registro');
@@ -114,7 +114,7 @@ function crear( $Conexion_ID, $miIntervencion ){
   return $resultado;
 }
 
-/* Realiza la actualizacón de los datos indicados en la forma */
+/* Realiza la actualizacÃ³n de los datos indicados en la forma */
 function actualiza( $Conexion_ID, $miIntervencion ){
 
   $Where = " id = " . $_POST["id"];
@@ -128,7 +128,7 @@ function actualiza( $Conexion_ID, $miIntervencion ){
   return $resultado;
 }
 
-/* Realiza la actualizacón de los datos indicados en la forma */
+/* Realiza la actualizacÃ³n de los datos indicados en la forma */
 function elimina( $Conexion_ID, $miIntervencion ){
 
   $Where = " id = " . $_POST["id"];

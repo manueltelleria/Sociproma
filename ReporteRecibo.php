@@ -39,9 +39,9 @@
     $Where[] = " fecha_intervencion <= '". $miFecha->formatoDbFecha($_POST["fechafinal"])."'";
     $Titulo .= " Hasta " . $_POST["fechafinal"];
   }
-  if ($_POST["id_tpoperacion"]){
-    $Where[] = " id_tpoperacion = ". $_POST["id_tpoperacion"];
-  }
+ // if ($_POST["id_tpoperacion"]){
+ //   $Where[] = " id_tpoperacion = ". $_POST["id_tpoperacion"];
+ // }
   if ($_POST["id_doctor_cirujano"]){
     $Where[] = " id_doctor_cirujano = ". $_POST["id_doctor_cirujano"];
   }
@@ -105,7 +105,7 @@
 	{
           $html2pdf = new HTML2PDF('l','letter','es', false, 'UTF-8');
 	  #$html2pdf->pdf->SetDisplayMode('real');
-//	  $html2pdf->setModeDebug();
+	  #$html2pdf->setModeDebug();
 	  $html2pdf->setDefaultFont('Arial','','5');
 	  $html2pdf->writeHTML(utf8_decode($content), isset($_GET['vuehtml']));
  	  $html2pdf->Output('exemple00.pdf');
